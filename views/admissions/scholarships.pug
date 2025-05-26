@@ -1,0 +1,55 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading scholarships
+                p Welcome to the world of possibilities at the Iqbal Institute of Technology and Management. We are committed to nurturing exceptional talent and providing a platform for students to thrive academically and personally. Through our diverse range of scholarships, we aim to empower deserving individuals to reach their full potential.
+                p At IITM, we believe that financial constraints should never hinder a student's pursuit of excellence. Our scholarships are designed to recognize and support various aspects of achievement, from academic brilliance to extracurricular accomplishments. These scholarships not only alleviate financial burdens but also serve as a testament to our commitment to fostering a dynamic and inclusive learning environment.
+
+                .line-above-heading 
+                h2.heading-with-top-border Explore Our Scholarship Landscape
+                p From merit-based awards to those tailored for specific disciplines and social causes, our scholarships cover a wide spectrum. Whether you're a budding engineer, a dedicated researcher, an aspiring artist, or a community advocate, there's a scholarship that aligns with your aspirations.
+                p We invite you to explore the diverse range of scholarships available, each with its own unique criteria and benefits. These scholarships are a testament to our belief in the potential of every student and our dedication to creating opportunities for growth, innovation, and impact.
+
+                .line-above-heading 
+                h2.heading-with-top-border Navigating the Scholarship Journey
+                p Each scholarship comes with its own set of eligibility criteria, application process, and deadlines. Our scholarship portal provides detailed information to guide you through the application process. Whether you're a new applicant or a returning student, we encourage you to delve into the opportunities that await you.
+                p At IITM, we are committed to excellence in education, research, and innovation. Our scholarships embody this commitment by supporting exceptional students who will shape the future through their contributions.
+                p We look forward to embarking on this journey of discovery, empowerment, and growth with you. If you have any questions or require assistance, our scholarship department is here to help. Together, let's forge a path toward a brighter future.
+
+
+
+
+                //- Cards container
+                .courses-cards.align-cards-center
+                    //- Card
+                    article.courses-card
+                        //- Card image
+                        div 
+                            img(src="/data/imgs/about-iqac.jpg" alt="alt")
+                        //- Card content
+                        .courses-card__content
+                            span.courses-card__content--title STEM Scholarship
+                            span.courses-card__content--subtitle Nurture your STEM journey with our specialized scholarship for aspiring scientists, technologists, engineers, and mathematicians.
+                            p.courses-card__content--description Step into the world of innovation and discovery through our exclusive STEM Scholarship. Geared towards passionate scientists, engineers, technologists, and mathematicians, this scholarship opens doors to exceptional educational experiences, empowering you to shape the future.
+                            //- Card button
+                            a(href="/admissions/scholarships/stem")
+                                button.btn-psu Explore
+
+                    //- Card
+                    article.courses-card
+                        div 
+                            img(src="/data/imgs/iqac-composition.jpg" alt="alt")
+                        .courses-card__content
+                            span.courses-card__content--title Sakhawat Centre
+                            span.courses-card__content--subtitle Sakhawat Centre Scholarship fosters change agents to make a difference through education.
+                            p.courses-card__content--description Empowering those in need, the Sakhawat Centre Scholarship embodies our commitment to social impact. Through this initiative, we enable deserving individuals to access quality education, catalyzing positive change in communities and fostering a culture of giving back.
+                            a(href="/admissions/scholarships/sakhawat-centre")
+                                button.btn-psu Explore
+

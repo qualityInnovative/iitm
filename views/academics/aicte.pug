@@ -1,0 +1,19 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading AICTE
+                p IITM is proud to be approved by the All India Council for Technical Education (AICTE), a statutory body established by the Government of India to ensure the quality and standardization of technical education in the country. This affiliation signifies our compliance with AICTE's rigorous standards and guidelines, assuring students and parents of the quality of education they can expect at IITM.
+                p Being AICTE approved means that our college meets the necessary infrastructure requirements, has qualified faculty members, and follows a curriculum that aligns with the latest industry trends. This affiliation also enables us to offer programs that are recognized nationwide, ensuring that our students' degrees hold value beyond our immediate region.
+                p Through our association with AICTE, we are actively involved in initiatives and programs aimed at promoting technical education, research, and innovation. This collaboration provides us with access to valuable resources, including funding opportunities, research grants, and industry collaborations. It also allows us to stay updated with the latest developments in technical education and incorporate them into our teaching methodologies, ensuring our students receive a comprehensive and industry-relevant education.
+
+                .btn-yellow-bg.margin-top-sm
+                    .btn-yellow-bg__overlay
+                    a(href="https://www.aicte-india.org/" target="_blank")
+                        button AICTE

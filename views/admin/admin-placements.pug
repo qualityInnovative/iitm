@@ -1,0 +1,178 @@
+
+extends ../layouts/cms-base.pug
+
+block styles 
+
+block content 
+    main.cont-sm.margin-top-md 
+        //- Tabs
+        .tabs
+            button.tabs__tab#tab__testimonials.active-tab Testimonials 
+            button.tabs__tab#tab__highlights Highlights
+            button.tabs__tab#tab__workshop-and-bootcamp Workshop / Bootcamp
+            button.tabs__tab#tab__guest-lecture Guest Lecture
+            button.tabs__tab#tab__industrial-visit Industrial Visit
+
+        .testimonials-form
+            form.form-1(action="/cms/upload-testimonial" method="post" enctype="multipart/form-data") 
+                h3 Testimonial Upload Panel
+                input.form-input(name="name" placeholder="Name of the student placed" required='' autocomplete="off")
+                label Photograph
+                input.form-input.form-input-upload(type="file" name="photograph" accept=".jpg,.png,.jpeg")
+                input.form-input(name="program" placeholder="Program he was enrolled in" required='')
+                input.form-input(name="company" placeholder="Company he is placed in" required='')
+                input.form-input(name="package" placeholder="Package he got" required='')
+                textarea.form-input(name="testimonial" cols="30" rows="10" placeholder="Write testimonial here")
+
+                button(type="submit") Upload
+
+        .highlights.hidden
+            form.form-1(action="/cms/upload-highlight" method="post" enctype="multipart/form-data")
+                h3 Placement Highlight Upload Panel
+                input.form-input(name="headline" placeholder="Headline" autocomplete="off" required="")
+                input.form-input(name="description" placeholder="Write description here..." autocomplete="off" required="")
+                label Picture
+                input.form-input.form-input-upload(type="file" name="picture" accept=".jpg,.png,.jpeg" required='')
+
+                button(type="submit") Upload
+
+        .workshop-and-bootcamp.hidden
+            form.form-1(action="/cms/upload-workshop-bootcamp" method="post")
+                h3 Workshop/Bootcamp Upload Panel
+                select.form-input(name="type" required)
+                    option(value="" disabled selected) Type
+                    option(value="workshop") Workshop
+                    option(value="bootcamp") Bootcamp
+                input.form-input(name="title" placeholder="Title" required='' autocomplete="off")
+                textarea.form-input(name="description" rows="5" placeholder="Write a short description about the bootcamp/workshop here..." autocomplete="off" required="")
+                input.form-input(name="place" placeholder="Place (Where was it conducted?)" required='' autocomplete="off")
+                input.form-input(name="speaker" placeholder="Speaker(s)" autocomplete="off")
+                input.form-input(type="number" name="participants" placeholder="Number of Participants" autocomplete="off")
+                label Date
+                input.form-input(type="date" name="date")
+                button(type="submit") Upload
+
+        .guest-lecture.hidden
+            form.form-1(action="/cms/upload-guest-lecture" method="post")
+                h3 Guest Lecture Upload Panel
+                input.form-input(name="title" placeholder="Title" required='' autocomplete="off")
+                textarea.form-input(name="description" rows="5" placeholder="Write a short description about the guest lecture..." autocomplete="off" required="")
+                input.form-input(name="place" placeholder="Place (Where was it conducted?)" required='' autocomplete="off")
+                input.form-input(name="speaker" placeholder="Speaker(s)" autocomplete="off")
+                input.form-input(type="number" name="participants" placeholder="Number of Participants" autocomplete="off")
+                label Date
+                input.form-input(type="date" name="date")
+                button(type="submit") Upload
+
+        .industrial-visit.hidden
+            form.form-1(action="/cms/upload-industrial-visit" method="post")
+                h3 Industrial Visit Upload Panel
+                input.form-input(name="industry" placeholder="Industry" required='' autocomplete="off")
+                textarea.form-input(name="description" rows="5" placeholder="Write a short description about the industrial visit..." autocomplete="off" required="")
+                input.form-input(name="place" placeholder="Location of the industry" required='' autocomplete="off")
+                input.form-input(type="number" name="participants" placeholder="Number of Participants" autocomplete="off")
+                label Date
+                input.form-input(type="date" name="date")
+                button(type="submit") Upload
+
+    script.
+        //- Script for tabs functionality
+        const testimonialsTab = document.querySelector("#tab__testimonials");
+        const highlightsTab = document.querySelector("#tab__highlights");
+        const workshopsAndBootcampsTab = document.querySelector("#tab__workshop-and-bootcamp");
+        const guestLectureTab = document.querySelector("#tab__guest-lecture");
+        const industrialVisitTab = document.querySelector("#tab__industrial-visit");
+
+        const testimonials  = document.querySelector(".testimonials-form");
+        const highlights = document.querySelector(".highlights");
+        const workshopsAndBootcamps = document.querySelector(".workshop-and-bootcamp");
+        const guestLecture = document.querySelector(".guest-lecture");
+        const industrialVisit = document.querySelector(".industrial-visit");
+
+        testimonialsTab.addEventListener("click", () => {
+            testimonialsTab.classList.add("active-tab");
+            highlightsTab.classList.remove("active-tab");
+            workshopsAndBootcampsTab.classList.remove("active-tab");
+            guestLectureTab.classList.remove("active-tab");
+            industrialVisitTab.classList.remove("active-tab");
+
+            testimonials.classList.remove("hidden");
+            highlights.classList.add("hidden");
+            workshopsAndBootcamps.classList.add("hidden");
+            guestLecture.classList.add("hidden");
+            industrialVisit.classList.add("hidden");
+        });
+        highlightsTab.addEventListener("click", () => {
+            highlightsTab.classList.add("active-tab");
+            testimonialsTab.classList.remove("active-tab");
+            workshopsAndBootcampsTab.classList.remove("active-tab");
+            guestLectureTab.classList.remove("active-tab");
+            industrialVisitTab.classList.remove("active-tab");
+
+            highlights.classList.remove("hidden");
+            testimonials.classList.add("hidden");
+            workshopsAndBootcamps.classList.add("hidden");
+            guestLecture.classList.add("hidden");
+            industrialVisit.classList.add("hidden");
+        });
+        workshopsAndBootcampsTab.addEventListener("click", () => {
+            workshopsAndBootcampsTab.classList.add("active-tab");
+            testimonialsTab.classList.remove("active-tab");
+            highlightsTab.classList.remove("active-tab");
+            guestLectureTab.classList.remove("active-tab");
+            industrialVisitTab.classList.remove("active-tab");
+
+            workshopsAndBootcamps.classList.remove("hidden");
+            testimonials.classList.add("hidden");
+            highlights.classList.add("hidden");
+            guestLecture.classList.add("hidden");
+            industrialVisit.classList.add("hidden");
+        });
+        guestLectureTab.addEventListener("click", () => {
+            guestLectureTab.classList.add("active-tab");
+            workshopsAndBootcampsTab.classList.remove("active-tab");
+            testimonialsTab.classList.remove("active-tab");
+            highlightsTab.classList.remove("active-tab");
+            industrialVisitTab.classList.remove("active-tab");
+
+            guestLecture.classList.remove("hidden");
+            testimonials.classList.add("hidden");
+            workshopsAndBootcamps.classList.add("hidden");
+            highlights.classList.add("hidden");
+            industrialVisit.classList.add("hidden");
+        });
+        industrialVisitTab.addEventListener("click", () => {
+            industrialVisitTab.classList.add("active-tab");
+            guestLectureTab.classList.remove("active-tab");
+            workshopsAndBootcampsTab.classList.remove("active-tab");
+            testimonialsTab.classList.remove("active-tab");
+            highlightsTab.classList.remove("active-tab");
+
+            industrialVisit.classList.remove("hidden");
+            guestLecture.classList.add("hidden");
+            testimonials.classList.add("hidden");
+            workshopsAndBootcamps.classList.add("hidden");
+            highlights.classList.add("hidden");
+        });
+
+        const tabBtns = document.querySelectorAll(".tabs__tab");
+        const equalizeTabs = () => {
+            if(window.innerWidth > 1024 && window.innerWidth < 640) {
+                width = (100 - 10) / (2 * tabBtns.length);
+                tabBtns.forEach(btn => {
+                    btn.style.width = `${width}%`;
+                });
+            }
+            else if (window.innerWidth > 640) {
+                width = (100 - 10) / tabBtns.length;
+                tabBtns.forEach(btn => {
+                    btn.style.width = `${width}%`;
+                });
+            }
+            else {
+                tabBtns.forEach(btn => {
+                    btn.style.width = `100%`;
+                });
+            }
+        }
+        equalizeTabs();

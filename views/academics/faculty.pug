@@ -1,0 +1,43 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout
+        include ../layouts/pagemenu.pug
+
+        .main
+            h1.page-heading faculty at IITM
+            p Our esteemed faculty members at Iqbal Institute of Technology and Management are committed to providing exceptional education and shaping the future of our students. With diverse expertise and experience, our faculty members inspire and guide our students towards academic excellence and professional success.
+            p Our faculty members are highly qualified, with advanced degrees from renowned institutions and expertise in various disciplines. Many of them hold Ph.D. degrees and have published research papers in reputed journals, showcasing their commitment to scholarly pursuits and staying at the forefront of their fields.
+            p Apart from their academic qualifications, our faculty members bring practical industry experience to the classroom, bridging the gap between theory and practice. They have worked on real-world projects, collaborated with industry partners, and have a deep understanding of the current trends and demands of the job market. This allows them to provide relevant and up-to-date instruction to our students, preparing them to excel in their careers.
+            p Our faculty members are also actively involved in research, innovation, and professional development activities. They regularly participate in national and international conferences, workshops, and seminars to enhance their knowledge and skills. They also engage in interdisciplinary research projects, contributing to the advancement of their respective fields and fostering a culture of innovation among our students.
+            p But it's not just about their academic qualifications and industry experience. Our faculty members are also known for their dedication to teaching and mentoring. They go the extra mile to ensure that our students receive personalized attention, guidance, and support to excel in their studies. They foster a nurturing and inclusive learning environment, encouraging students to explore their potential and achieve their academic and professional goals.
+            p Our faculty members are the heart of our institution, and their passion for teaching, research, and mentorship sets them apart. We are proud to have such an exceptional team of faculty members who are committed to providing a holistic education and shaping the leaders of tomorrow.
+
+            //- Cards container
+            .courses-cards.align-cards-center
+                //- Card
+                article.courses-card
+                    //- Card image
+                    div 
+                        img(src="/data/imgs/cs-faculty-card.png" alt="alt")
+                    //- Card content
+                    .courses-card__content
+                        span.courses-card__content--title meet our cs faculty
+                        span.courses-card__content--subtitle  specializing in diverse programming languages, AI, software engineering, data science, mathematics and cybersecurity.
+                        p.courses-card__content--description IITM's computer science faculty, with experienced educators, provides innovative instruction emphasizing problem-solving skills and real-world application. Students are prepared for successful careers in the tech industry with a cutting-edge education aligned with industry demands, mentored by experts.
+                        //- Card button
+                        a(href="/academics/cs/faculty")
+                            button.btn-psu Explore
+
+                //- Card
+                article.courses-card
+                    div 
+                        img(src="/data/imgs/management-studies-faculty.png" alt="alt")
+                    .courses-card__content
+                        span.courses-card__content--title meet our management faculty
+                        span.courses-card__content--subtitle specializing in various areas, equipping students with the knowledge and skills for success in today's dynamic business landscape.
+                        p.courses-card__content--description IITM's management faculty nurtures students with practical skills and global perspectives. Skilled educators provide innovative instruction, emphasizing leadership development, strategic management, and business acumen. Students gain insights from experienced mentors for success in diverse business areas.
+                        a(href="/academics/management/faculty")
+                            button.btn-psu Explore

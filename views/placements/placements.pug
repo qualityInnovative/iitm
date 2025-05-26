@@ -1,0 +1,188 @@
+extends ../layouts/base.pug
+
+block styles
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous")
+    //- Open Graph Tags
+    meta(name="og:title", content="IITM - Placements")
+    meta(name="og:description", content="Unlock extraordinary career opportunities at IITM with a proven track record. Our commitment to excellence, industry collaborations, and holistic development ensures graduates are well-prepared for success. Join us for a transformative journey toward a thriving professional future.")
+    meta(name="og:image" content=bannerImg)
+
+    //- Meta Description
+    meta(name="description", content="Unlock extraordinary career opportunities at IITM with a proven track record. Our commitment to excellence, industry collaborations, and holistic development ensures graduates are well-prepared for success. Join us for a transformative journey toward a thriving professional future.")
+
+block content
+    script(src="/OwlCarousel/dist/owl.carousel.js") 
+    include ../layouts/banner.pug
+
+    main.placements-page
+        .container-lg
+            h3.placements-page__introduction.fw-nl We take immense pride in our strong track record of providing exceptional career opportunities to our students. With our unwavering commitment to excellence, industry collaborations, and holistic development, we ensure that our graduates are well-prepared to thrive in the professional world. Our placement program equips students with the necessary skills, knowledge, and networks to secure coveted positions in leading companies. Join us at IITM and embark on a transformative journey that will shape your future success.
+
+        .overlay-section.margin-top-md
+            .overlay-section__overlay
+            .overlay-section__content
+                h1.primary_heading.bg-none.color-white Revealing Success
+                .testimonials 
+                    .testimonials__buttons 
+                        button.testimonials__buttons--prev
+                            ion-icon(name="arrow-back-circle")
+                    .testimonials__slides
+                        - for(let i = 0; i < placementTestimonials.length; i++) {
+                            .testimonials__slides--item               
+                                if placementTestimonials[i].photograph
+                                    img(src=placementTestimonials[i].photograph alt="")
+                                else 
+                                    img(src="/data/imgs/profile-placeholder.jpg" alt="")
+                                span.testimonials__slides--item--name.uppercase.bold #{placementTestimonials[i].name}, #{placementTestimonials[i].program}
+                                span.testimonials__slides--item--placement #{placementTestimonials[i].company} @#{placementTestimonials[i].package}
+                                p #{placementTestimonials[i].testimonial}
+                        - }
+                    .testimonials__buttons 
+                        button.testimonials__buttons--next
+                            ion-icon(name="arrow-forward-circle")
+
+        .offer-letter-container
+            a(href="/data/imgs/offer-letter.jpeg" target="_blank") 
+                img(src="/data/imgs/offer-letter.jpeg" alt="")
+            .offer-letter-container__content
+                h1.primary_heading.margin-top-md Student Excellence and Industry Acclaim
+                h3.fw-nl Recognizing student excellence! Our talented students have earned notable acclaim from industry leaders. With a commitment to providing quality education and practical training, we take pride in their exceptional achievements. These accolades validate their capabilities and present exciting career prospects. We applaud their success and eagerly anticipate their future accomplishments.
+
+        .zigzag-container.margin-top-md
+            .zigzag-container__item 
+                img(src="/data/svgs/internship-1.svg" alt="SVG Image")
+                .zigzag-container__item--content
+                    h1 Industry Collaborations
+                    p Our strong industry connections enable us to curate internships across various fields, including technology, finance, healthcare, engineering, and more. Students gain insights into cutting-edge technologies, industry best practices, and the day-to-day operations of successful companies.
+            .zigzag-container__item 
+                img(src="/data/svgs/internship-2.svg" alt="SVG Image")
+                .zigzag-container__item--content
+                    h1 Mentorship and Skill Development
+                    p Throughout their internships, students are mentored by industry professionals, working on meaningful projects and developing both technical and soft skills. Our placement team supports students in securing internships that align with their interests and career aspirations. 
+            .zigzag-container__item 
+                img(src="/data/svgs/internship-3.svg" alt="SVG Image")
+                .zigzag-container__item--content
+                    h1 Priority on Internship Support
+                    p At IITM, we prioritize providing internship support. Our career advisors work closely with industry partners to curate internships that offer real-world exposure and valuable learning experiences. With a track record of successful internships and industry collaborations, our students have secured internships at prestigious companies in IT and Mangement Sector.
+
+        h1.primary_heading.margin-top-md Recent Placement Drive Highlights
+        span.heading-sm-secondary Discover the Success Stories of Our Recent Job Placements and Join the Ranks of Thriving Professionals
+        section.section-carousal 
+            #carouselExample.carousel.slide(data-bs-ride="carousel")
+                .carousel-inner
+                    //- .carousel-item(class=(i == 0 ? 'active' : '') data-bs-interval="3000")
+                    //-     img.d-block.w-100(src="https://picsum.photos/1024" alt='Image' title="Carousel Paused")
+                    - for(let i = 0; i < placementDriveHighlights.length; i++) {
+                        .carousel-item(class=(i == 0 ? 'active' : '') data-bs-interval="3000")
+                            img.d-block.w-100(src=placementDriveHighlights[i].picture alt='Image' title="Carousel Paused")
+                            .carousel-caption.d-none.d-md-block 
+                                span.clear-text #{new Date(placementDriveHighlights[i].date).toLocaleString("en-US", {day:"numeric", month:"short", year:"numeric"})}
+                                h4.clear-text.uppercase.font-lg #{placementDriveHighlights[i].headline}
+                                p.clear-text #{placementDriveHighlights[i].description}
+                    - }
+                    button.carousel-control-prev(type='button' data-bs-target='#carouselExample' data-bs-slide='prev')
+                        span.carousel-control-prev-icon(aria-hidden='true')
+                        span.visually-hidden Previous
+                    button.carousel-control-next(type='button' data-bs-target='#carouselExample' data-bs-slide='next')
+                        span.carousel-control-next-icon(aria-hidden='true')
+                        span.visually-hidden Next
+        
+        .container-lg.margin-bottom-lg
+            //- Teacher profile cards
+            .line-above-heading
+            h2.heading-with-top-border meet the experts
+            .cards-person-container.align-cards-center
+                //- placementFaculty is an array fetched from db which contains object having details of cs teaching faculty 
+                - for (var i = 0; i < placementFaculty.length; ++i) {
+                    .card-person
+                        .card-person__border-top
+                        if placementFaculty[i].photograph == null
+                            if placementFaculty[i].gender == "m"
+                                img(src="/data/imgs/man-default-profile.png" alt="").card-person__img
+                            else
+                                img(src="/data/imgs/woman-default-profile.png" alt="").card-person__img
+                        else
+                            img(src=`/data/collegeImgs/${placementFaculty[i].photograph}` alt="").card-person__img
+                        span.card-person__name #{placementFaculty[i].name}
+                        span.card-person__job #{placementFaculty[i].appointedAs}
+                        span.card-person__qualification #{placementFaculty[i].qualification}
+                        span.card-person__experience #{placementFaculty[i].experience}
+                        span.card-person__specialization #{placementFaculty[i].specialization}
+                        if placementFaculty[i].resume != null
+                            a(href=`/data/resumes/${placementFaculty[i].resume}`, target="_blank" rel="noopener noreferrer")
+                                button 
+                                    ion-icon(name="download")
+                                    | resume
+                        else 
+                            a(href="javascript:void(0)")
+                                button 
+                                    ion-icon(name="download")
+                                    | comming soon!
+                            
+                - }
+
+    script.
+        ////////////////////////////////////////////////////////////////////////////
+        //- SCRIPT FOR CAROUSAL
+        const testimonialSlider = document.querySelector(".testimonials__slides");
+        const testimonialSlides = document.querySelectorAll(".testimonials__slides--item");
+        const prevBtn = document.querySelector(".testimonials__buttons--prev")
+        const nextBtn = document.querySelector(".testimonials__buttons--next")
+
+        let currentSlideIndex = 0;
+
+        const testmonialItemWidth = testimonialSlides[0].offsetWidth; // Get the width of each card
+        const margin = 16; // Set the margin value
+
+        function showSlide(index) {
+            const translateXValue = `calc(-${(index * (testmonialItemWidth - margin))}px)`;
+            // Hide all items
+            testimonialSlides.forEach(slide => {
+                slide.style.transform = `translateX(${translateXValue})`; // Apply transform
+            });
+        }
+
+        function showNextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % testimonialSlides.length;
+            showSlide(currentSlideIndex);
+            clearInterval(slideInterval);
+            startSlideShow();
+        }
+
+        function showPreviousSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + testimonialSlides.length) % testimonialSlides.length;
+            showSlide(currentSlideIndex);
+            clearInterval(slideInterval);
+            startSlideShow();
+        }
+
+        // Show initial item
+        showSlide(currentSlideIndex);
+
+            // Add event listeners to the buttons
+        prevBtn.addEventListener('click', showPreviousSlide);
+        nextBtn.addEventListener('click', showNextSlide);
+
+
+        var slideInterval; // Global variable to hold the interval ID
+
+        function startSlideShow() {
+            slideInterval = setInterval(showNextSlide, 5000);
+        }
+        function stopSlideShow() {
+            clearInterval(slideInterval);
+        }
+
+        // Call startSlideShow to begin the slideshow initially
+        startSlideShow();
+
+        // Add event listeners for mouseover and mouseout events on the testimonial div
+        testimonialSlider.addEventListener('mouseover', function() {
+            stopSlideShow(); // Stop calling the function when hovering over the div
+        });
+        testimonialSlider.addEventListener('mouseout', function() {
+            startSlideShow(); // Start calling the function again when moving out of the div
+        });
+
+    block scripts 
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous")

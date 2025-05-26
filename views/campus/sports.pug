@@ -1,0 +1,83 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading Sports
+                p At Iqbal Institute of Technology and Management (IITM) Srinagar, we believe that a well-rounded education extends beyond the confines of the classroom. That's why we place great emphasis on sports and physical fitness, recognizing the invaluable role they play in shaping the holistic development of our students.
+                P Our sports program is designed to inspire and empower students, fostering a sense of camaraderie, discipline, and sportsmanship. With state-of-the-art facilities, a wide range of sports activities, and passionate coaches, IITM Srinagar offers an environment where students can thrive and excel in their chosen sporting pursuits.
+
+                .line-above-heading 
+                h3.heading-with-top-border Sports Facilities
+                p IITM Srinagar boasts state-of-the-art sports facilities that provide opportunities for various sporting activities. Our facilities include:
+                h4.left-aligned-heading.font-md.margin-bottom-xs Indoor Sports Complex
+                ul.star-ul.margin-left-sm
+                    li Equipped with facilities for sports like badminton and table tennis.
+                    li Provides a conducive environment for students to engage in sports irrespective of weather conditions.
+                h4.left-aligned-heading.font-md.margin-bottom-xs.margin-top-xs Outdoor Sports Grounds
+                ul.star-ul.margin-left-sm
+                    li Expansive grounds for cricket, football, hockey, athletics, and various other field sports.
+                    li Well-maintained and offer ample space for practice and matches.
+
+                .line-above-heading 
+                h3.heading-with-top-border Sports Activities
+                p We encourage students at IITM Srinagar to actively participate in a variety of sports activities. Here are some of the popular sports activities organized within the institute:
+                h4.left-aligned-heading.font-md.margin-bottom-xs Inter-College Tournaments
+                ul.star-ul.margin-left-sm
+                    li Annual sports tournaments where students from different departments and colleges compete in various sports disciplines.
+                    li Foster healthy competition and team spirit among participants.
+                h4.left-aligned-heading.font-md.margin-bottom-xs.margin-top-xs Fitness Programs
+                ul.star-ul.margin-left-sm
+                    li Along with competitive sports, the college also conducts fitness programs and workshops to educate students about the importance of physical fitness.
+                    li Programs may include yoga sessions, aerobics, and other fitness-related activities.
+
+                .line-above-heading 
+                h3.heading-with-top-border Sports Clubs and Teams
+                p IITM Srinagar has several sports clubs and teams that cater to specific sports disciplines. These clubs provide a platform for students to pursue their passion for sports and represent the IITM in various inter-college competitions. Some of the common sports clubs at IITM include:
+                ol.beautiful-ol-num
+                    li Cricket
+                    li Football
+                    li Basketball
+                    li Badminton
+                    li Tennis
+                    li Table Tennis
+                    li Athletics
+                    li Volleyball
+                
+            //- Teacher profile cards
+            .line-above-heading
+            h2.heading-with-top-border meet the experts
+            .cards-person-container.align-cards-center
+                //- sportsFaculty is an array fetched from db which contains object having details of cs teaching faculty 
+                - for (var i = 0; i < sportsFaculty.length; ++i) {
+                    .card-person
+                        .card-person__border-top
+                        if sportsFaculty[i].photograph == null
+                            if sportsFaculty[i].gender == "m"
+                                img(src="/data/imgs/man-default-profile.png" alt="").card-person__img
+                            else
+                                img(src="/data/imgs/woman-default-profile.png" alt="").card-person__img
+                        else
+                            img(src=`/data/collegeImgs/${sportsFaculty[i].photograph}` alt="").card-person__img
+                        span.card-person__name #{sportsFaculty[i].name}
+                        span.card-person__job #{sportsFaculty[i].appointedAs}
+                        span.card-person__qualification #{sportsFaculty[i].qualification}
+                        span.card-person__experience #{sportsFaculty[i].experience}
+                        span.card-person__specialization #{sportsFaculty[i].specialization}
+                        if sportsFaculty[i].resume != null
+                            a(href=`/data/resumes/${sportsFaculty[i].resume}`, target="_blank" rel="noopener noreferrer")
+                                button 
+                                    ion-icon(name="download")
+                                    | resume
+                        else 
+                            a(href="javascript:void(0)")
+                                button 
+                                    ion-icon(name="download")
+                                    | comming soon!
+                            
+                - }

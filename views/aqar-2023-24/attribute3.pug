@@ -1,0 +1,19 @@
+extends ../layouts/base.pug
+
+block styles 
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+             div
+                .line-above-heading 
+                h2.heading-with-top-border Explore the following documents
+
+                a(href="attribute3/3_2" style="display: block; width: 100%; text-align: center; margin: 20px 0 20px 0;") 
+                    button.tabs__tab#tab__bootcamps(style="width:100%") 3.2
+                a(href="attribute3/3_2_2" style="display: block; width: 100%; text-align: center; margin: 20px 0 20px 0;") 
+                    button.tabs__tab#tab__bootcamps(style="width:100%") 3.2.2

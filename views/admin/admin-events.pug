@@ -1,0 +1,99 @@
+extends ../layouts/cms-base.pug
+
+block styles 
+    //- simpleMDE Style
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css')
+
+block content 
+    //- simpleMDE script
+    script(src='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js')
+
+    main.cont-sm
+        //- Tabs
+        .tabs.margin-top-sm
+            button.tabs__tab#tab__event.active-tab Event
+            button.tabs__tab#tab__video Video
+
+        .event-dash
+            form.form-1(action="/cms/upload-event" method="post" enctype="multipart/form-data") 
+                h3 Event Upload Panel
+                input.form-input(type="text" name="event" placeholder="Event" autocomplete="off" required="")
+                div.markdown
+                    textarea#editor.form-input(name="description" rows="5" placeholder="Describe event")
+                label Poster
+                input.form-input.form-input-upload(type="file" name="poster" accept=".jpg,.png,.jpeg" title="Choose thumbnail")
+                .center 
+                    div 
+                        label Start
+                        input.form-input.half(type="datetime-local" name="start" required)
+                    div 
+                        label End
+                        input.form-input.half(type="datetime-local" name="end" required)
+                input.form-input(type="text" name="speaker" placeholder="Speaker(s)" autocomplete="off")
+                select.form-input(name="audience" required)
+                    option(value="" disabled selected) Audience
+                    option(value="all") All
+                    option(value="cs") CS Department 
+                    option(value="bca") BCA
+                    option(value="mca") MCA
+                    option(value="ms") Management Department 
+                    option(value="bba") BBA
+                    option(value="mba") MBA
+                input.form-input(type="text" name="place" placeholder="Place" autocomplete="off")
+                button(type="submit") Upload
+
+        .video-dash.hidden
+            form.form-1(action="/cms/upload-video" method="post") 
+                h3 Video Upload Panel
+                input.form-input(type="text" name="title" placeholder="Title" autocomplete="off" required="")
+                input.form-input(type="text" name="link" placeholder="Embed Link" autocomplete="off" required="")
+                select.form-input(name="category" required)
+                    option(value="" disabled selected) Category
+                    option(value="event") Event
+                    option(value="campus") Campus
+                button(type="submit") Upload
+
+    script.
+        //- Setup texarea as markdown field
+        const simplemde = new SimpleMDE({ element: document.getElementById("editor") });
+
+            //- Script for tabs functionality
+        const eventTab = document.querySelector("#tab__event");
+        const videoTab = document.querySelector("#tab__video");
+        const eventContainer  = document.querySelector(".event-dash");
+        const videoContainer = document.querySelector(".video-dash");
+
+        eventTab.addEventListener("click", () => {
+            eventContainer.classList.remove("hidden");
+            videoContainer.classList.add("hidden");
+            eventTab.classList.add("active-tab");
+            videoTab.classList.remove("active-tab");
+        });
+        videoTab.addEventListener("click", () => {
+            eventContainer.classList.add("hidden");
+            videoContainer.classList.remove("hidden");
+            eventTab.classList.remove("active-tab");
+            videoTab.classList.add("active-tab");
+        });
+
+        const tabBtns = document.querySelectorAll(".tabs__tab");
+        const equalizeTabs = () => {
+            if(window.innerWidth > 1024 && window.innerWidth < 640) {
+                width = (100 - 10) / (2 * tabBtns.length);
+                tabBtns.forEach(btn => {
+                    btn.style.width = `${width}%`;
+                });
+            }
+            else if (window.innerWidth > 640) {
+                width = (100 - 10) / tabBtns.length;
+                tabBtns.forEach(btn => {
+                    btn.style.width = `${width}%`;
+                });
+            }
+            else {
+                tabBtns.forEach(btn => {
+                    btn.style.width = `100%`;
+                });
+            }
+        }
+        equalizeTabs();

@@ -1,0 +1,32 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading Academic Calendar
+
+                p Our academic calendar is closely aligned with the academic schedule set by Kashmir University, with which our college is proudly affiliated. The university determines key academic events, including semester breaks, class schedules, important deadlines, and graduation and commencement ceremonies. As a result, our students benefit from a structured and comprehensive academic experience that is in line with the university's academic standards.
+
+                .line-above-heading
+                h2.heading-with-top-border Holidays and Celebrations
+                p In addition to the academic calendar, we also celebrate various holidays and observances throughout the year. These special occasions allow our students, faculty, and staff to come together, celebrate diversity, and create memorable moments that enrich our educational community.
+
+                .line-above-heading
+                h2.heading-with-top-border Holiday Calendar for the Current Year
+
+                iframe.pdf-viewer.margin-top-xs.hidden(src="/data/documents/calendar-2023.pdf")
+                .pdf.margin-top-sm.hidden
+                    .pdf__heading
+                    .pdf__container
+                    .pdf__download
+                        a(href="/data/documents/calendar-2023.pdf" target="_blank")
+                            button Download
+
+    script.
+        //- Show pdf using pdfJs function defined in base.pug script.(For small devies)
+        pdfJs(["/data/documents/calendar-2023.pdf"])

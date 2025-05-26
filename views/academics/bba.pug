@@ -1,0 +1,441 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                //- Course introduction
+                h1.page-heading bachelor of business administration
+                p The Bachelor of Business Administration (BBA) program offered by Iqbal Institute of Technology and Management is a comprehensive undergraduate program that provides a solid foundation in business management. The program covers diverse disciplines, including marketing, finance, accounting, economics, human resources, and entrepreneurship, among others. It is designed to equip students with the knowledge and skills necessary for success in the competitive business world.
+                p The BBA program at Iqbal Institute of Technology and Management focuses on a practical and multidisciplinary approach to learning. It emphasizes critical thinking, problem-solving, communication, and teamwork, which are essential skills for modern business professionals. The program is delivered by experienced faculty with industry expertise who bring real-world insights to the classroom, enriching the learning experience for students.
+                p The modern infrastructure and resources at Iqbal Institute of Technology and Management provide a conducive environment for students to learn and thrive. The program also incorporates real-world case studies, projects, internships, and industry interactions to enhance students' practical understanding of business concepts and prepare them for the challenges of the corporate world.
+                p Upon completion of the BBA program, graduates from Iqbal Institute of Technology and Management are well-prepared to pursue diverse careers in areas such as marketing, finance, human resources, operations, consulting, and entrepreneurship, among others. They are equipped with a strong foundation in business principles, strategic planning, financial analysis, and leadership skills, making them valuable assets to the business community.
+                p Overall, the BBA program at Iqbal Institute of Technology and Management provides students with a comprehensive and dynamic education in business management, preparing them to excel in the ever-evolving and competitive business landscape.
+
+                //- Cards container
+                .course-specs-cards-container.align-cards-center
+                    //- Card
+                    .course-specs-card
+                        //- Header of the card
+                        .header
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                                path(d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z")
+                            h1.title Duration
+                        //- Content of the card
+                        .content
+                            p 3 Years
+                            p.small
+                                | BBA courses last for 
+                                span.bold 3 years
+                                | , divided into 
+                                span.bold 6 semester
+                                | , covering diverse business subjects through classroom lectures, assignments, internships, and industry interactions.
+
+                    //- Card
+                    .course-specs-card
+                        .header
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                                path(d='M0 0h24v24H0z' fill='none')
+                                path(d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z")
+                            h1.title Eligibility
+                        .content
+                            p 10+2 Passout
+                            p.small in any stream with minimum of 45% marks for open merit. 40% marks for reserve category.
+
+                    //- Card
+                    .course-specs-card
+                        .header
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                                path(d='M0 0h24v24H0z' fill='none')
+                                path(d="M168 80c-13.3 0-24 10.7-24 24V408c0 8.4-1.4 16.5-4.1 24H440c13.3 0 24-10.7 24-24V104c0-13.3-10.7-24-24-24H168zM72 480c-39.8 0-72-32.2-72-72V112C0 98.7 10.7 88 24 88s24 10.7 24 24V408c0 13.3 10.7 24 24 24s24-10.7 24-24V104c0-39.8 32.2-72 72-72H440c39.8 0 72 32.2 72 72V408c0 39.8-32.2 72-72 72H72zM176 136c0-13.3 10.7-24 24-24h96c13.3 0 24 10.7 24 24v80c0 13.3-10.7 24-24 24H200c-13.3 0-24-10.7-24-24V136zm200-24h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H376c-13.3 0-24-10.7-24-24s10.7-24 24-24zm0 80h32c13.3 0 24 10.7 24 24s-10.7 24-24 24H376c-13.3 0-24-10.7-24-24s10.7-24 24-24zM200 272H408c13.3 0 24 10.7 24 24s-10.7 24-24 24H200c-13.3 0-24-10.7-24-24s10.7-24 24-24zm0 80H408c13.3 0 24 10.7 24 24s-10.7 24-24 24H200c-13.3 0-24-10.7-24-24s10.7-24 24-24z")
+                            h1.title Admission Criteria
+                        .content
+                            p CUET
+                            p.small
+                                | BBA admissions are based on a
+                                span.bold common university entrance test
+                                | , assessing students' aptitude in English, math, reasoning, and general knowledge.
+
+                    //- Card
+                    .course-specs-card
+                        .header
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
+                                path(d='M0 0h24v24H0z' fill='none')
+                                path(d="M160 64c0-35.3 28.7-64 64-64H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H336.8c-11.8-25.5-29.9-47.5-52.4-64H384V320c0-17.7 14.3-32 32-32h64c17.7 0 32 14.3 32 32v32h64V64L224 64v49.1C205.2 102.2 183.3 96 160 96V64zm0 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zM133.3 352h53.3C260.3 352 320 411.7 320 485.3c0 14.7-11.9 26.7-26.7 26.7H26.7C11.9 512 0 500.1 0 485.3C0 411.7 59.7 352 133.3 352z")
+                            h1.title Program Mode
+                        .content
+                            p Regular
+                            p.small Our BBA program is offered in a regular mode with full-time classes.
+
+                    //- Card
+                    .course-specs-card
+                        .header
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                                path(d='M0 0h24v24H0z' fill='none')
+                                path(d="M0 64C0 46.3 14.3 32 32 32H96h16H288c17.7 0 32 14.3 32 32s-14.3 32-32 32H231.8c9.6 14.4 16.7 30.6 20.7 48H288c17.7 0 32 14.3 32 32s-14.3 32-32 32H252.4c-13.2 58.3-61.9 103.2-122.2 110.9L274.6 422c14.4 10.3 17.7 30.3 7.4 44.6s-30.3 17.7-44.6 7.4L13.4 314C2.1 306-2.7 291.5 1.5 278.2S18.1 256 32 256h80c32.8 0 61-19.7 73.3-48H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H185.3C173 115.7 144.8 96 112 96H96 32C14.3 96 0 81.7 0 64z")
+                            h1.title Fee Structure
+                        .content
+                            p ₹30,000
+                            p.small this is the fee for one year (two semesters), which may be subject to minor additional charges.
+
+
+                //- Program Outcomes
+                .line-above-heading
+                h2.heading-with-top-border programme outcomes
+                ol.beautiful-list(style='--length: 12' role='list')
+                    li(style='--i: 1')
+                        h3 Business Principles and Management Concepts
+                        p Develop a strong foundation in fundamental business principles, theories, and management concepts that are relevant in today's dynamic business landscape, and apply them to real-world business scenarios to make informed decisions.
+                    li(style='--i: 2')
+                        h3 Critical Thinking and Problem-Solving
+                        p Cultivate advanced critical thinking, analytical, and problem-solving skills to identify, analyze, and address complex business problems, and make data-driven decisions to achieve strategic business objectives.
+                    li(style='--i: 3')
+                        h3 Communication and Leadership
+                        p Enhance communication, negotiation, and leadership skills to effectively interact with diverse stakeholders, build collaborative relationships, and lead teams to achieve organizational goals, while demonstrating effective oral and written communication skills.
+                    li(style='--i: 4')
+                        h3 Business Knowledge and Skills
+                        p Acquire comprehensive knowledge and practical skills in various business areas such as marketing, finance, accounting, human resources, operations, and strategic management, through practical application and experiential learning.
+                    li(style='--i: 5')
+                        h3 Global Business Understanding
+                        p Develop a thorough understanding of the global business environment, including international trade, cultural diversity, and emerging markets, and analyze the impact of globalization on businesses, and formulate strategies to compete in the global marketplace.
+                    li(style='--i: 6')
+                        h3 Data Analysis and Research
+                        p Gain proficiency in data analysis techniques, financial analysis methods, and business research methodologies to collect, analyze, interpret, and present data to support decision-making processes and solve complex business challenges.
+                    li(style='--i: 7')
+                        h3 Entrepreneurial Mindset
+                        p Foster an entrepreneurial mindset, innovative thinking, and creativity to identify business opportunities, develop innovative solutions, and implement entrepreneurial initiatives in different business contexts, including startups and established organizations.
+                    li(style='--i: 8')
+                        h3 Ethics and Social Responsibility
+                        p Develop a strong ethical foundation and understand the social responsibility of businesses towards various stakeholders, including employees, customers, communities, and the environment, and practice ethical decision-making and responsible business practices.
+                    li(style='--i: 9')
+                        h3 Business Communication
+                        p Enhance negotiation, presentation, and persuasion skills to effectively communicate and collaborate with diverse stakeholders, deliver persuasive business presentations, and influence others to achieve desired outcomes.
+                    li(style='--i: 10')
+                        h3 Legal and Regulatory Knowledge
+                        p Acquire comprehensive knowledge of legal and regulatory frameworks governing business operations, including laws related to contracts, intellectual property, labor, taxation, and business compliance, and apply them in real-world business scenarios.
+                    li(style='--i: 11')
+                        h3 Professional Skills
+                        p Develop essential professional skills, including time management, project management, adaptability, teamwork, and interpersonal skills, to effectively manage workloads, meet deadlines, and work collaboratively with others in a professional business environment.
+                    li(style='--i: 12')
+                        h3 Career Readiness
+                        p Prepare for further studies in business or related fields, or for entry-level roles in the business world by gaining the necessary knowledge, skills, and practical experience to succeed in the competitive job market, and demonstrate professionalism, leadership, and a strong work ethic.
+
+                //- Course structure
+                //- .line-above-heading
+                //- h2.heading-with-top-border course structure
+                //- .courses-table
+                    //- .header BCA
+                    table(cellspacing='0')
+                        //- Table headers
+                        tr
+                            th.border-bottom-solid(rowspan=2) Semester
+                            th.border-bottom-solid(rowspan=2) Subject Code
+                            th.border-bottom-solid(rowspan=2) Name of the subject
+                            th.border-bottom-solid(colspan=4) Credits
+                        tr
+                            th.border-bottom-solid L
+                            th.border-bottom-solid T 
+                            th.border-bottom-solid P 
+                            th.border-bottom-solid Total
+
+                        //- Semester 1
+                        tr
+                            td.border-right.border-bottom-solid(rowspan=4) I
+                            td BCA120C1
+                            td Programming in C/C++
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td BCA120C2
+                            td Discrete Structures
+                            td 4
+                            td 2
+                            td 0
+                            td 6
+                        tr
+                            td AECC-II
+                            td Environmental Studies
+                            td 4
+                            td 0
+                            td 0
+                            td 6
+                        tr
+                            td.border-bottom-solid GE-I
+                            td.border-bottom-solid.text-align-left
+                                | General Elective 1 (GE1) Any One:
+                                ol 
+                                    li Mathematics 
+                                    li Statistics 
+                                    li Physics 
+                                    li Electronics 
+                                    li Botany 
+                                    li Chemistry
+                                    li Zoology
+                                    li Economics 
+                                    li Education 
+                                    li Psychology 
+                                    li Sociology 
+                                    li Commerce: Business Law 
+                                    li Business Management: Principles of Management
+                            td.border-bottom-solid 4
+                            td.border-bottom-solid 2/0
+                            td.border-bottom-solid 0/2
+                            td.border-bottom-solid 6
+
+                        //- Semester 2
+                        tr
+                            td.border-right.border-bottom-solid(rowspan=4) II
+                            td BCA220C1
+                            td Programming in Java
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td BCA220C2
+                            td Computer System Architecture
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td AECCs
+                            td English Communication Skills
+                            td 4
+                            td 0
+                            td 0
+                            td 6
+                        tr
+                            td.border-bottom-solid GE-II
+                            td.border-bottom-solid.text-align-left
+                                | General Elective 2 (GE2) Any One:
+                                ol 
+                                    li Mathematics 
+                                    li Statistics 
+                                    li Physics 
+                                    li Electronics 
+                                    li Botany 
+                                    li Chemistry
+                                    li Zoology
+                                    li Economics 
+                                    li Education 
+                                    li Psychology 
+                                    li Sociology 
+                                    li Commerce: Business Law 
+                                    li Business Management: Principles of Management
+                            td.border-bottom-solid 4
+                            td.border-bottom-solid 2/0
+                            td.border-bottom-solid 0/2
+                            td.border-bottom-solid 6
+
+                        //- Semester 3
+                        tr
+                            td.border-right.border-bottom-solid(rowspan=5) III
+                            td BCA320C1
+                            td Data Structures
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td BCA320C2
+                            td Operating Systems
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td BCA320C3
+                            td Computer Networks
+                            td 4
+                            td 0
+                            td 0
+                            td 6
+                        tr
+                            td SEC320S
+                            td Skill Enhancement Course (FROM 3RD SEMESTER BASKET)
+                            td 4
+                            td 0
+                            td 0
+                            td 6
+                        tr
+                            td.border-bottom-solid GE-III
+                            td.border-bottom-solid.text-align-left
+                                | General Elective 3 (GE3) Any One:
+                                ol 
+                                    li Mathematics 
+                                    li Statistics 
+                                    li Physics 
+                                    li Electronics 
+                                    li Botany 
+                                    li Chemistry
+                                    li Zoology
+                                    li Economics 
+                                    li Education 
+                                    li Psychology 
+                                    li Sociology 
+                                    li Commerce: Business Law 
+                                    li Business Management: Principles of Management
+                            td.border-bottom-solid 4
+                            td.border-bottom-solid 2/0
+                            td.border-bottom-solid 0/2
+                            td.border-bottom-solid 6
+
+                        //- Semester 4
+                        tr
+                            td.border-right.border-bottom-solid.bg-colored(rowspan=5) IV
+                            td BCA420C1
+                            td Design and Analysis of Algorithms
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td BCA420C2
+                            td Software Engineering
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td BCA420C3
+                            td Database Management System
+                            td 4
+                            td 0
+                            td 0
+                            td 6
+                        tr
+                            td DM420S
+                            td Disaster Management
+                            td 2
+                            td 2
+                            td 0
+                            td 4
+                        tr
+                            td.border-bottom-solid GE-IV
+                            td.border-bottom-solid.text-align-left 
+                                | General Elective 4 (GE4) Any One:
+                                ol 
+                                    li Mathematics 
+                                    li Statistics 
+                                    li Physics 
+                                    li Electronics 
+                                    li Botany 
+                                    li Chemistry
+                                    li Zoology
+                                    li Economics 
+                                    li Education 
+                                    li Psychology 
+                                    li Sociology 
+                                    li Commerce: Business Law 
+                                    li Business Management: Principles of Management
+                            td.border-bottom-solid 4
+                            td.border-bottom-solid 2/0
+                            td.border-bottom-solid 0/2
+                            td.border-bottom-solid 6
+
+                        //- Semester 5
+                        tr
+                            td.border-right.border-bottom-solid(rowspan=4) V
+                            td BCA520C1
+                            td Internet Technologies
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td BCA520C2
+                            td Theory of Computation
+                            td 4
+                            td 2
+                            td 0
+                            td 6
+                        tr
+                            td 
+                                | BCA520D1A
+                                br
+                                | OR
+                                br
+                                | BCA520D1B
+                            td
+                                | Numeraical Methods
+                                br
+                                | OR
+                                br
+                                | Information Security
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td.border-bottom-solid 
+                                | BCA520D2A
+                                br
+                                | OR
+                                br
+                                | BCA520D2B
+                            td.border-bottom-solid
+                                | Data Mining
+                                br
+                                | OR
+                                br
+                                | Machine Learning
+                            td.border-bottom-solid 4
+                            td.border-bottom-solid 0
+                            td.border-bottom-solid 2
+                            td.border-bottom-solid 6
+
+                        //- Semester 6
+                        tr
+                            td.border-right.border-bottom-solid(rowspan=4) VI
+                            td BCA620C1
+                            td Artificial Intelligence
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td BCA620C2
+                            td Computer Graphics
+                            td 4
+                            td 2
+                            td 0
+                            td 6
+                        tr
+                            td 
+                                | BCA620D1A
+                                br
+                                | OR
+                                br
+                                | BCA620D1B
+                            td
+                                | Cloud Computing
+                                br
+                                | OR
+                                br
+                                | Python Programming
+                            td 4
+                            td 0
+                            td 2
+                            td 6
+                        tr
+                            td.border-bottom-solid BCA620D2
+                            td.border-bottom-solid Dissertation/Project Work 
+                            td.border-bottom-solid 0
+                            td.border-bottom-solid 4
+                            td.border-bottom-solid 2
+                            td.border-bottom-solid 6
+
+                        //- Total
+                        tr
+                            td.border-right(colspan=3) Total
+                            td 
+                            td 
+                            td 
+                            td 148

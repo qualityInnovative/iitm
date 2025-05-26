@@ -1,0 +1,31 @@
+extends ../layouts/cms-base.pug
+
+block content 
+    main
+        .cont-sm.cms-admin
+            //- Buttons
+            .cms-admin-btns
+              
+                //- Notifications dash button
+                a(href="/cms/admin-logs").cms-admin-btns-btn
+                    ion-icon(name="book" size="large")
+                    h3 Logs
+                    span Dashboard
+              
+                //- Notifications dash button
+                a(href="/cms/admin-notifications").cms-admin-btns-btn
+                    ion-icon(name="notifications" size="large")
+                    h3 Notifications 
+                    span Dashboard
+
+                //- News dash button
+                a(href="/cms/admin-news").cms-admin-btns-btn
+                    ion-icon(name="newspaper" size="large")
+                    h3 News 
+                    span Dashboard
+
+                //- Events dash button
+                a(href="/cms/admin-events").cms-admin-btns-btn
+                    ion-icon(name="calendar" size="large")
+                    h3 Events
+                    span Dashboard

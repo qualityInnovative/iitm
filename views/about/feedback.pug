@@ -1,0 +1,120 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                if submitted
+                    .success-note.margin-top-xs
+                        svg(fill="green" xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
+                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z')
+                        | Your feedback is highly appreciated. We will consider it to improve and provide a better college environment. Thank you!
+
+                if error == "swr"
+                    .error-note.margin-top-xs
+                        svg(xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
+                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z')
+                        | Oops! Something unexpected happend. Try again.
+                else if error == "NAuth"
+                    .error-note.margin-top-xs
+                        svg(xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
+                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z')
+                        | Sorry you can't submit a feedback as we can't authenticate you as student, faculty, alumni or parent/employer of any of our students.
+
+                if !submitted
+                    form.form-1.margin-top-xs(action="/post-feedback" method="post") 
+                        h3 Let us know how we're doing!
+                        //- Common
+                        input.form-input.common(type="text" name="name" placeholder="Name" autocomplete="off" required="")
+                        input.form-input.common(type="tel" name="phone" placeholder="Phone" autocomplete="off" required="")
+                        input.form-input.common(type="email" name="email" placeholder="Email" autocomplete="off" required="")
+
+                        //- Select
+                        select.form-input.submitter(name="provider" required="" onchange="showFields()")
+                            option(value="" disabled selected) You're a
+                            option(value="student") Student
+                            option(value="faculty") Faculty
+                            option(value="parent") Parent/Guardian
+                            option(value="alumni") Alumni
+                            option(value="employer") Employer
+
+                        //- Common to Student, Parent,  Alumni Employer 
+                        input.form-input.student.parent.alumni.employer(type="text" name="studentId" placeholder="Student ID" autocomplete="off")
+
+                        //- Employer
+                        input.form-input.employer(type="text" name="company" placeholder="Company" autocomplete="off")
+
+                        //- Alumni
+                        input.form-input.alumni(type="text" name="occupation" placeholder="What do you do?" autocomplete="off")
+
+                        //- Faculty
+                        input.form-input.faculty(type="text" name="empId" placeholder="Employee Id" autocomplete="off")
+
+                        //- Common
+                        textarea.form-input.common(name="feedback" cols="30" rows="10" placeholder="Your feedback here..." required="")
+                        button.common(type="submit") Let Us Know
+
+    script.
+        const submitter = document.querySelector(".submitter");
+        const studentFields = document.querySelectorAll(".student");
+        const parentFields = document.querySelectorAll(".parent");
+        const alumniFields = document.querySelectorAll(".alumni");
+        const employerFields = document.querySelectorAll(".employer");
+        const facultyFields = document.querySelectorAll(".faculty");
+
+        const showFields = () => {
+            studentFields.forEach(field => {
+                field.style.display = "none"
+                field.removeAttribute("required")
+            })
+            parentFields.forEach(field => {
+                field.style.display = "none"
+                field.removeAttribute("required")
+            })
+            alumniFields.forEach(field => {
+                field.style.display = "none"
+                field.removeAttribute("required")
+            })
+            employerFields.forEach(field => {
+                field.style.display = "none"
+                field.removeAttribute("required")
+            })
+            facultyFields.forEach(field => {
+                field.style.display = "none"
+                field.removeAttribute("required")
+            })
+
+            if(submitter.value == "student") {
+                studentFields.forEach(field => {
+                    field.style.display = "block"
+                    field.setAttribute("required", "")
+                });
+
+            } else if(submitter.value == "faculty") {
+                facultyFields.forEach(field => {
+                    field.style.display = "block"
+                    field.setAttribute("required", "")
+                });
+            } else if(submitter.value == "parent") {
+                parentFields.forEach(field => {
+                    field.style.display = "block"
+                    field.setAttribute("required", "")
+                });
+            } else if(submitter.value == "alumni") {
+                alumniFields.forEach(field => {
+                    field.style.display = "block"
+                    field.setAttribute("required", "")
+                });
+            } else if(submitter.value == "employer") {
+                employerFields.forEach(field => {
+                    field.style.display = "block"
+                    field.setAttribute("required", "")
+                })
+            }
+        }
+
+        showFields();

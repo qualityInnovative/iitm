@@ -1,0 +1,351 @@
+//- This view recieves top3(for top carousel), events(all, current month, next month, month, date) or event(for event details of a particular event) from render function.
+extends ../layouts/base.pug
+
+block styles 
+    script(src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js')
+    if event 
+        //- Open Graph Tags
+        meta(property="og:title" content=`${event[0].event} | ${event[0].start} - ${event[0].end}`)
+        meta(property="og:description" content=`${event[0].description.split(" ").slice(0, 10).join(" ").replace(/<[^>]*>/g, '')}...`)
+        meta(property="og:image" content=event[0].path ? event[0].path : "/data/imgs/image_not_available.jpg")
+
+block content
+    include ../layouts/banner.pug
+
+    main.events-page
+        //- Main Page
+        .main 
+            //- Top carousel
+            .latest-events.event-slider
+                //- Left prev button
+                .event-slider__buttons 
+                    button.event-slider__buttons--prev
+                        ion-icon(name="arrow-back-circle")
+
+                //- Top 3 events
+                .event-slider__slides
+                    - for(let i = 0; i < top3.length; i++) {
+                        .latest-events__event.event-slider__slides--slide
+                            a(href=`/events/id/${top3[i].eid}`)
+                                - console.log("Path:", top3[i].path)
+                                if top3[i].path
+                                    img(src=top3[i].path)
+                                else
+                                    img(src="/data/imgs/image_not_available.jpg")
+                            .latest-events__event--details
+                                a(href=`/events/id/${top3[i].eid}`)
+                                    h2 #{top3[i].event}
+                                .date 
+                                    - let date = top3[i].start
+                                    a(href=`/events/date/${new Date(date).getFullYear()}-${new Date(date).getMonth() + 1}-${new Date(date).getDate()}`) 
+                                        ion-icon(name="calendar")
+                                        | #{top3[i].start} - #{top3[i].end}
+                                div
+                                    | #{top3[i].description.split(" ").slice(0, 25).join(" ").replace(/<[^>]*>/g, '')}...
+                                    
+                    - }
+
+                //- Right next button
+                .event-slider__buttons 
+                    button.event-slider__buttons--next
+                        ion-icon(name="arrow-forward-circle")
+
+            //- If events are sent with render function then show events container else don't
+            if events
+                //- Events Container
+                .events-container
+                    //- Heading
+                    h2.events__heading
+                        //- If custom title(titles) is sent with render function then show that
+                        if titles 
+                            | #{titles}
+                        //- Else if date is sent, show that
+                        else if date 
+                            | #{new Date(date).toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' })}
+                        //- Else just show events
+                        else 
+                            | Events
+
+                    //- Events
+                    .events
+                        //- If there are no events then show empty container with message
+                        if events.length == 0
+                            .empty-container
+                                ion-icon(name="alert-circle-sharp")
+                                | No Events Yet
+                                br
+                                | Come Back Later 
+                                br
+                                | ;-)
+                        //- Else show events
+                        else
+                            - for(let i = 0; i < events.length; i++) {
+                                .latest-events__event
+                                    a.event-link(href=`/events/id/${events[i].eid}`)
+                                        if events[i].path
+                                            img(src=events[i].path)
+                                        else
+                                            img(src="/data/imgs/image_not_available.jpg")
+
+                                    .latest-events__event--details
+                                        a.event-link(href=`/events/id/${events[i].eid}`)
+                                            h2 #{events[i].event}
+                                        .date
+                                            - let date = events[i].start
+                                            a(href=`/events/date/${new Date(date).getFullYear()}-${new Date(date).getMonth() + 1}-${new Date(date).getDate()}`) 
+                                                ion-icon(name='calendar')
+                                                | #{events[i].start} - #{events[i].end}
+                                        div
+                                            | #{events[i].description.split(" ").slice(0, 25).join(" ").replace(/<[^>]*>/g, '')}...
+                                if isEventsAdmin 
+                                    button.btn-open-modal.btn-event-open-modal(data-link=`/cms/delete-event/${events[i].eid}`) delete
+                            - }
+
+                    //- If events do not come from /events route then hideLoadeMore boolean is sent with true. i.e., Load More button is not shown as we are sending all events at once for all routes except /events(when no filter is set on events)
+                        h1 #{events.length}
+                    if !hideLoadMore
+                        //- If length of fetched events is 
+                        if events.length >= 5
+                            button.load-more.btn-secondary.margin-top-sm.margin-bottom-xl
+                                ion-icon(name="cloud-download-sharp")
+                                | load more
+
+                    //- End message. Hidden by default. Shown when load more button is done with fetching all events.
+                    div.end-message.margin-top-sm.margin-bottom-lg.hidden
+                        | No more events
+                        br
+                        | :-|
+
+            //- If events are not send with render function and event is sent. That means we need to show details of a particular event and not events. So, events container will not be shown as and event will be shown.
+            if event
+                .event
+                    h2.events__heading Event
+
+                    .event-item
+                        if event[0].path
+                            img(src=event[0].path)
+                        else 
+                            img(src="/data/imgs/image_not_available.jpg")
+                        .event-item__details 
+                            .event-item__details--event #{event[0].event}
+                            .event-item__details--date 
+                                - let date = event[0].start
+                                a(href=`/events/date/${new Date(date).getFullYear()}-${new Date(date).getMonth() + 1}-${new Date(date).getDate()}`) 
+                                    ion-icon(name="calendar-outline")
+                                    | #{event[0].start} - #{event[0].end}
+                            .event-item__details--place
+                                a(href="javascript:void(0)") 
+                                    ion-icon(name="location-outline")
+                                    | #{event[0].place}
+                            .event-item__details--description 
+                                - let description = event[0].description 
+                                != description
+                    .event-info 
+                        .event-info__item
+                            h2 Speaker(s)
+                            if !event[0].speaker
+                                span It's Surprise ;-)
+                            else
+                                span #{event[0].speaker}
+                        .event-info__item
+                            h2 Audience
+                            if event[0].audience == "all"
+                                span All are welcomed
+                            else if event[0].audience == "cs"
+                                span Department of Computer Science
+                            else if event[0].audience == "bca"
+                                span Bachelor's of Computer Applications
+                            else if event[0].audience == "mca"
+                                span Master's of Computer Applications
+                            else if event[0].audience == "ms"
+                                span Department of Management Studies
+                            else if event[0].audience == "bba"
+                                span Bachelor's of Business Administrations
+                            else if event[0].audience == "mba"
+                                span Master's of Business Administrations
+
+                if isEventsAdmin 
+                    button.btn-open-modal.btn-event-open-modal(data-link=`/cms/delete-event/${event[0].eid}`) delete
+
+
+        //- Sidebar Widgets
+        .widgets
+            //- Event Filters
+            .filters
+                a(href="/events") 
+                    div 
+                        ion-icon(name="calendar-outline")
+                        span All Events 
+                a(href="/events/current-month") 
+                    div 
+                        ion-icon(name="time-outline")
+                        span Upcoming This Month
+                a(href="/events/next-month") 
+                    div 
+                        ion-icon(name="time-outline")
+                        span Next Month
+            //- Calendar
+            include ../layouts/calendar.pug
+
+    script.
+        //////////////////////////////////////////////////////////////////////////
+        //- LOAD MORE FUCNTIONALITY
+        //- Variable to store limit and current offset to fetch data asynchronoulsy.
+        let limit = 5;
+        let offset = 5; // 5 events are already in view on page load
+
+        // Function to fetch events items from /fetch-events route
+        async function fetchEvents(limit, offset) {
+            //- URL from where news is asynchronously fetched for sidebar
+            let url = `/fetch-events?limit=${limit}&offset=${offset}`;
+
+            let response = await fetch(url);
+            let events = await response.json();
+
+            return events;
+        }
+
+        //- Variable tracks if the interactor is user or admin
+        let isAdmin = false;
+
+        //- Function to authenticate admin
+        const authenticate = async() => {
+            let url = `/authenticate`;
+            return fetch(url)
+            .then(response => {
+                if(response.ok)
+                    return response.json();
+                else 
+                    throw new Error('Failed to authenticate');
+            })
+            .then(data => {
+                return data;
+            })
+        }
+
+        const eventsContainer = document.querySelector(".events");
+        const loadMoreBtn = document.querySelector(".load-more");
+
+        //- Function that prints events beforeend events container
+        const printEvents = (events) => {
+            for(let i = 0; i < events.length; i++) {
+                let image = `<img src="${events[i].path}"/>`;
+                let delBtn = ""
+
+                if(isAdmin)
+                    delBtn = `<button class="btn-open-modal btn-event-open-modal" data-link="/cms/delete-event/${events[i].eid}">delete</button`;
+
+                if(events[i].path == null)
+                    image = `<img src="/data/imgs/image_not_available.jpg"/>`;
+
+                let event = `
+                    <div class="latest-events__event">
+                        <a href="/events/id/${events[i].eid}" class="event-link">
+                            ${image}
+                        </a>
+                        <div class="latest-events__event--details">
+                            <a href="/events/id/${events[i].eid}" class="event-link">
+                                <h2>${events[i].event}</h2>
+                            </a>
+                            <div class="date">
+                                <a href="/events/date/${new Date(events[i].start).getFullYear()}-${new Date(events[i].start).getMonth() + 1}-${new Date(events[i].start).getDate()}"> 
+                                    <ion-icon name="calendar"></ion-icon>
+                                    ${events[i].start} - ${events[i].end}
+                                </a>
+                            </div>
+                            <div>
+                                ${events[i].description.split(" ").slice(0, 25).join(" ")}
+                            </div>
+                        </div>
+                    </div>
+                    ${delBtn}
+                `;
+
+                eventsContainer.insertAdjacentHTML("beforeend", event);
+            }
+        }
+
+        //- Load more functionality
+        loadMoreBtn?.addEventListener("click", () => {
+            //- Fetches next 25 notifications of current category prints them, updates offset, attaches event listeners, manages load more and end message
+            fetchEvents(limit, offset)
+            .then(events => {
+
+                authenticate()
+                .then((data) => {
+                    isAdmin = data;
+
+                    printEvents(events);
+
+                    //- Attach event listeners(confirm-modal listeners) to delete button(if present).
+                    attachEventListeners();
+
+                    //- Update offset
+                    offset += limit;
+
+                    manageLoadMore(checkEnd(events));
+                })
+            }).catch(err => console.log(err))
+        })
+
+        //- Checks if all events are fetched or not.
+        const checkEnd = (events) => {
+            //- If returned array has length 0 or less than 5 then all events has been fetched
+            if(events.length == 0 || events.length < 5)
+                end = true;
+            else
+                end = false;
+
+            return end;
+        }
+
+        //- Shows and hides load more button and end message.
+        const manageLoadMore = (end) => {
+            if(end) {
+                loadMoreBtn.classList.add("hidden");
+                document.querySelector(".end-message").classList.remove("hidden");
+            } else {
+                loadMoreBtn.classList.remove("hidden");
+                document.querySelector(".end-message").classList.add("hidden");
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////////////
+        //- SCRIPT FOR CAROUSAL
+        const eventSlider = document.querySelector(".event-slider__slides");
+        const eventSlides = document.querySelectorAll(".event-slider__slides--slide");
+        const prevBtn = document.querySelector(".event-slider__buttons--prev")
+        const nextBtn = document.querySelector(".event-slider__buttons--next")
+
+        let currentSlideIndex = 0;
+
+        function showSlide(index) {
+            // Hide all items
+            eventSlides.forEach(slide => {
+                slide.style.transform = `translateX(-${index * 100}%)`; // Apply transform
+            });
+        }
+
+        function showNextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % eventSlides.length;
+            showSlide(currentSlideIndex);
+        }
+
+        function showPreviousSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + eventSlides.length) % eventSlides.length;
+            showSlide(currentSlideIndex);
+        }
+
+        // Show initial item
+        showSlide(currentSlideIndex);
+
+        // Add event listeners to the buttons
+        prevBtn.addEventListener('click', showPreviousSlide);
+        nextBtn.addEventListener('click', showNextSlide);
+
+        window.onload = () => {
+            // Initialize the calendar
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            // Attach event listeners to delete buttons (if there)
+            attachEventListeners();
+        }

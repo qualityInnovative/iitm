@@ -1,0 +1,54 @@
+extends ../layouts/base.pug
+
+block styles 
+    //- Open Graph Tags
+    meta(name="og:title", content="IITM - Community")
+    meta(name="og:description", content="Stay connected with our vibrant community at IITM. Explore the latest news, important notifications, upcoming events, and engage with our thriving alumni network. Join us for a sense of unity and shared experiences.")
+    meta(name="og:image" content=bannerImg)
+
+    //- Meta Description
+    meta(name="description", content="Stay connected with our vibrant community at IITM. Explore the latest news, important notifications, upcoming events, and engage with our thriving alumni network. Join us for a sense of unity and shared experiences.")
+
+block content
+    include ../layouts/banner.pug
+    main.academics-page.container-lg
+
+        h3.academics-page__introduction
+            | Explore the latest college updates in our 
+            a(href="/community/news").link-inside-p News section
+            | , featuring announcements from the administration. Dive into our 
+            a(href="/community/videos") Videos collection 
+            | for engaging content directly from our YouTube channel. Alumni can seamlessly connect by submitting their details in our dedicated 
+            a(href="/community/alumni") Alumni section. 
+            | Stay in the loop with important notifications across various categories in our 
+            a(href="/notifications") Notifications area.
+
+        div.margin-top-sm.margin-bottom-md
+            .square-cards
+                .square-cards__item 
+                    a(href="/community/news")
+                        img(src="/data/imgs/news-banner.jpg")
+                        div
+                            h2 News
+                            p  College updates from administration's desk.
+
+                .square-cards__item 
+                    a(href="/community/videos")
+                        img(src="/data/imgs/videos-banner.png")
+                        div
+                            h2 Videos
+                            p Dynamic content from our YouTube channel.
+
+                .square-cards__item 
+                    a(href="/community/alumni")
+                        img(src="/data/imgs/alumni-banner.jpg")
+                        div
+                            h2 Alumni
+                            p Connect and share in alumni network.
+
+                .square-cards__item 
+                    a(href="/notifications")
+                        img(src="/data/imgs/notifications-banner.jpg")
+                        div
+                            h2 Notifications
+                            p  Timely updates across diverse categories.

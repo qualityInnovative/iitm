@@ -1,0 +1,68 @@
+//- OVERVIEW:   
+//- Recieves sidebarHeading, pageRoutes and pageLinks from the route. Inserts sidebarHeading as the sidebar heading, pageRotues as the hrefs of sidebar links and pageLinks as the names of sidebar links. pagemenu-lg is shown for devices with width greater that 968px and pagemenu-sm for devices with width lesser than that.
+
+.pagemenu-lg.hidden
+    .pagemenu-lg__heading 
+        h3 
+            span #{sidebarHeading}
+    .pagemenu-lg__links
+        ul 
+            -for(var i = 0; i < pageRoutes.length; i++)
+                a(href=pageRoutes[i][0]).link-underline-animate-left
+                    li(class=(path === pageRoutes[i][0] ? 'actv' : '')) #{pageLinks[i][0]}
+                if pageRoutes[i].length > 1
+                    ul(class=(!path.includes(pageRoutes[i][0]) ? 'hidden' : '')).pagemenu-lg__links--nested
+                        -for(var j = 1; j < pageRoutes[i].length; j++)
+                            a(href=pageRoutes[i][j]).link-underline-animate-left
+                                li(class=(path === pageRoutes[i][j] ? 'actv': '')) #{pageLinks[i][j]}
+
+.pagemenu-sm.hidden
+    button.collapsible #{sidebarHeading}
+    .content
+        .pagemenu-lg__links.pagemenu-sm__links
+            ul 
+                -for(var i = 0; i < pageRoutes.length; i++)
+                    a(href=pageRoutes[i][0]).link-underline-animate-left
+                        li(class=(path === pageRoutes[i][0] ? 'actv' : '')) #{pageLinks[i][0]}
+                    if pageRoutes[i].length > 1
+                        ul(class=(!path.includes(pageRoutes[i][0]) ? 'hidden' : '')).pagemenu-lg__links--nested
+                            -for(var j = 1; j < pageRoutes[i].length; j++)
+                                a(href=pageRoutes[i][j]).link-underline-animate-left
+                                    li(class=(path === pageRoutes[i][j] ? 'actv': '')) #{pageLinks[i][j]}
+
+script.
+    //- Script to toggle the table of contents
+    var collapsible = document.querySelector(".collapsible");
+
+    collapsible.addEventListener("click", function() {      
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+            content.style.maxHeight = null;
+            content.style.paddingTop = "0"
+            content.style.paddingBottom = "0"
+        } else {
+        //- content.style.maxHeight = content.scrollHeight + "px";
+            content.style.maxHeight = "100%";
+            content.style.paddingTop = "25px"
+            content.style.paddingBottom = "25px"
+        }
+    });
+
+    //- Script to show and hide table of contents for small and large devices
+    const toc = () => {
+        const pageMenuLg = document.querySelector(".pagemenu-lg");
+        const pageMenuSm  = document.querySelector(".pagemenu-sm");
+        let width = window.innerWidth;
+
+        if(width <= 968) {
+            pageMenuLg.classList.add("hidden")
+            pageMenuSm.classList.remove("hidden")
+        } else {
+            pageMenuSm.classList.add("hidden")
+            pageMenuLg.classList.remove("hidden")
+        }
+    }
+
+    toc()
+    window.addEventListener('resize', toc)

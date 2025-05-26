@@ -1,0 +1,108 @@
+extends ../layouts/cms-base.pug
+
+block styles 
+
+block content 
+     main.cont-sm
+
+        h2.primary_heading.bg-none.margin-top-sm.margin-bottom-sm
+            if date
+                | Changes made on #{new Date(date).toLocaleString('en-US', {day: 'numeric', month: 'short', year: 'numeric'})}
+            else
+                |  Changes made today
+
+        form(action="", method="get" style="display: flex; justify-content: space-between; align-items: center; gap: .5rem; margin-bottom: 1rem;") 
+            input.form-control(type="date", name="date" style="width: 100%; padding: .5rem" value=`${date}`)
+
+            button.btn.btn-primary(type="submit" style="background: none; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer;")
+                ion-icon(name="search-circle" style="font-size: 3rem; color: #14416f")
+            a(href="/cms/admin-logs?date=") 
+                button.btn.btn-primary(style="background: none; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer;")
+                    ion-icon(name="refresh-circle" style="font-size: 3rem; color: #14416f")
+            
+    
+
+        if logs.length == 0
+            div(style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; text-align: center; background-color: #eee; padding: 2rem; border-radius: 5px; font-size: 1.5rem; margin: 5rem auto")
+                ion-icon(name="alert-circle", style="font-size: 5rem; color: #14416f; margin-right: 1rem;")
+                p(style="font-size:1.5rem; font-weight: 500;")
+                    | No changes were made on the selected date
+
+        each log in logs
+                .text-card.home-notifications(style="padding: 1rem")
+                    p.text-card__title
+                        if log.tble == "events" || log.tble == "industrialVisits"
+                            | An 
+                        else
+                            | A 
+
+                        if log.tble == "events"
+                            a(href=`/events`).link-inside-p.uppercase event
+                        else if log.tble == "gallery"
+                            a(href=`/`).link-inside-p.uppercase gallery
+                        else if log.tble == "guestLectures"
+                            a(href=`/academics/guest-lectures`).link-inside-p.uppercase guest lecture
+                        else if log.tble == "homeButtons"
+                            a(href=`/`).link-inside-p.uppercase home button
+                        else if log.tble == "homeCarousel"
+                            a(href=`/`).link-inside-p.uppercase home carousel
+                        else if log.tble == "industrialVisits"
+                            a(href=`/placements/industrial-visits`).link-inside-p.uppercase industrial visit
+                        else if log.tble == "news"
+                            a(href=`/community/news`).link-inside-p.uppercase news
+                        else if log.tble == "notifications"
+                            a(href=`/notifications`).link-inside-p.uppercase notification
+                        else if log.tble == "placementDriveHighlights"
+                            a(href=`/placements`).link-inside-p.uppercase placement drive highlight
+                        else if log.tble == "placementTestimonials"
+                            a(href=`/placements`).link-inside-p.uppercase placement testimonial
+                        else if log.tble == "videos"
+                            a(href=`/community/videos`).link-inside-p.uppercase video
+                        else if log.tble == "workshopsAndBootcamps"
+                            a(href=`/academics/workshops-and-bootcamps`).link-inside-p.uppercase workshop or bootcamp
+                        else if log.tble == "grievances"
+                            a(href=`/about/grievance`).link-inside-p.uppercase grievance
+
+                        |  was 
+                        span.uppercase.bold
+                            if log.operation == "insert"
+                                | added
+                            else if log.operation == "update"
+                                | updated
+                            else if log.operation == "delete"
+                                | deleted
+
+                    .text-card__footer.margin-top-xs
+                        div
+                            svg(fill='#9fa4aa' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 512 512')
+                                path(d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z")
+                            | #{log.time.toLocaleString('en-US', {day: 'numeric', month: 'short', year: 'numeric'})} #{log.time.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', hour12: true})}
+                        div
+                            svg(fill='#9fa4aa' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 448 512')
+                                path(d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z")
+                            
+                            if log.username == "hod@cs"
+                                | Computer Science HOD
+                            else if log.username == "hod@ms"
+                                | Management Studies HOD
+                            else if log.username == "admin@cms"
+                                | Website Admin
+                            else if log.username == "coordinator@cs"
+                                | Computer Science Coordinator
+                            else if log.username == "coordinator@ms"
+                                | Management Studies Coordinator
+                            else if log.username == "gr@iitm"
+                                | Grienvace Redressal 
+                            else if log.username == "so@iitm"
+                                | Section Officer
+                            else if log.username == "pro@iitm"
+                                | Public Relations Office
+                            else if log.username == "admissions@iitm"
+                                | Admissions Office
+                            else if log.username == "po@iitm"
+                                | Placement Officer
+                            else if log.username == "director@iitm"
+                                | Director
+                            else
+                                | Unknown User
+                            

@@ -1,0 +1,24 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+    main.academics-page.container-lg
+
+        h3.academics-page__introduction
+            | Discover the pulse of our campus and the spirit of our events through our thoughtfully curated video collection. From dynamic lectures to lively campus festivities, these videos offer a vivid window into our college community. Stay up-to-date with the latest additions by
+            a(href="https://www.youtube.com/@iitmsrinagar" target="_blank" rel="noopener noreferrer")  subscribing to our YouTube channel
+            | , and immerse yourself in the energy and vibrancy that define us.
+
+        .line-above-heading.margin-top-sm
+        h2.heading-with-top-border Campus
+        .video-cont.margin-top-xs
+            each video in campusVideos 
+                iframe(src=video.link title=video.title frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen)
+        a(href="/community/videos/campus").see-more-link ... see more
+
+        .line-above-heading.margin-top-sm
+        h2.heading-with-top-border Events
+        .video-cont.margin-top-xs
+            each video in eventVideos 
+                iframe(src=video.link title=video.title frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen)
+        a(href="/community/videos/events").see-more-link.margin-bottom-xl ... see more

@@ -1,0 +1,66 @@
+.video-cont {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    @include devices(phone) {
+        justify-content: center;
+    }
+
+    iframe {
+        border-radius: 15px;
+        width: 25rem;
+        height: 15rem;
+        background-color: #ccc;
+        animation: loading-placeholder 0.5s infinite alternate;
+    }
+}
+
+.see-more-link {
+    font-family: $poppins;
+    text-decoration: none;
+    color: $primary-color;
+    font-weight: 500;
+    display: block;
+    text-align: right;
+    margin-top: 1rem;
+
+    &:hover {
+        color: $primary-color-hover;
+    }
+}
+
+.video-del-btn {
+    * {
+        transition: all 0.25s ease-in-out;
+    }
+    button {
+        width: 100%;
+        background-color: rgba(255, 0, 0, 0.75);
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 1.05rem;
+
+        &:hover {
+            box-shadow: 0px 0px 10px red;
+
+            svg {
+                scale: 1.25;
+                transform: rotate(-10deg);
+            }
+        }
+
+        svg {
+            color: #fff;
+        }
+    }
+}

@@ -1,0 +1,48 @@
+extends ../layouts/cms-base.pug
+
+block content 
+
+    main.cont-sm
+        form.form-1(action="/cms/upload-notification" method="post" enctype="multipart/form-data") 
+            h3 Notification Upload Panel
+            textarea.form-input(name="notificationName" rows="5" placeholder="What's this notification about?" required='')
+            input.form-input(type="text" name="links" placeholder="Attach Links" autocomplete="off")
+
+
+            select.form-input(name="category" required="")
+                option(value="" disabled selected) Select Category
+                option(value="academics") Academics: Exams, Class Schedules, Assignments & Academic 
+                option(value="events") Events: Extracurricular Activities, Workshops, Seminars, Conferences & Cultural Events
+                option(value="important-dates") Important Dates: Registration Deadlines, Fee Payment Dates, Admissions, Holidays & Other Significant Dates
+                option(value="scholarships-and-financial-aid") Scholarships & Financial Aid:  Scholarships, Grants & Financial Assistance Programs
+                option(value="job-opportunities") Job Opportunities: Job Openings, Internships & Career Fairs
+                option(value="clubs-and-organizations") Clubs & Organizations: Clubs, Student Organizations & Their Activities.
+                option(value="health-and-wellness") Health & Wellness: Health Services, Wellness Programs & Counseling
+                option(value="sports-and-recreation") Sports and Recreation: Sports Events, Tournaments, Fitness Classes & Recreational Activities
+                option(value="campus-news") Campus News: General News & Announcements About The Institution, Faculty & Staff
+            label Notification
+            input.form-input.form-input-upload(type="file" name="notification" accept=".jpg,.png,.jpeg,.pdf")
+
+            label Notification Preferences
+            .center
+                div 
+                    select.form-input.half(name="audience")
+                        option(value="" disabled selected) Target Audience
+                        option(value="all") All
+                        option(value="ug") Undergrads
+                        option(value="pg") Postgrads
+                        option(value="cs") Computer Science
+                        option(value="ms") Management Studies
+                        option(value="bca") BCA
+                        option(value="bba") BBA
+                        option(value="mca") MCA
+                        option(value="mba") MBA
+                    span.end-text.margin-0.margin-top-xxs Default: All
+                div
+                    select.form-input.half(name="priority")
+                        option(value="" disabled selected) Notification Priority
+                        option(value="0") 0: Just Upload
+                        option(value="1") 1: Upload & Mail
+                    span.end-text.margin-0.margin-top-xxs Default: 0 (Just Upload)
+
+            button(type="submit") Upload

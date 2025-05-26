@@ -1,0 +1,185 @@
+//- OVERVIEW:
+//- Recieves pageTitle, pageName, buttonLink and buttonText from the render function to insert texts as page title, heading of the navbar, text of button in the navbar and its link, respectively. "block styles" inserts any additional styles if needed. "block content" inserts the main content of the page and "block scipts" inserts any additional scripts if needed
+
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(http-equiv='X-UA-Compatible' content='IE=edge')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+        title #{pageTitle}
+        //- Robots meta tag
+        meta(name='robots' content='noindex, nofollow')
+        link(rel='stylesheet' href='/css/style.css')
+        link(rel='stylesheet' href='https://kit.fontawesome.com/3d15514f5b.css' crossorigin='anonymous')
+
+        //- Styles block
+        block styles
+
+    body 
+        //- Loader
+        include ../layouts/loader.pug
+
+        //- main.page-layout
+        nav.nav-cms 
+            .nav-cms__heading
+                a(href="/cms")
+                    ion-icon(name="arrow-back-sharp")
+                //- a(href="javascript:void(0)")
+                span #{pageName}    
+
+            //- Navbar Buttons
+            .btns
+                //- Show logout button only if the user is logged in
+                - if(isAuthenticated)
+                    div 
+                        form(action="/logout" method="POST") 
+                            button.btn-svg.logout
+                                .icon
+                                    svg(xmlns='http://www.w3.org/2000/svg' viewBox="0 0 512 512" width='24' height='24')
+                                        path(fill='none' d='M0 0h24v24H0z')
+                                        path(fill='red' d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z")
+
+                //- Home button
+                div 
+                    a(href="/")
+                        button.btn-svg
+                            .icon
+                                svg(xmlns='http://www.w3.org/2000/svg' viewBox="0 0 576 512" width='24' height='24')
+                                    path(fill='none' d='M0 0h24v24H0z')
+                                    path(fill='#ff9100' d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z")
+
+                //- Show logout button only if the user is logged in
+                - if(isAuthenticated)
+                    div 
+                        form(action="/cms/change-password" method="GET") 
+                            button.btn-svg.password
+                                .icon
+                                    svg(xmlns='http://www.w3.org/2000/svg' viewBox="0 0 512 512" width='24' height='24')
+                                        path(fill='none' d='M0 0h24v24H0z')
+                                        path(fill='green' d="M336 352c97.2 0 176-78.8 176-176S433.2 0 336 0S160 78.8 160 176c0 18.7 2.9 36.8 8.3 53.7L7 391c-4.5 4.5-7 10.6-7 17v80c0 13.3 10.7 24 24 24h80c13.3 0 24-10.7 24-24V448h40c13.3 0 24-10.7 24-24V384h40c6.4 0 12.5-2.5 17-7l33.3-33.3c16.9 5.4 35 8.3 53.7 8.3zM376 96a40 40 0 1 1 0 80 40 40 0 1 1 0-80z")
+
+        //- Modal
+        .modal-overlay
+        .modal-cont
+            .modal
+                .modal-content
+                    h3 Are you sure you want to delete this item?
+                    .modal-content__btns 
+                        button.btn-cancel Cancel
+                        form.form-confirm(action="" method="post")
+                            button.btn-confirm(type="submit") Confirm
+
+        //- Block for content of page
+        block content
+
+        //- Footer
+        include ../layouts/footer.pug
+
+        script.
+            //- Function to attach event listeners to modal buttons
+            const attachEventListeners = () => {
+                //- Selecting elements
+                const openModalBtns = document.querySelectorAll('.btn-open-modal');
+                const modal = document.querySelector('.modal');
+                const modalContainer = document.querySelector(".modal-cont")
+                const closeModalBtn = document.querySelector('.btn-cancel');
+                const confirmModalBtn = document.querySelector(".btn-confirm");
+                const modalOverlay = document.querySelector('.modal-overlay');
+
+                //- Open modal listener
+                openModalBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    modalContainer.style.height = "calc(100vh - 25vh)"
+                    modalContainer.style.width = "100vw"
+                    modal.style.display = 'block';
+                    modalOverlay.style.display = 'block';
+                    document.body.classList.add('modal-open');
+                    const link = btn.getAttribute("data-link");
+                    document.querySelector(".form-confirm").setAttribute("action", link)
+                });
+                })
+
+                //- Close modal listener
+                closeModalBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+                modalOverlay.style.display = 'none';
+                modalContainer.style.height = "0"
+                modalContainer.style.width = "0"
+                document.body.classList.remove('modal-open');
+                });
+            }
+
+            //- Loader script
+            document.onreadystatechange = function () {
+                if (document.readyState !== "complete") {
+                document.querySelector("body").style.visibility = "hidden";
+                document.querySelector("body").style.height = "100%";
+                document.querySelector("body").style.overflow = "hidden";
+                document.querySelector(".loader").style.visibility = "visible";
+                } else {
+                document.querySelector(".loader").style.display = "none";
+                document.querySelector("body").style.visibility = "visible";
+                document.querySelector("body").style.height = "";
+                document.querySelector("body").style.overflow = "";
+                }
+            }
+
+            //- Modal Script
+            const openModalBtns = document.querySelectorAll('.btn-open-modal');
+            const modal = document.querySelector('.modal');
+            const modalContainer = document.querySelector(".modal-cont")
+            const closeModalBtn = document.querySelector('.btn-cancel');
+            const confirmModalBtn = document.querySelector(".btn-confirm");
+            const modalOverlay = document.querySelector('.modal-overlay');
+
+            openModalBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    modalContainer.style.height = "100vh"
+                    modalContainer.style.width = "100vw"
+                    modal.style.display = 'block';
+                    modalOverlay.style.display = 'block';
+                    document.body.classList.add('modal-open');
+                    const link = btn.getAttribute("data-link");
+                    document.querySelector(".form-confirm").setAttribute("action", link)
+                });
+            })
+
+            closeModalBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+                modalOverlay.style.display = 'none';
+                modalContainer.style.height = "0"
+                modalContainer.style.width = "0"
+                document.body.classList.remove('modal-open');
+            });
+
+            //-? ////////////////////////////////////////////
+            //- HELPER FUNCTIONS
+            //- Checks if all notifications are fetched or not.
+            const checkEnd = (notifications) => {
+                //- If returned array has length 0 or less than 25 then all notificaitons has been fetched
+                if(notifications.length == 0 || notifications.length < 25)
+                    end = true;
+                else
+                    end = false;
+
+                return end;
+            }
+
+            //- Shows and hides load more button and end message.
+            const manageLoadMore = (end) => {
+                if(end) {
+                    loadMoreBtn.classList.add("hidden");
+                    document.querySelector(".end-message").classList.remove("hidden");
+                } else {
+                    loadMoreBtn.classList.remove("hidden");
+                    document.querySelector(".end-message").classList.add("hidden");
+                }
+            }
+
+
+        //- Block for script includes
+        block scripts
+            //- ionicons script
+            script(type='module' src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js')
+            script(nomodule='' src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js')

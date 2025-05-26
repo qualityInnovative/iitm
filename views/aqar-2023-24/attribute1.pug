@@ -1,0 +1,16 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                .line-above-heading 
+                h2.heading-with-top-border Explore the following documents
+                a(href="attribute1/feedback-analysis-and-action-taken-report" style="display: block; width: 100%; text-align: center; margin: 20px 0 20px 0;") 
+                    button.tabs__tab#tab__bootcamps(style="width:100%") Feedback Analysis and Action Taken Report
+                a(href="attribute1/stakeholders-feedback" style="display: block; width: 100%; text-align: center; margin: 20px 0 20px 0;")
+                    button.tabs__tab#tab__bootcamps(style="width:100%") Stakeholders Feedback

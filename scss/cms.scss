@@ -1,0 +1,49 @@
+// CMS Navbar
+.nav-cms {
+    background-color: $primary-color;
+    box-shadow: none;
+    border-bottom: 5px solid $secondary-color;
+    min-height: 4rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0px 1rem;
+
+    &__heading {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        a {
+            text-decoration: none;
+            color: white;
+
+            ion-icon {
+                font-size: 1.5rem;
+            }
+        }
+
+        span {
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: white;
+            margin-left: 1rem;
+        }
+    }
+
+    // Navbar buttons container
+    .btns {
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+// If it is logout button then color red
+.logout {
+    background-color: red;
+}
+
+.password {
+    background-color: #66ff66;
+}

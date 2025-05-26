@@ -1,0 +1,50 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout
+        include ../layouts/pagemenu.pug
+
+        .main
+            h1.page-heading management faculty
+            p The management studies faculty at Iqbal Institute of Technology and Management is renowned for its excellence in providing high-quality education and preparing students to become successful leaders in the field of management. The faculty is comprised of highly experienced and qualified professors who bring a wealth of knowledge and expertise to the classroom. They are dedicated to delivering innovative and industry-relevant curriculum that focuses on developing students' analytical, strategic, and leadership skills, preparing them for the challenges of the modern business world.
+            p The faculty at Iqbal Institute of Technology and Management employs a student-centric approach to teaching, where students are encouraged to actively participate in discussions, case studies, and practical assignments. This approach fosters critical thinking, problem-solving, and decision-making skills, which are essential for effective management. The faculty also emphasizes the importance of practical exposure, and students are provided with opportunities to intern with leading organizations, participate in industry visits, and work on real-world projects, allowing them to apply their theoretical knowledge to real-world scenarios.
+            p In addition to academic excellence, the management studies faculty at Iqbal Institute of Technology and Management also focuses on the holistic development of students. They offer mentorship programs, career guidance, and personality development workshops, helping students build their self-confidence, communication skills, and leadership abilities. The faculty also fosters a culture of research and encourages students to engage in research projects, publish papers, and participate in conferences, nurturing their intellectual curiosity and promoting lifelong learning.
+            p With their experienced faculty, student-centric approach, emphasis on practical exposure, and focus on holistic development, the management studies faculty at Iqbal Institute of Technology and Management prepares students to excel in their careers and become leaders in the field of management.
+
+            //- Teacher profile cards
+            .line-above-heading 
+            h2.heading-with-top-border meet the experts
+            .cards-person-container.align-cards-center
+                //- teachingFaculty is an array fetched from db which contains object having details of cs teaching faculty 
+                - for (var i = 0; i < teachingFaculty.length; ++i) {
+                    .card-person
+                        .card-person__border-top
+                        if teachingFaculty[i].photograph == null
+                            if teachingFaculty[i].gender == "m"
+                                img(src="/data/imgs/man-default-profile.png" alt="").card-person__img
+                            else
+                                img(src="/data/imgs/woman-default-profile.png" alt="").card-person__img
+                        else
+                            img(src=`/data/collegeImgs/${teachingFaculty[i].photograph}` alt="").card-person__img
+                        span.card-person__name #{teachingFaculty[i].name}
+                        span.card-person__job #{teachingFaculty[i].appointedAs}
+                        span.card-person__qualification #{teachingFaculty[i].qualification}
+                        span.card-person__experience #{teachingFaculty[i].experience}
+                        span.card-person__specialization #{teachingFaculty[i].specialization}
+                        if teachingFaculty[i].resume != null
+                            a(href=`/data/resumes/${teachingFaculty[i].resume}`, target="_blank" rel="noopener noreferrer")
+                                button 
+                                    ion-icon(name="download")
+                                    | resume
+                        else 
+                            a(href="javascript:void(0)")
+                                button 
+                                    ion-icon(name="download")
+                                    | comming soon!
+                            
+                - }
+    
+    script.
+        equalizeCardHeights(".card-person")

@@ -1,0 +1,20 @@
+//- Recieves loginError and username from the render function to check if there is any error to show. loginError specifies which type of error (username or password) and username is used to prefil the input value
+
+extends ../layouts/cms-base.pug
+
+block content 
+    main.container
+        .form-container
+            .login
+                form.form(action='/login' method="POST")
+                    label(for='chk' aria-hidden='true') LOGIN
+                    | &#x9;&#x9;&#x9;&#x9;&#x9;
+                    input.input#user-input(class=loginError=='user not found' ? 'incorrect' : '' type='text' name='username' placeholder='Username' required='' autocomplete="off" value=username)
+                    | &#x9;&#x9;&#x9;&#x9;&#x9;
+                    if loginError == 'user not found'
+                        span.error-msg #{loginError}
+                    input.input#password-input(class=loginError =='incorrect password' ? 'incorrect' : '' type='password' name='password' placeholder='Password' required='')
+                    if loginError == 'incorrect password'
+                        span.error-msg #{loginError}
+                    | &#x9;&#x9;&#x9;&#x9;&#x9;
+                    button Log in

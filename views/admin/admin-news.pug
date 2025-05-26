@@ -1,0 +1,26 @@
+extends ../layouts/cms-base.pug
+
+block styles 
+    //- simpleMDE Style
+    link(rel='stylesheet' href='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css')
+
+block content 
+    //- simpleMDE script
+    script(src='https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js')
+
+    main
+        .cont-sm
+            form.form-1(action="/cms/upload-news" method="post" enctype="multipart/form-data") 
+                h3 News Upload Panel
+                input.form-input(type="text" name="headline" placeholder="Headline" autocomplete="off" required="")
+                div.markdown
+                    textarea#editor.form-input(name="news" rows="5" placeholder="What's the news?")
+                label Thumbnail
+                input.form-input.form-input-upload(type="file" name="poster" accept=".jpg,.png,.jpeg" title="Choose thumbnail")
+                input.form-input(type="date" name="date")
+                span.end-text Date is an optional field. If not provided, today's date will be used.
+                button(type="submit") Upload
+
+    script.
+        //- Setup texarea as markdown field
+        const simplemde = new SimpleMDE({ element: document.getElementById("editor") });

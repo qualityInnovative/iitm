@@ -1,0 +1,83 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                if submitted
+                    .success-note.margin-top-xs
+                        svg(fill="green" xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
+                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z')
+                        | Your grievance has been registered. We appreciate your patience while we assess the situation and work towards a satisfactory outcome.
+
+                if error == "swr"
+                    .error-note.margin-top-xs
+                        svg(xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
+                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z')
+                        | Oops! Something unexpected happend. Try again.
+                else if error == "NAuth"
+                    .error-note.margin-top-xs
+                        svg(xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
+                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z')
+                        | Sorry you can't raise a concern as we can't authenticate you as student or faculty of IITM.
+
+                if !submitted
+                    form.form-1.margin-top-xs(action="/post-grievance" method="post") 
+                        h3.margin-bottom-none Express Your Concerns
+                        h3 We're Here to Listen and Help
+                        //- Common
+                        input.form-input.common(type="text" name="name" placeholder="Name" autocomplete="off" required="")
+                        input.form-input.common(type="tel" name="phone" placeholder="Phone" autocomplete="off" required="")
+                        input.form-input.common(type="email" name="email" placeholder="Email" autocomplete="off" required="")
+
+                        //- Select
+                        select.form-input.submitter(name="submitter" required="" onchange="showFields()")
+                            option(value="" disabled selected) You're a
+                            option(value="student") Student
+                            option(value="faculty") Faculty
+
+                        //- Student
+                        input.form-input.student(type="text" name="studentId" placeholder="Student Id" autocomplete="off")
+
+                        //- Faculty
+                        input.form-input.faculty(type="text" name="empId" placeholder="Employee Id" autocomplete="off")
+
+                        //- Common
+                        textarea.form-input.common(name="grievance" cols="30" rows="10" placeholder="Your words have power. Write them down here..." required)
+                        span.end-text Your personal details will be kept confidential. Please don't hesitate to share.
+                        button.common(type="submit") Raise Concern
+
+
+    script.
+        const submitter = document.querySelector(".submitter");
+        const studentFields = document.querySelectorAll(".student");
+        const facultyFields = document.querySelectorAll(".faculty");
+
+        const showFields = () => {
+            studentFields.forEach(field => {
+                field.style.display = "none"
+                field.removeAttribute("required")
+            })
+            facultyFields.forEach(field => {
+                field.style.display = "none"
+                field.removeAttribute("required")
+            })
+
+            if(submitter.value == "student") {
+                studentFields.forEach(field => {
+                    field.style.display = "block"
+                    field.setAttribute("required", "")
+                });
+            } else if(submitter.value == "faculty") {
+                facultyFields.forEach(field => {
+                    field.style.display = "block"
+                    field.setAttribute("required", "")
+                });
+            }
+        }
+
+        showFields();

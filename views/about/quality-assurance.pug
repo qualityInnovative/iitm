@@ -1,0 +1,41 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading Quality Assurance
+
+                p At Iqbal Institute of Technology and Management, we are committed to delivering a top-quality educational experience to our students. To ensure the highest standards of excellence, we have implemented a comprehensive Quality Assurance framework. This framework encompasses various processes and practices aimed at continually improving our educational programs and services.
+
+                //- Cards container
+                .courses-cards.align-cards-center
+                    //- Card
+                    article.courses-card
+                        //- Card image
+                        div 
+                            img(src="/data/imgs/about-iqac.jpg" alt="alt")
+                        //- Card content
+                        .courses-card__content
+                            span.courses-card__content--title About IQAC
+                            span.courses-card__content--subtitle Discover how Internal Quality Assurance Cell drives excellence in education at IITM.
+                            p.courses-card__content--description Internal Quality Assurance Cell at Iqbal Institute of Technology & Management is dedicated to ensuring top-notch educational standards. We monitor curriculum, faculty, and support services to deliver an enriching learning experience. Join us as we drive educational excellence through IQAC at IITM.
+                            //- Card button
+                            a(href="/about/quality-assurance/about")
+                                button.btn-psu Explore
+
+                    //- Card
+                    article.courses-card
+                        div 
+                            img(src="/data/imgs/iqac-composition.jpg" alt="alt")
+                        .courses-card__content
+                            span.courses-card__content--title IQAC Composition
+                            span.courses-card__content--subtitle Explore the composition of IQAC, the driving force behind educational excellence at IITM.
+                            p.courses-card__content--description The IQAC at IITM is composed of a dedicated team of experienced faculty, administrators, and external experts. Together, they work diligently to establish and uphold rigorous quality assurance measures, ensuring educational excellence and fostering a culture of continuous improvement.
+                            a(href="/about/quality-assurance/composition")
+                                button.btn-psu Explore
+

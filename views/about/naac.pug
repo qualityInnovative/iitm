@@ -1,0 +1,26 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading NAAC Accreditation
+                p Iqbal Institute of Technology and Management proudly holds accreditation from the National Assessment and Accreditation Council. This recognition signifies our commitment to maintaining the highest standards of quality in education. The NAAC accreditation validates our institution's adherence to rigorous benchmarks in various aspects, including curriculum design, teaching-learning processes, infrastructure, student support services, and governance.
+
+                .line-above-heading 
+                h2.heading-with-top-border Certificate
+                iframe.pdf-viewer.hidden(src="/data/documents/naac.pdf")
+                .pdf.margin-top-sm.hidden
+                    .pdf__heading
+                    .pdf__container
+                    .pdf__download
+                        a(href="/data/documents/naac.pdf" target="blank")
+                            button Download
+
+    script.
+        //- Show pdf using pdfJs function defined in base.pug script.(For small devies)
+        pdfJs(["/data/documents/naac.pdf"])

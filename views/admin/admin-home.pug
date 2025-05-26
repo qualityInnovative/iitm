@@ -1,0 +1,225 @@
+extends ../layouts/cms-base.pug
+
+block styles 
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous")
+    script(type='module' src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js')
+    script(nomodule='' src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js')
+
+
+block content 
+    main.cms-home
+        .cont-sm 
+            //- Tabs
+            .tabs
+                button.tabs__tab#tab__btns.active-tab Buttons 
+                button.tabs__tab#tab__heading Heading
+                button.tabs__tab#tab__gallery Gallery
+                button.tabs__tab#tab__carousel Carousel
+
+            //- Buttons Update Dashboard
+            .cms-home__btns
+                //- Form
+                form.form-1(action="/cms/upload-homeButton" method="post" enctype="application/x-www-form-urlencoded") 
+                    h3 Manage Buttons
+                    select.form-input(name="bid" required="")
+                        option(value="" disabled selected) Select Button
+                        option(value="1") 1
+                        option(value="2") 2
+                        option(value="3") 3
+                        option(value="4") 4
+                    input.form-input(name="buttonText" placeholder="Button Text" autocomplete="off")
+                    input.form-input(name="buttonLink" placeholder="Button Link" autocomplete="off")
+                    button(type="submit") Upload
+
+                //- Display available buttons
+                .cms-home__btns--buttons
+                    h3 Available Buttons
+                    - for(var i = 0; i < buttons.length; i++) {
+                        //- h3 Button #{i+1}
+                        a(href=buttons[i].link)
+                            if (i+1)%2 == 0
+                                .link.even 
+                                    span.index #{i+1}
+                                    | #{buttons[i].text}
+                                    span.btn-link #{buttons[i].link}
+                            else
+                                .link.odd
+                                    span.index #{i+1}
+                                    | #{buttons[i].text}
+                                    span.btn-link #{buttons[i].link}
+                    - }
+
+            //- Heading update dashboard
+            .cms-home__heading.hidden
+                //- Form
+                form.form-1(action="/cms/upload-homeHeading" method="post" enctype="application/x-www-form-urlencoded") 
+                    h3 Manage Heading
+                    input.form-input(name="heading" placeholder="Heading" autocomplete="off" required="" value=homeHeading)
+                    button(type="submit") Upload
+
+            //- Gallery update dashboard
+            .cms-home__gallery.hidden
+                //- Form
+                form.form-1(action="/cms/upload-gallery" method="post" enctype="multipart/form-data") 
+                    h3 Manage Gallery
+                    select.form-input(name="iid" required="")
+                        option(value="" disabled selected) Select Image
+                        option(value="1") 1
+                        option(value="2") 2
+                        option(value="3") 3
+                        option(value="4") 4
+                        option(value="5") 5
+                        option(value="6") 6
+                        option(value="7") 7
+                        option(value="8") 8
+                        option(value="9") 9
+                        option(value="10") 10
+                        option(value="11") 11
+                        option(value="12") 12
+                        option(value="13") 13
+                        option(value="14") 14
+                        option(value="15") 15
+                        option(value="16") 16
+                        option(value="17") 17
+                        option(value="18") 18
+                        option(value="19") 19
+                        option(value="20") 20
+                        option(value="21") 21
+                        option(value="22") 22
+                        option(value="23") 23
+                        option(value="24") 24
+                    input.form-input(name="caption" rows="5" placeholder="Caption" required='' autocomplete="off")
+                    label Image
+                    input.form-input.form-input-upload(type="file" name="image" accept="image/*" required='')
+                    button(type="submit") Upload
+
+                //- College Gallery
+                section.gallery
+                    .gallery__heading 
+                        h1.primary_heading Photo Gallery
+                        span.heading-sm-secondary Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa placeat perferendis excepturi atque dignissimos!
+                    if gallery.length!=0 
+                        .gallery__images.cms-gallery
+                            - for(var i = 0; i < gallery.length; i++) {
+                                figure.gallery__images--item(class=`gallery__images--item-${i+1}`)
+                                    img.gallery__images--img(src=gallery[i].path)
+                                    button.btn-two Image #{gallery[i].iid}
+                                    figcaption 
+                                        h6 #{gallery[i].caption}
+                            - }
+
+            //- Carousel update dashboard
+            .cms-home__carousel.hidden
+                //- Form
+                form.form-1(action="/cms/upload-homeCarousel" method="post" enctype="multipart/form-data") 
+                    h3 Manage Carousel
+                    select.form-input(name="cid" required="")
+                        option(value="" disabled selected) Select Image
+                        option(value="1") 1
+                        option(value="2") 2
+                        option(value="3") 3
+                        option(value="4") 4
+                        option(value="5") 5
+                    label Image
+                    input.form-input.form-input-upload(type="file" name="image" accept="image/*" required='')
+                    button(type="submit") Upload
+
+                .carousel-images 
+                    if homeCarousel.length > 0
+                        section.section-carousal 
+                            #carouselExample.carousel.slide(data-bs-ride="carousel")
+                                .carousel-inner
+                                    - for (let i = 0; i < homeCarousel.length; i++) {
+                                        .carousel-item(class=(i == 0 ? 'active' : '') data-bs-interval="3000")
+                                            span.carousel-number #{homeCarousel[i].cid}
+                                            img.d-block.w-100(src=homeCarousel[i].path alt='Image' title="Carousel Paused")
+                                    - }
+                                    //- .carousel-item.active(data-bs-interval="3000")
+                                    //-     img.d-block.w-100(src='https://picsum.photos/2500/2500' alt='Image' title="Carousel Paused")
+                                    //- .carousel-item(data-bs-interval="5000")
+                                    //-     img.d-block.w-100(src='https://picsum.photos/2300/2000' alt='image' title="Carousel Paused")
+                                    //- .carousel-item(data-bs-interval="3000")
+                                    //-     img.d-block.w-100(src='https://picsum.photos/1700/1500' alt='Image' title="Carousel Paused")
+                                button.carousel-control-prev(type='button' data-bs-target='#carouselExample' data-bs-slide='prev')
+                                    span.carousel-control-prev-icon(aria-hidden='true')
+                                    span.visually-hidden Previous
+                                button.carousel-control-next(type='button' data-bs-target='#carouselExample' data-bs-slide='next')
+                                    span.carousel-control-next-icon(aria-hidden='true')
+                                    span.visually-hidden Next
+
+    script.
+        //- Script for tabs functionality
+        const btnsTab = document.querySelector("#tab__btns");
+        const headingTab = document.querySelector("#tab__heading");
+        const galleryTab = document.querySelector("#tab__gallery");
+        const carouselTab = document.querySelector("#tab__carousel");
+        const btnsContainer  = document.querySelector(".cms-home__btns");
+        const headingContainer = document.querySelector(".cms-home__heading");
+        const galleryContainer = document.querySelector(".cms-home__gallery");
+        const carouselContainer = document.querySelector(".cms-home__carousel");
+
+        btnsTab.addEventListener("click", () => {
+            btnsContainer.classList.remove("hidden");
+            headingContainer.classList.add("hidden");
+            galleryContainer.classList.add("hidden");
+            carouselContainer.classList.add("hidden");
+            btnsTab.classList.add("active-tab");
+            headingTab.classList.remove("active-tab");
+            galleryTab.classList.remove("active-tab");
+            carouselTab.classList.remove("active-tab");
+        });
+        headingTab.addEventListener("click", () => {
+            headingContainer.classList.remove("hidden");
+            btnsContainer.classList.add("hidden");
+            galleryContainer.classList.add("hidden");
+            carouselContainer.classList.add("hidden");
+            headingTab.classList.add("active-tab");
+            btnsTab.classList.remove("active-tab");
+            galleryTab.classList.remove("active-tab");
+            carouselTab.classList.remove("active-tab");
+        });
+        galleryTab.addEventListener("click", () => {
+            galleryContainer.classList.remove("hidden");
+            btnsContainer.classList.add("hidden");
+            headingContainer.classList.add("hidden");
+            carouselContainer.classList.add("hidden");
+            galleryTab.classList.add("active-tab");
+            btnsTab.classList.remove("active-tab");
+            headingTab.classList.remove("active-tab");
+            carouselTab.classList.remove("active-tab");
+        });
+        carouselTab.addEventListener("click", () => {
+            carouselContainer.classList.remove("hidden");
+            galleryContainer.classList.add("hidden");
+            btnsContainer.classList.add("hidden");
+            headingContainer.classList.add("hidden");
+            carouselTab.classList.add("active-tab");
+            galleryTab.classList.remove("active-tab");
+            btnsTab.classList.remove("active-tab");
+            headingTab.classList.remove("active-tab");
+        });
+
+        const tabBtns = document.querySelectorAll(".tabs__tab");
+        const equalizeTabs = () => {
+            if(window.innerWidth > 1024 && window.innerWidth < 640) {
+                width = (100 - 10) / (2 * tabBtns.length);
+                tabBtns.forEach(btn => {
+                    btn.style.width = `${width}%`;
+                });
+            }
+            else if (window.innerWidth > 640) {
+                width = (100 - 10) / tabBtns.length;
+                tabBtns.forEach(btn => {
+                    btn.style.width = `${width}%`;
+                });
+            }
+            else {
+                tabBtns.forEach(btn => {
+                    btn.style.width = `100%`;
+                });
+            }
+        }
+        equalizeTabs();
+
+block scripts 
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous")

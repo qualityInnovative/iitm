@@ -1,0 +1,633 @@
+extends layouts/base.pug
+
+block styles
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" defer)
+    script(type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" defer)
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js")
+    link(rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css")
+    //- Open Graph Tags
+    meta(property="og:title" content="Iqbal Institute of Technology and Management")
+    meta(property="og:description" content="Founded in 2006, IITM offers transformative education backed by Iqbal Memorial Trust. NAAC-accredited, AICTE-approved, and affiliated with the University of Kashmir. Join us for a career-ready journey in a vibrant, hands-on learning environment.")
+    meta(property="og:image" content="./data/collegeImgs/college-1.png")
+    
+    //- Meta Description
+    meta(name="description", content="Founded in 2006, IITM offers transformative education backed by Iqbal Memorial Trust. NAAC-accredited, AICTE-approved, and affiliated with the University of Kashmir. Join us for a career-ready journey in a vibrant, hands-on learning environment.")
+    meta(property="og:image" content="/data/collegeImgs/college-1.png")
+
+
+block content
+    //- Slider
+    .slider#play-pause
+        video#parallax-video(src='./data/videos/college-highlights-with-sound.mp4' autoplay='' muted loop='' playsinline poster="/data/collegeImgs/college-1.png")
+        //- check how many button's both text and link fields are empty
+        - var allEmpty = 0;
+        each button in buttons
+            if button.text == "" || button.link == ""
+                - allEmpty++;
+
+        //- If at least one button's both text and link field is not empty, then show the slider content    
+        if allEmpty != 4
+            .slider__content
+                h1
+                    include ../public/data/homeHeading.txt
+                div
+                    //- Track the order of the buttons, as we need to alternate the colors
+                    - var orderTracker = 1;
+                    each button in buttons
+                        if button.text != "" && button.link != ""
+                            a(href=button.link)
+                                if (orderTracker) % 2 == 0
+                                    .link.even #{button.text}
+                                else
+                                    .link.odd #{button.text}
+                            
+                            - orderTracker++;
+
+    main
+        //- Accredetions-Memberships-Certifications Section
+        section.section-amc
+            h2 ACCREDITATIONS - MEMBERSHIPS - CERTIFICATIONS
+            div
+                img(src="./data/imgs/naac.png")
+                img.fit(src="./data/imgs/iqac.jpeg")
+                img.fit(src="./data/imgs/pearson.jpeg")
+
+        //- College Statistics Section
+        section.section-statistics.cont
+            h1.primary_heading IITM Statistics 2022-2023
+            span.heading-sm-secondary  This year IITM achieved B Grade accredition from NAAC. 
+            .section-statistics__tabs
+                ul
+                    li.active
+                        a(href='javascript:void(0)') overview
+                    li
+                        a(href='javascript:void(0)') academic
+                    li
+                        a(href='javascript:void(0)') campus
+                    li
+                        a(href='javascript:void(0)') student
+            .section-statistics__tab
+                div.section-statistics__tab--overview
+                    div
+                        span.count(data-count=5)
+                        span.count-of programs
+                    div
+                        span.count(data-count=20) :1
+                        span.count-of student to faculty ratio
+                    div
+                        span.count(data-count=100) +
+                        span.count-of placements
+                    div
+                        span.count(data-count=7) LPA
+                        span.count-of average package
+                div.section-statistics__tab--academic.hidden
+                    div
+                        span.count(data-count=3)
+                        span.count-of undergraduate programs
+                    div
+                        span.count(data-count=2)
+                        span.count-of graduate programs
+                    div
+                        span.count(data-count=91)
+                        span.count-of total courses
+                    div
+                        span.count(data-count=36)
+                        span.count-of average class size
+                div.section-statistics__tab--campus.hidden
+                    div
+                        span.count(data-count=7)
+                        span.count-of buildings 
+                    div
+                        span.count(data-count=14)
+                        span.count-of classrooms
+                    div
+                        span.count(data-count=5)
+                        span.count-of labs
+                    div
+                        span.count(data-count=200) +
+                        span.count-of computers
+                div.section-statistics__tab--student.hidden
+                    div
+                        span.count(data-count=500) +
+                        span.count-of students
+                    div
+                        span.count(data-count=300) +
+                        span.count-of undergraduate degrees awarded
+                    div
+                        span.count(data-count=2568) +
+                        span.count-of graduate degrees awarded
+
+        if homeCarousel.length > 0
+            section.section-carousal 
+                #carouselExample.carousel.slide(data-bs-ride="carousel")
+                    .carousel-inner
+                        - for (let i = 0; i < homeCarousel.length; i++) {
+                            .carousel-item(class=(i == 0 ? 'active' : '') data-bs-interval="3000")
+                                img.d-block.w-100(src=homeCarousel[i].path alt='Image' title="Carousel Paused")
+                        - }
+                    button.carousel-control-prev(type='button' data-bs-target='#carouselExample' data-bs-slide='prev')
+                        span.carousel-control-prev-icon(aria-hidden='true')
+                        span.visually-hidden Previous
+                    button.carousel-control-next(type='button' data-bs-target='#carouselExample' data-bs-slide='next')
+                        span.carousel-control-next-icon(aria-hidden='true')
+                        span.visually-hidden Next
+
+        //- h1.primary_heading Top News 
+        section.section-news.cont
+            .section-news__cards 
+                - for(let i = 0; i < news.length; i++) {
+                    .section-news__cards--card 
+                        //- If there is no image to show then display placeholder image else the actual poster
+                        if news[i].path == NULL
+                            img(src="/data/imgs/image_not_available.jpg" alt="" loading="lazy")
+                        else
+                            img(src=news[i].path alt="" loading="lazy")
+
+                        .section-news__cards--card__content
+                            h2 
+                                a(href=`/community/news/${news[i].nid}`) #{news[i].headline}
+                            p #{news[i].news.split(" ").slice(0, 25).join(" ")}...
+                            a(href=`/community/news/${news[i].nid}`)
+                                button.btn-psu Read More
+                - }
+
+        //- /////////////////////////////////////////////////////////
+        //- Placement Testimonials Section
+        .overlay-section
+            .overlay-section__overlay
+            .overlay-section__content
+                h1.primary_heading.bg-none.color-white Revealing Success
+                .testimonials 
+                    .testimonials__buttons 
+                        button.testimonials__buttons--prev
+                            ion-icon(name="arrow-back-circle")
+                    .testimonials__slides
+                        - for(let i = 0; i < testimonials.length; i++) {
+                            .testimonials__slides--item               
+                                if testimonials[i].photograph
+                                    img(src=testimonials[i].photograph alt="")
+                                else 
+                                    img(src="/data/imgs/profile-placeholder.jpg" alt="")
+                                span.testimonials__slides--item--name.uppercase.bold #{testimonials[i].name}, #{testimonials[i].program}
+                                span.testimonials__slides--item--placement #{testimonials[i].company} @#{testimonials[i].package}
+                                p #{testimonials[i].testimonial}
+                        - }
+                    .testimonials__buttons 
+                        button.testimonials__buttons--next
+                            ion-icon(name="arrow-forward-circle")
+
+        //- /////////////////////////////////////////////////
+        //- Latest Events Section
+        div.padding-top-md(style="background-color: white")
+            h1.primary_heading Upcoming Events
+
+        //- If there are no events then show empty container with message
+        if events.length == 0
+            .empty-container.padding-top-sm.padding-bottom-xs(style="background-color: white")
+                ion-icon(name="alert-circle-sharp")
+                | No Upcoming Events are Scheduled Yet!
+                br
+                | Come Back Later 
+                br
+                | ;-)
+        else
+            .latest-events.event-slider.cont(style="background-color: white")
+                //- Left prev button
+                .event-slider__buttons 
+                    button.event-slider__buttons--prev
+                        ion-icon(name="arrow-back-circle")
+
+                .event-slider__slides
+                    - for(let i = 0; i < events.length; i++) {
+                        .latest-events__event.event-slider__slides--slide
+                            a(href=`/events/id/${events[i].eid}`)
+                                if events[i].path
+                                    img(src=events[i].path)
+                                else
+                                    img(src="/data/imgs/image_not_available.jpg")
+                            .latest-events__event--details
+                                a(href=`/events/id/${events[i].eid}`)
+                                    h2 #{events[i].event}
+                                .date 
+                                    - let date = events[i].start
+                                    a(href=`/events/date/${new Date(date).getFullYear()}-${new Date(date).getMonth() + 1}-${new Date(date).getDate()}`) 
+                                        ion-icon(name="calendar")
+                                        | #{events[i].start} - #{events[i].end}
+                                div
+                                   | #{events[i].description.split(" ").slice(0, 25).join(" ").replace(/<[^>]*>/g, '')}...
+                    - }
+
+                //- Right next button
+                .event-slider__buttons 
+                    button.event-slider__buttons--next
+                        ion-icon(name="arrow-forward-circle")
+
+        a(href=`/events` target="_blank").cont.bg-white.font-nl
+            button.btn-psu.center.font-nl(style="transition: all .25s ease-in-out; width: 20em;") See Previous
+
+        //- //////////////////////////////////////////////////////
+        //- Recent Notifications Section
+        div.padding-top-md(style="background-color: white; padding-bottom: 1rem")
+            h1.primary_heading Recent Notifications
+
+        //- If there are no events then show empty container with message
+        if notifications.length == 0
+            .empty-container.padding-top-xs.padding-bottom-xs(style="background-color: white")
+                ion-icon(name="alert-circle-sharp")
+                | No Recent Notifications
+                br
+                | Come Back Later 
+                br
+                | ;-)
+        else
+            div.cont.notifications-slider(style="background-color:#fff; display: flex; justify-content: center; align-items: center;")
+                each notification in notifications
+                    .text-card.home-notifications(style="padding: 1rem")
+                        p #{notification.notification}
+                        .text-card__copy-toast(id=`copy-toast-${notification.nid}`)
+                            | Copied
+                        .text-card__copy-btn
+                            button(onclick=`copyToClipboard('${notification.nid}')`)
+                                svg(xmlns="http://www.w3.org/2000/svg" height="26" width="22" viewBox="0 0 384 512")
+                                    path(d="M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z")
+                        if notification.links !== null && notification.links !== ""
+                            - let links = notification.links.split(",")
+                            .text-card__attached-links
+                                p Attached Links:
+                                - let protocol = ""
+                                each link in links
+                                    if !link.includes("https://") && !link.includes("http://")
+                                        - protocol = "http://"
+                                    a(href=`${protocol}${link}` target="_blank") #{link.split("").slice(0, 20).join("")}...
+
+                        .text-card__footer.margin-top-xs
+                            div
+                                svg(fill='#9fa4aa' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 512 512')
+                                    path(d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z")
+                                | #{notification.date.toLocaleString('en-US', {day: 'numeric', month: 'short', year: 'numeric'})}
+                            div
+                                svg(fill='#9fa4aa' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 448 512')
+                                    path(d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z")
+                                if notification.audience == "ug"
+                                    | Undergrads
+                                else if notification.audience == "pg"
+                                    | Postgrads
+                                else if notification.audience == "cs"
+                                    | Computer Science
+                                else if notification.audience == "ms"
+                                    | Management Studies
+                                else if notification.audience == "bca"
+                                    | BCA
+                                else if notification.audience == "bba"
+                                    | BBA
+                                else if notification.audience == "mca"
+                                    | MCA
+                                else if notification.audience == "mba"
+                                    | MBA
+                                else
+                                    | All
+                        if notification.path !== null
+                            a(href=notification.path target="_blank").view.open-pvm
+                                button
+                                    svg(fill="#fff" xmlns="http://www.w3.org/2000/svg" height="1em" viewbox="0 0 576 512")
+                                        path(d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z")
+                                    | View
+
+        a(href=`/notifications` target="_blank").cont.bg-white.font-nl
+            button.btn-psu.center.font-nl(style="transition: all .25s ease-in-out; width: 20em") See Previous
+
+        //- College Gallery
+        section.gallery
+            .gallery__heading 
+                h1.primary_heading Photo Gallery
+                span.heading-sm-secondary Experience the essence of our vibrant community through a collection of cherished moments.
+            .gallery__images
+                - for(var i = 0; i < gallery.length; i++) {
+                    figure.gallery__images--item(class=`gallery__images--item-${i+1}`)
+                        img.gallery__images--img(src=gallery[i].path)
+                        figcaption 
+                            a(href=gallery[i].path target="_blank").gallery__images--img__external-link
+                                svg(xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512")
+                                    path(d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z")
+                            h6 #{gallery[i].caption}
+                - }
+
+        //- College Visionaries Section
+        section.section-visionaries
+            //- College Visionaries Section Heading
+            .section-visionaries__headings.cont
+                h1.primary_heading Our visionaries
+                span.heading-sm-secondary Under their visionarieship, the institution is able to innovate and adapt to changing circumstances, ensuring that it remains at the forefront of higher education.
+            .section-visionaries__cards
+                //- Visionary Card
+                .section-visionaries-card#card_1
+                    .section-visionaries-card__image 
+                        img(src="/data/collegeImgs/chairman.jpg" alt="image")
+                    .section-visionaries-card__content
+                        div
+                            h3 Chairman IITM
+                            h2
+                                a(href="") Dr. Yousuf ul Umar, PhD IIT Dehli
+
+                            p  Man is born with a basic instinct to learn and express his ideas. Once this process of learning and expressing one's ideas becomes stagnant and outdated, the intellectual growth along with physical growth of society is a big casualty. Therefore, education must provide a stimulus for learning which in turn may transform the individual and the society for the good of humanity. That is what IITM stands for.
+                            button.nextButton
+                                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
+                                    path(d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L370.7 256 233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L178.7 256 41.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z")
+
+                //- Visionary Card
+                .section-visionaries-card#card_2
+                    .section-visionaries-card__image 
+                        img(src="/data/collegeImgs/director.jpg" alt="BCA")
+                    .section-visionaries-card__content
+                        div
+                            h3 Director at IITM
+                            h2
+                                a(href="") Dr. R.A. Thakur
+                            p At IITM, we are dedicated to providing a transformative educational experience that empowers our students to excel in their chosen paths. Our committed faculty, state-of-the-art facilities, and vibrant learning community create an inspiring environment for growth, innovation, and personal development. Together, let us embark on a journey of learning, discovery, and success.
+                            button.nextButton
+                                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
+                                    path(d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L370.7 256 233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L178.7 256 41.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z")
+
+                //- Visionary Card
+                .section-visionaries-card#card_3
+                    .section-visionaries-card__image 
+                        img(src="/data/collegeImgs/sabina-tariq.JPG" alt="BCA")
+                    .section-visionaries-card__content
+                        div
+                            h3 HOD Computer Science Department 
+                            h2
+                                a(href="") Sabina Tariq
+                            p  We are committed to fostering a dynamic learning environment that nurtures a passion for computer science. With our dedicated faculty, advanced infrastructure, and industry-aligned curriculum, we aim to empower you for academic excellence and professional growth. Let's embark on a journey of exploration, innovation, and success in the world of computer science together.
+                            button.nextButton
+                                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
+
+                                    path(d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L370.7 256 233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L178.7 256 41.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z")
+
+                //- Visionary Card
+                .section-visionaries-card#card_4
+                    .section-visionaries-card__image 
+                        img(src="/data/collegeImgs/asma-gulzar.JPG" alt="BCA")
+                    .section-visionaries-card__content
+                        div
+                            h3 HOD Management Department
+                            h2
+                                a(href="") Asma Gulzar, Ph.D.
+                            p It is my privilege to lead this department, where we strive to foster a dynamic learning environment that prepares our students for success in the field of management. With our experienced faculty, industry-relevant curriculum, and experiential learning opportunities, we aim to develop your skills, knowledge, and leadership abilities. Together, let us embark on a transformative journey of growth, innovation, and professional achievement in the realm of management.
+                            button.nextButton
+                                svg( xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
+                                    path(d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L269.3 256 406.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z")
+
+block scripts 
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+             // Get the video element
+            const video = document.getElementById('parallax-video');
+            video.play();
+            video.muted = false;
+
+            document.querySelector("#play-pause").addEventListener("click", function() {
+                if (video.muted) {
+                    video.muted = false;
+                } else {
+                    video.muted = true;
+                }
+            });
+
+            // Function to handle scroll events
+            function handleScroll() {
+                // Calculate the new position for the video based on the scroll position
+                const scrollPosition = window.scrollY;
+                const newPosition = scrollPosition * 0.5; // Adjust the multiplier to control the parallax speed
+
+                // Apply the new position to the video using translate
+                video.style.transform = `translate(50%, -${newPosition}px)`;
+            }
+
+            const options = {
+                root: null,
+                rootMargin: '0px',
+            };
+
+            const observer = new IntersectionObserver(handleIntersection, options);
+
+            observer.observe(video);
+
+            function handleIntersection(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Video goes out of viewport
+                        video.play();
+                    } else {
+                        video.pause(); 
+                        video.muted = true;
+                    }
+                });
+            }
+
+            // Add a scroll event listener
+            window.addEventListener('scroll', handleScroll);
+                
+            $('.notifications-slider').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                speed: 500,
+                autoplay: true,
+                autoplaySpeed: 3000,
+                infinite: true,
+                arrows: false,
+            });
+        })
+
+        //- Function to copy to clipboard
+        const copyToClipboard = (id) => {
+            let input = document.createElement("input");
+            input.value = `iitm.edu.in/notifications/${id}`;
+            document.body.appendChild(input);
+            input.select();
+            input.setSelectionRange(0,99999); //- For mobile devices
+            document.execCommand("copy");
+            document.body.removeChild(input);
+
+            //- Show copy toast
+            document.querySelector(`#copy-toast-${id}`).style.display = "flex";
+            setTimeout(() => {
+                document.querySelector(`#copy-toast-${id}`).style.display = "none";
+            }, 2000)
+        }
+
+
+        //////////////////////////////////////////////////////
+        //- VISIONARIES CARDS CAROUSAL
+        const visionariesContainer = document.querySelector('.section-visionaries');
+        const visionariesCardsContainer = visionariesContainer.querySelector('.section-visionaries__cards')
+        const prevButton = document.querySelectorAll('.prevButton');
+        const nextButton = document.querySelectorAll('.nextButton');
+
+        //- Keeps track of which card to show
+        let currentIndex = 0;
+
+        //- Next button
+        nextButton.forEach(btn => {
+            //- Calls the update funciton on click and increments the currentIndex
+            btn.addEventListener('click', function() {
+                currentIndex += 1;
+                updateCarousel();
+            });
+        })
+
+
+        //- Implementing swipe functionality
+        let touchStartX = 0;
+        //- Debouncing flag
+        let isUpdating = false;
+
+        //- Specifies where the user touces the screen
+        visionariesContainer.addEventListener('touchstart', (event) => {
+            touchStartX = event.touches[0].clientX;
+        });
+        //- Determines whether user swiped left or right and scrolls carousal accordingly
+        visionariesContainer.addEventListener('touchmove', (event) => {
+            if(!isUpdating) {
+                isUpdating = true;
+
+                //- Calculates the swipe
+                const touchEndX = event.touches[0].clientX;
+                const touchDiffX = touchEndX - touchStartX;
+
+                // Swipe left
+                if (touchDiffX < -5) {
+                    //- Restricts the currentIndex to exceed the value greater than number of cards
+                    currentIndex = Math.min(currentIndex + 1, visionariesCardsContainer.children.length - 1);
+                    updateCarousel();
+                }
+                // Swipe right
+                else if (touchDiffX > 5) {
+                    //- Restricts the currentIndex to subceed the value lesser than 0.
+                    currentIndex = Math.max(currentIndex - 1, 0);
+                    updateCarousel();
+                }
+
+                //- Timeout to reset the flag 1s
+                setTimeout(function() {
+                    isUpdating = false;
+                }, 1000);
+            }
+        });
+
+        const updateCarousel = () => {
+            //- Calculates the width of card
+            const cardWidth = visionariesContainer.offsetWidth;
+
+
+            //- If current index is greater than the number of cards then move the carousel to first card and set currentIndex to 0
+            if(currentIndex >= visionariesCardsContainer.children.length) {
+                visionariesCardsContainer.style.transform = `translateX(0px)`;
+                currentIndex = 0;
+            } else {
+                //- Else calculate the value of translateX and show the current card
+                const translateX = -1 * cardWidth * currentIndex;
+                visionariesCardsContainer.style.transform = `translateX(${translateX}px)`;
+            }
+        }
+
+        //- Equalize card heights
+        equalizeCardHeights(".section-news__cards--card");
+
+        ////////////////////////////////////////////////////////////////////////////
+        //- SCRIPT FOR CAROUSAL
+        const eventSlider = document.querySelector(".event-slider__slides");
+        const eventSlides = document.querySelectorAll(".event-slider__slides--slide");
+        const prevBtn2 = document.querySelector(".event-slider__buttons--prev")
+        const nextBtn2 = document.querySelector(".event-slider__buttons--next")
+
+        let currentSlideIndex2 = 0;
+
+        function showSlide2(index) {
+            // Hide all items
+            eventSlides.forEach(slide => {
+                slide.style.transform = `translateX(-${index * 100}%)`; // Apply transform
+            });
+        }
+
+        function showNextSlide2() {
+            currentSlideIndex2 = (currentSlideIndex2 + 1) % eventSlides.length;
+            showSlide2(currentSlideIndex2);
+        }
+
+        function showPreviousSlide2() {
+            currentSlideIndex2 = (currentSlideIndex2 - 1 + eventSlides.length) % eventSlides.length;
+            showSlide2(currentSlideIndex2);
+        }
+
+        // Show initial item
+        showSlide2(currentSlideIndex2);
+
+        // Add event listeners to the buttons
+        prevBtn2?.addEventListener('click', showPreviousSlide2);
+        nextBtn2?.addEventListener('click', showNextSlide2);
+
+         ////////////////////////////////////////////////////////////////////////////
+        //- SCRIPT FOR CAROUSAL
+        const testimonialSlider = document.querySelector(".testimonials__slides");
+        const testimonialSlides = document.querySelectorAll(".testimonials__slides--item");
+        const prevBtn = document.querySelector(".testimonials__buttons--prev")
+        const nextBtn = document.querySelector(".testimonials__buttons--next")
+
+        let currentSlideIndex = 0;
+
+        const testmonialItemWidth = testimonialSlides[0].offsetWidth; // Get the width of each card
+        const margin = 16; // Set the margin value
+
+        function showSlide(index) {
+            const translateXValue = `calc(-${(index * (testmonialItemWidth - margin))}px)`;
+            // Hide all items
+            testimonialSlides.forEach(slide => {
+                slide.style.transform = `translateX(${translateXValue})`; // Apply transform
+            });
+        }
+
+        function showNextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % testimonialSlides.length;
+            showSlide(currentSlideIndex);
+            clearInterval(slideInterval);
+            startSlideShow();
+        }
+
+        function showPreviousSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + testimonialSlides.length) % testimonialSlides.length;
+            showSlide(currentSlideIndex);
+            clearInterval(slideInterval);
+            startSlideShow();
+        }
+
+        // Show initial item
+        showSlide(currentSlideIndex);
+
+            // Add event listeners to the buttons
+        prevBtn?.addEventListener('click', showPreviousSlide);
+        nextBtn?.addEventListener('click', showNextSlide);
+
+
+        var slideInterval; // Global variable to hold the interval ID
+
+        function startSlideShow() {
+            slideInterval = setInterval(showNextSlide, 5000);
+        }
+        function stopSlideShow() {
+            clearInterval(slideInterval);
+        }
+
+        // Call startSlideShow to begin the slideshow initially
+        startSlideShow();
+
+        // Add event listeners for mouseover and mouseout events on the testimonial div
+        testimonialSlider.addEventListener('mouseover', function() {
+            stopSlideShow(); // Stop calling the function when hovering over the div
+        });
+        testimonialSlider.addEventListener('mouseout', function() {
+            startSlideShow(); // Start calling the function again when moving out of the div
+        });
+
+    script(type="module" src="/scripts/tabs.js") 
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous")
+

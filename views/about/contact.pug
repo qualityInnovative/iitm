@@ -1,0 +1,303 @@
+extends ../layouts/base.pug
+
+block content 
+    include ../layouts/banner.pug
+    main.container-lg.contact-us
+        //- Google maps iframe
+        iframe(src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.847585803086!2d74.77180761517123!3d34.04778058060719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38e1902f3274d87f%3A0xbe87de3622d8769b!2sIqbal%20Institute%20of%20Technology%20and%20Management%20(I.I.T.M)!5e0!3m2!1sen!2sin!4v1679559962236!5m2!1sen!2sin' width='600' height='450' style='border:0;' allowfullscreen='' loading='lazy' referrerpolicy='no-referrer-when-downgrade')
+
+        //- Select
+        .contact-us__contact-select
+            h4 CHOOSE THE (OFFICE, CENTER, OR DEPARTMENT) YOU WOULD LIKE TO VIEW THEIR CONTACTS
+            select#contacts(name="contacts" onchange="showDiv(this)") 
+                option(value="director") director 
+                option(value="office" selected) office
+                option(value="admissions") admissions & accounts
+                option(value="examination") examination
+                option(value="cs") CS Department
+                option(value="md") management department
+                option(value="iqac") IQAC
+                option(value="it") IT Cell
+
+        //- Contact lists container
+        .contact-us__contact-lists
+            //- General contacts
+            .contact-us__contact-list#director.hidden
+                h2 Director IITM
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:secretary@iitm.edu.in")
+                                | director@iitm.edu.in
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 ms. mehnaaz shah
+                    .contact-us__contact-list--contact-item__position
+                        h3 Secretary to Director
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:secretary@iitm.edu.in")
+                                | secretary@iitm.edu.in
+
+            //- General contacts
+            .contact-us__contact-list#office
+                h2 Office - Iqbal Institute of Technology and Management
+                div
+                    p Laloo Sheshgaribagh, Hyderpora 190014
+                    p Jammu & Kashmir
+                    div 
+                        svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                            path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                        a(href="tel:9070337770")
+                            | 9070337770
+                    div 
+                        svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                            path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                        a(href="mailto:contact@iitm.edu.in")
+                            | contact@iitm.edu.in
+
+            //- Examination contacts
+            .contact-us__contact-list#admissions.hidden
+                h2 Admissions
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 ms. arjumand qayoom
+                    .contact-us__contact-list--contact-item__position
+                        h3 Senior Manager, Admission 
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:7006248865")
+                                | 7006248865
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:sma@iitm.edu.in")
+                                | sma@iitm.edu.in
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 mr. yasir arfat
+                    .contact-us__contact-list--contact-item__position
+                        h3 Accounts Officer
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:8715096674")
+                                | 8715096674
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:ao@iitm.edu.in")
+                                | ao@iitm.edu.in
+            //- Examination contacts
+            .contact-us__contact-list#examination.hidden
+                h2 Examination Center
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 ms. sabina tariq
+                    .contact-us__contact-list--contact-item__position
+                        h3 Incharge Examination
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:9906471860")
+                                | 9906471860
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:swo@iitm.edu.in")
+                                | swo@iitm.edu.in
+
+            //- Computer Science contacts
+            .contact-us__contact-list#cs.hidden
+                h2 Department of Computer Science
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 Javaid Ahmad Parray
+                    .contact-us__contact-list--contact-item__position
+                        h3 HOD
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:7889526926")
+                                | 7889526926
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:cto@iitm.edu.in")
+                                | cto@iitm.edu.in
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 ms. asifa arabi
+                    .contact-us__contact-list--contact-item__position
+                        h3 coordinator
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:8825067210")
+                                | 8825067210
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:gmiac@iitm.edu.in")
+                                | gmiac@iitm.edu.in
+
+            //- Management Department contacts
+            .contact-us__contact-list#md.hidden
+                h2 Department of Management Studies
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 Aadil Majeed Chicken
+                    .contact-us__contact-list--contact-item__position
+                        h3 HOD
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:7006151396")
+                                | 7006151396
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:gmop@iitm.edu.in")
+                                | gmop@iitm.edu.in
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 ms. misbah maqbool
+                    .contact-us__contact-list--contact-item__position
+                        h3 coordinator
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:9796597700")
+                                | 9796597700
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:chro@iitm.edu.in")
+                                | chro@iitm.edu.in
+
+            //- IQAC contacts
+            .contact-us__contact-list#iqac.hidden
+                h2 Internal Quality Assurance Cell
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 Asma Gulzar
+                    .contact-us__contact-list--contact-item__position
+                        h3 Coordinator IQAC
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:7006880221")
+                                | 7006880221
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:ccin@iitm.edu.in")
+                                | ccin@iitm.edu.in
+
+            //- IT Cell contacts
+            .contact-us__contact-list#it.hidden
+                h2 IT Cell
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 Mr. Javaid Ahmad Parray
+                    .contact-us__contact-list--contact-item__position
+                        h3 Cheif Technical Officer
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:7889526926")
+                                | 7889526926
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:cto@iitm.edu.in")
+                                | cto@iitm.edu.in
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 Umer Yousuf
+                    .contact-us__contact-list--contact-item__position
+                        h3 IT Administrator
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:7006357699")
+                                | 7006357699
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:admin.it@iitm.edu.in")
+                                | admin.it@iitm.edu.in
+                .contact-us__contact-list--contact-item
+                    .contact-us__contact-list--contact-item__name
+                        h4 mr. aadil bashir
+                    .contact-us__contact-list--contact-item__position
+                        h3 incharge website
+                    .contact-us__contact-list--contact-item__details
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d='M347.1 24.6c7.7-18.6 28-28.5 47.4-23.2l88 24C499.9 30.2 512 46 512 64c0 247.4-200.6 448-448 448c-18 0-33.8-12.1-38.6-29.5l-24-88c-5.3-19.4 4.6-39.7 23.2-47.4l96-40c16.3-6.8 35.2-2.1 46.3 11.6L207.3 368c70.4-33.3 127.4-90.3 160.7-160.7L318.7 167c-13.7-11.2-18.4-30-11.6-46.3l40-96z')
+                            a(href="tel:7006961632")
+                                | 7006961632
+                        div 
+                            svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512')
+                                path(d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z")
+                            a(href="mailto:developer@iitm.edu.in")
+                                | developer@iitm.edu.in
+
+        .btn-yellow-bg.margin-top-sm
+            .btn-yellow-bg__overlay
+            a(href="/about/contact-us")
+                button Further you can write us here
+
+        //- Script to implement select contact list functionality
+        script.
+            const divs = document.querySelectorAll(".contact-us__contact-list");
+
+            const hidePresent = () => {
+                divs.forEach(node => {
+                    node.classList.add("hidden");
+                })
+            }
+
+            const showDiv = (select) => {
+                if(select.value=="director"){
+                    hidePresent()
+                    document.getElementById('director').classList.remove("hidden");
+                } else if(select.value == "office") {
+                    hidePresent()
+                    document.getElementById('office').classList.remove("hidden");
+                } else if(select.value == "admissions") {
+                    hidePresent()
+                    document.getElementById('admissions').classList.remove("hidden");
+                } else if(select.value == "examination") {
+                    hidePresent()
+                    document.getElementById('examination').classList.remove("hidden");
+                } else if(select.value == "cs") {
+                    hidePresent()
+                    document.getElementById('cs').classList.remove("hidden");
+                } else if(select.value == "md") {
+                    hidePresent()
+                    document.getElementById('md').classList.remove("hidden");
+                } else if(select.value == "iqac") {
+                    hidePresent()
+                    document.getElementById('iqac').classList.remove("hidden");
+                } else if(select.value == "it") {
+                    hidePresent()
+                    document.getElementById('it').classList.remove("hidden");
+                }
+            } 

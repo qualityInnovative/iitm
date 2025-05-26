@@ -1,0 +1,429 @@
+.events-page {
+  // Setup page for main and sidebar widgets container
+  margin: 0 auto;
+  width: 90vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  * {
+    transition: all 0.25s ease;
+  }
+
+  // Width of
+  @include devices(1500px) {
+    width: 92vw;
+  }
+  @include devices(1280px) {
+    width: 95vw;
+  }
+  @include devices(968px) {
+    flex-direction: column;
+    align-items: center;
+    // width: 98vw;
+  }
+
+  // Main Container
+  .main {
+    // Widths of main container on different devices
+    width: 50vw;
+    transform: translateY(-6rem);
+    @include devices(1500px) {
+      width: 60vw;
+    }
+    @include devices(1280px) {
+      width: 70vw;
+    }
+    @include devices(968px) {
+      width: 85vw;
+    }
+
+    .btn-event-open-modal {
+      transform: translateY(-1rem);
+      text-transform: uppercase;
+      background-color: rgba(255, 0, 0, 0.25);
+      border: 1px solid red;
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 0px 0px 5px 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+
+      &:hover {
+        // background-color: rgba(255, 0, 0, 0.35);
+        box-shadow: 0px 0px 10px 1px red;
+      }
+    }
+
+    // Styles for heading of events
+    .events {
+      &__heading {
+        color: $primary-color;
+        font-weight: 600;
+        font-size: 2rem;
+        font-family: $poppins;
+        margin: 1rem 0;
+        text-decoration: none;
+      }
+    }
+
+    // Styles for event details container
+    .event {
+      padding: 1.5rem;
+      &-item {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        padding-bottom: 1.5rem;
+        align-items: flex-start;
+        border-bottom: 3px solid #f0f0f0;
+        border-radius: 5px;
+        margin: 1rem 0;
+
+        @include devices(968px) {
+          flex-direction: column;
+        }
+
+        img {
+          width: 10rem;
+          height: 15rem;
+          object-fit: cover;
+
+          @include devices(968px) {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        &__details {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+
+          &--event {
+            font-size: 2rem !important;
+            font-weight: 600;
+            text-transform: capitalize;
+            line-height: 2rem;
+            color: $primary-color;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 0.5rem;
+          }
+
+          &--date,
+          &--place {
+            color: #777;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            a {
+              text-decoration: none;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              font-size: 0.85rem;
+              font-family: $poppins;
+              color: #777;
+              padding-bottom: 1rem;
+              border-bottom: 1px solid #ccc;
+              text-transform: capitalize;
+
+              ion-icon {
+                font-size: 1.5rem;
+                margin-right: 0.5rem;
+              }
+
+              &:hover {
+                color: $primary-color-hover;
+              }
+            }
+          }
+
+          &--description {
+            p {
+              line-height: 2rem;
+              margin: 1rem 0;
+              text-align: justify;
+
+              strong {
+                font-weight: bold;
+              }
+            }
+
+            a {
+              text-decoration: none;
+              font-weight: 700;
+              color: $primary-color;
+              font-family: $poppins;
+              // font-style: italic;
+
+              &:hover {
+                color: $primary-color-hover;
+              }
+            }
+
+            ol,
+            ul {
+              list-style-position: inside;
+              line-height: 2rem;
+              li {
+                font-weight: 600;
+              }
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+              font-style: italic;
+              color: $primary-color-hover;
+              text-align: left;
+              font-family: $merriweather;
+              margin-block-end: 0;
+            }
+
+            h1 {
+              font-size: 3rem;
+            }
+            h2 {
+              font-size: 2.5rem;
+            }
+            h3 {
+              font-size: 2rem;
+            }
+            h4 {
+              font-size: 1.75rem;
+            }
+            h5 {
+              font-size: 1.5rem;
+            }
+            h6 {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+
+      &-info {
+        border-bottom: 3px solid #f0f0f0;
+        &__item {
+          padding-left: 1.5rem;
+          border-bottom: 1px solid #ccc;
+          padding-bottom: 0.5rem;
+          margin-bottom: 1rem;
+
+          &:last-child {
+            border-bottom: none;
+          }
+          h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: $primary-color;
+            text-transform: uppercase;
+            font-family: $poppins;
+          }
+
+          span {
+            text-transform: capitalize;
+          }
+        }
+      }
+    }
+  }
+
+  // Sidebar widgets
+  .widgets {
+    // Widths on different devices
+    width: 20vw;
+    @include devices(1500px) {
+      width: 25vw;
+    }
+    @include devices(1280px) {
+      width: 20vw;
+    }
+    @include devices(968px) {
+      width: 85vw;
+    }
+
+    // Styles for filters widget
+    .filters {
+      transform: translateY(-5rem);
+      background-color: white;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      a {
+        text-decoration: none;
+        div {
+          border-bottom: 1px solid #ccc;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          padding: 0.5rem 1rem;
+          color: #777;
+
+          ion-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+          }
+
+          &:hover {
+            background-color: #f0f0f0;
+          }
+        }
+        a:last-child {
+          div {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Styles for events container(top3 and events)
+.latest-events,
+.events {
+  &__event {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    padding: 1.5rem;
+    transition: all 1s ease-out;
+    border-bottom: 3px solid #ccc;
+    border-radius: 5px;
+    margin: 1rem 0;
+
+    @include devices(968px) {
+      flex-direction: column;
+    }
+
+    img {
+      width: 10rem;
+      height: 15rem;
+      object-fit: cover;
+
+      @include devices(968px) {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    &--details {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+
+      a {
+        text-decoration: none;
+        h2 {
+          font-size: 1.5rem !important;
+          font-style: italic;
+          text-transform: uppercase;
+          line-height: 2rem;
+          color: $primary-color;
+          margin-bottom: 1rem;
+
+          &:hover {
+            color: $primary-color-hover;
+          }
+        }
+      }
+
+      .date {
+        color: #777;
+        margin-bottom: 1rem;
+        a {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          font-size: 0.85rem;
+          font-family: $poppins;
+          color: #777;
+
+          ion-icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+
+            @include devices(968px) {
+              font-size: 2rem;
+            }
+          }
+
+          &:hover {
+            color: $primary-color-hover;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Styles for top3 events slider
+.event-slider {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &__slides {
+    // z-index: -1;
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    /* Add any other desired styles */
+
+    &--slide {
+      display: flex;
+      flex-direction: row;
+      flex: 0 0 100%;
+      transition: transform 0.5s ease;
+      /* Additional styling for individual items */
+      @include devices(968px) {
+        flex-direction: column;
+      }
+    }
+  }
+}
+// Styles for prev and next buttons of top3 slider
+.event-slider__buttons {
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+
+    ion-icon {
+      font-size: 2.5rem;
+      color: $primary-color;
+
+      &:hover {
+        color: $primary-color-hover;
+      }
+    }
+  }
+
+  * {
+    transition: all ease-in-out 0.25s;
+  }
+
+  &--prev {
+    // transform: translateX(1rem);
+
+    &:hover {
+      // transform: translateX(0.75rem);
+      transform: translateX(-0.25rem);
+    }
+  }
+  &--next {
+    // transform: translateX(-1rem);
+
+    &:hover {
+      // transform: translateX(-0.75rem);
+      transform: translateX(0.25rem);
+    }
+  }
+}

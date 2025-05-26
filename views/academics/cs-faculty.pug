@@ -1,0 +1,50 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout
+        include ../layouts/pagemenu.pug
+
+        .main
+            h1.page-heading faculty of computer science
+            p The computer science faculty at IITM comprises a dynamic team of experienced educators who are passionate about computer science and its applications. They bring extensive expertise in fields such as artificial intelligence, data science, software engineering, and more. With a student-centric approach, the faculty provides an engaging learning experience, emphasizing a hands-on approach through real-world projects, hackathons, and research activities.
+            p The faculty is actively involved in research and innovation, collaborating with industry partners and publishing research papers in renowned conferences and journals. This ensures that students are exposed to the latest developments and trends in computer science. The faculty also provides mentorship and guidance, offering career counseling, guest lectures by industry experts, and facilitating internships and placements.
+            p Overall, the computer science faculty at IITM is committed to providing a world-class education that prepares students for successful careers in the technology industry. They foster innovation, creativity, and critical thinking, helping students develop the skills and mindset to excel in the fast-paced and evolving field of computer science.
+
+            //- Teacher profile cards
+            .line-above-heading 
+            h2.heading-with-top-border meet the experts
+            .cards-person-container.align-cards-center
+                //- teachingFaculty is an array fetched from db which contains object having details of cs teaching faculty 
+                - for (var i = 0; i < teachingFaculty.length; ++i) {
+                    .card-person
+                        .card-person__border-top
+                        if teachingFaculty[i].photograph == null
+                            if teachingFaculty[i].gender == "m"
+                                img(src="/data/imgs/man-default-profile.png" alt="").card-person__img
+                            else
+                                img(src="/data/imgs/woman-default-profile.png" alt="").card-person__img
+                        else
+                            img(src=`/data/collegeImgs/${teachingFaculty[i].photograph}` alt="").card-person__img
+                        span.card-person__name #{teachingFaculty[i].name}
+                        span.card-person__job #{teachingFaculty[i].appointedAs}
+                        span.card-person__qualification #{teachingFaculty[i].qualification}
+                        span.card-person__experience #{teachingFaculty[i].experience}
+                        span.card-person__specialization #{teachingFaculty[i].specialization}
+                        if teachingFaculty[i].resume != null
+                            a(href=`/data/resumes/${teachingFaculty[i].resume}`, target="_blank" rel="noopener noreferrer")
+                                button 
+                                    ion-icon(name="download")
+                                    | resume
+                        else 
+                            a(href="javascript:void(0)")
+                                button 
+                                    ion-icon(name="download")
+                                    | comming soon!
+                            
+                - }
+
+    script.
+        equalizeCardHeights(".card-person")
+

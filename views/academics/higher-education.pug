@@ -1,0 +1,19 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading Department of Higher Education
+                p IITM is recognized and supported by the Department of Higher Education, which falls under the purview of the Government of India. This association highlights our commitment to providing quality education and our adherence to government regulations and policies.
+                p The support from the Department of Higher Education allows us to avail ourselves of various government scholarships and grants, making education more accessible to deserving students. We actively participate in government initiatives aimed at promoting higher education and skill development, ensuring that our programs align with the national priorities and the evolving needs of the industry.
+                p Our association with the Department of Higher Education also facilitates collaborations with other government institutions and universities, creating opportunities for joint research projects, faculty exchange programs, and knowledge sharing. It further enhances our credibility and ensures that we operate in accordance with the established norms and standards of the education sector.
+
+                .btn-yellow-bg.margin-top-sm
+                    .btn-yellow-bg__overlay
+                    a(href="https://www.education.gov.in/higher_education" target="_blank")
+                        button Department of Higher Education

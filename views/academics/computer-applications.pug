@@ -1,0 +1,60 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading Department of Computer Applications
+                p The Department of Computer Science was established in the year 2006 with a three-year undergraduate course, Bachelor of Computer Applications (BCA). The department has started the Master of Computer Applications (MCA) course from the session 2008. 
+                p The department has qualified, experienced & committed teaching faculty members with various specializations. Due to the quality teaching, the students of the department are performing well in the examination. 
+                p The Department has well equipped laboratories with state of art equipment and software tools. A computer center with over 50 computers caters to the student needs. 
+                p Activities such as Seminars, Quizzes and Workshops are carried out for the students to boost their technical skills and knowledge.
+                p The Department has Memorandum of Understandings (MOUs) with various Organizations which supports internships and projects to develop skills and professional ethics required for IT Industry.
+
+                .line-above-heading
+                h2.heading-with-top-border vision
+                p.text-blockquote To be the source of bringing out globally competent pioneering computing professionals, researchers, innovators and entrepreneurs and thereby succeed and contribute value to the knowledge-based economy and society.
+
+                .line-above-heading
+                h2.heading-with-top-border mission
+                ul.star-ul 
+                    li Prepare the students with strong fundamental concepts, analytical capability, programming and problem solving skills.
+                    li Create an ambience of education through faculty training, self learning, sound academic practices and research endeavors.
+                    li Provide opportunities to promote organizational and leadership skills in students through various extra- curricular and co-curricular events
+                    li To make the students as for as possible industry ready to enhance their employability in the industries.
+                    li To improve department industry collaboration through internship programme and interaction with professional society through seminar/workshops.
+                    li Imbibe social awareness and responsibility in students to serve the society and protect environment.
+
+                //- Programs offered cards
+                .line-above-heading
+                h2.heading-with-top-border programmes offered
+                //- Cards container
+                .courses-cards.align-cards-center
+                    //- Card
+                    article.courses-card
+                        //- Card image
+                        div 
+                            img(src="../data/imgs/bca-course-image.png" alt="alt")
+                        //- Card content
+                        .courses-card__content
+                            span.courses-card__content--title bachelor of computer applications
+                            span.courses-card__content--subtitle undergraduate degree program focusing on computer science, programming, and information technology.
+                            p.courses-card__content--description Bachelor's of Computer Applications (BCA) is a three-year undergraduate program in computer science and information technology covering topics like software development, web development, and computer networks. It provides students with practical training and prepares them for careers in related fields.
+                            //- Card button
+                            a(href="/academics/cs/bca")
+                                button.btn-psu Explore
+
+                    //- Card
+                    article.courses-card
+                        div 
+                            img(src="../data/imgs/mca-course-image.jpg" alt="alt")
+                        .courses-card__content
+                            span.courses-card__content--title master of computer applications
+                            span.courses-card__content--subtitle Postgraduate program in computer science and applications, focusing on advanced concepts and research.
+                            p.courses-card__content--description Master's of Computer Applications (MCA) is a postgraduate program in computer science, focusing on advanced concepts and practical training. It prepares students for careers in software development, database administration, and network administration, among others.
+                            a(href="/academics/cs/mca")
+                                button.btn-psu Explore

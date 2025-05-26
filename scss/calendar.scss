@@ -1,0 +1,115 @@
+.calendar {
+    // width: 20rem;
+    border-top: 4px solid $primary-color-hover;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+
+    &--header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        padding: 10px;
+        background-color: white;
+        border-bottom: 1px solid #ccc;
+
+        ion-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: $primary-color-hover;
+
+            &:hover {
+                color: $primary-color;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            .calendar--header__title {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                &--month {
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    color: $primary-color-hover;
+                }
+
+                &--year {
+                    font-family: $merriweather;
+                    font-size: 0.75rem;
+                    color: #777;
+                }
+            }
+        }
+    }
+
+    &--weekdays {
+        display: flex;
+        justify-content: space-around;
+        padding-top: 1rem;
+        margin: 0 0.5rem;
+        background-color: #f0f0f0;
+
+        &__weekday {
+            flex-basis: calc(100% / 7);
+
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+            color: $primary-color-hover;
+            text-transform: uppercase;
+        }
+    }
+
+    &--days {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0.5rem;
+        background-color: white;
+        border-top: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+
+        &__day {
+            flex-basis: calc(100% / 7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 2.5rem;
+            font-size: 0.75rem;
+            margin: auto;
+            // padding: 5px;
+            text-decoration: none;
+            color: #777;
+            border: none;
+            background: none;
+            // border: 0.5px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            cursor: pointer;
+            // border-right: 1px;
+
+            &:hover {
+                background-color: $primary-color-hover;
+                color: white;
+            }
+        }
+
+        .current-day {
+            background: $secondary-color;
+            color: black;
+        }
+
+        .not-month-day {
+            background-color: #f0f0f0;
+
+            &:hover {
+                background-color: #f0f0f0;
+                color: #777;
+            }
+        }
+    }
+}

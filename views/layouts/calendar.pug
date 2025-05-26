@@ -1,0 +1,166 @@
+.calendar.margin-bottom-sm
+
+script.
+    // Get the current date
+    var currentDate = new Date();
+    var today = currentDate;
+
+    // Generate the calendar
+    function generateCalendar(year, month) {
+        var calendar = document.querySelector(".calendar");
+
+        calendar.innerHTML = "";
+
+        // Create the header
+        var monthsArr = [
+            "january",
+            "febuary",
+            "march",
+            "april",
+            "may",
+            "june",
+            "july",
+            "august",
+            "september",
+            "october",
+            "november",
+            "december",
+        ];
+
+        var header = document.createElement("div");
+        header.className = "calendar--header";
+        var monthLink = document.createElement("a");
+        monthLink.setAttribute("href", `/events/month/${month+1}-${year}`)
+        var title = document.createElement("div");
+        title.className = "calendar--header__title";
+        var titleContent = `<span class="calendar--header__title--month">${monthsArr[month]}</span><span class="calendar--header__title--year">${year}</span>`;
+        title.innerHTML = titleContent;
+        monthLink.appendChild(title)
+        // header.innerHTML = title;
+        header.appendChild(monthLink);
+        calendar.appendChild(header);
+
+        var prevBtn = document.createElement("ion-icon");
+        prevBtn.setAttribute("name", "chevron-back-circle-sharp");
+        //   header.appendChild(prevBtn);
+        header.insertAdjacentElement("afterbegin", prevBtn);
+
+        var nextBtn = document.createElement("ion-icon");
+        nextBtn.setAttribute("name", "chevron-forward-circle-sharp");
+        header.appendChild(nextBtn);
+
+        prevBtn.addEventListener("click", () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        });
+        nextBtn.addEventListener("click", () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        });
+
+        //   calendar.appendChild(prevBtn);
+        //   calendar.appendChild(nextBtn);
+
+        // Create the weekdays row
+        var weekdays = document.createElement("div");
+        weekdays.className = "calendar--weekdays";
+        var weekdaysArr = ["s", "m", "t", "w", "t", "f", "s"];
+        for (var i = 0; i < weekdaysArr.length; i++) {
+            var weekday = document.createElement("div");
+            weekday.className = "calendar--weekdays__weekday";
+            weekday.innerHTML = weekdaysArr[i];
+            weekdays.appendChild(weekday);
+        }
+        calendar.appendChild(weekdays);
+
+        // Create the days
+        var days = document.createElement("div");
+        days.className = "calendar--days";
+
+        // Calculate the first day of the month
+        var firstDay = new Date(year, month, 1);
+        var startingDay = firstDay.getDay();
+        // console.log("first: ", startingDay);
+
+        // Calculate the number of days in the month
+        var monthLength = new Date(year, month + 1, 0).getDate();
+
+        // Generate the days for the current month
+        for (var i = startingDay; i > 0; i--) {
+            var prevMonthLength = new Date(year, month, 0).getDate();
+            var link = document.createElement("a");
+            link.className = "calendar--days__day";
+            link.classList.add("not-month-day");
+
+            link.addEventListener("click", () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            });
+
+            var day = document.createElement("div");
+            day.innerHTML = prevMonthLength - i + 1;
+            link.appendChild(day);
+            days.appendChild(link);
+        }
+
+        for (var i = 1; i <= monthLength; i++) {
+            var link = document.createElement("a");
+            link.className = "calendar--days__day";
+            link.classList.add("btn-event");
+            link.setAttribute("href", `/events/date/${year}-${month + 1}-${i}`);
+            var day = document.createElement("div");
+            day.innerHTML = i;
+
+            link.appendChild(day);
+
+            // Highlight the current day
+            if (
+                i == new Date().getDate() &&
+                month == new Date().getMonth() &&
+                year == new Date().getFullYear()
+            ) {
+            link.classList.add("current-day");
+            }
+
+            days.appendChild(link);
+        }
+
+        // Calculate the last day of the month
+        var lastDay = new Date(year, month + 1, 1);
+        var endingDay = lastDay.getDay();
+        // console.log("last: ", endingDay);
+
+        for (var i = 1; i <= 7 - endingDay; i++) {
+            if (endingDay == 0) {
+            break;
+            }
+            var link = document.createElement("a");
+            link.className = "calendar--days__day";
+            link.classList.add("not-month-day");
+            link.addEventListener("click", () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            });
+            var day = document.createElement("div");
+            day.innerHTML = i;
+            link.appendChild(day);
+            days.appendChild(link);
+        }
+
+        calendar.appendChild(days);
+    }
+
+    // // Initialize the calendar
+    // generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+
+    // Handle month navigation
+    function changeMonth(direction) {
+        if (direction === "prev") {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+        } else if (direction === "next") {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+
+        generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    }
+

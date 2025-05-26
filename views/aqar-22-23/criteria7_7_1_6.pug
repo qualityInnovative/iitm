@@ -1,0 +1,25 @@
+extends ../layouts/base.pug
+
+block styles 
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div 
+                .line-above-heading 
+                h2.heading-with-top-border Document
+                iframe.pdf-viewer.hidden(src="/data/aqar-22-23/c7_7.1.6.pdf")
+                .pdf.margin-top-sm.hidden
+                    .pdf__heading
+                    .pdf__container
+                    .pdf__download
+                        a(href="/data/aqar-22-23/c7_7.1.6.pdf" target="blank")
+                            button Download
+    
+    script.
+        //- Show pdf using pdfJs function defined in base.pug script.(For small devies)
+        pdfJs(["/data/aqar-22-23/c7_7.1.6.pdf"])

@@ -1,0 +1,6 @@
+.heading-banner
+    img(src=bannerImg alt="Banner Image" loading="lazy")
+
+    - if(bannerText !== "" || bannerText)
+        div.heading-banner__banner-text
+            h1 #{bannerText}

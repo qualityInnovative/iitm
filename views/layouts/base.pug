@@ -1,0 +1,732 @@
+//- OVERVIEW:
+//- Recieves pageTitle from the route to insert use that as the title of the page. "block styles" inserts any additional styles if needed. "block content" inserts the main content of the page and "block scipts" inserts any additional scripts if needed
+
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title #{pageTitle}
+    //- META DATA
+    //- Favicon
+    link(rel="icon" href="favicon.ico" type="image/x-icon")
+    //- Meta Description
+    meta(name="description" content="Founded in 2006, IITM offers transformative education backed by Iqbal Memorial Trust. NAAC-accredited, AICTE-approved, and affiliated with the University of Kashmir. Join us for a career-ready journey in a vibrant, hands-on learning environment.")
+
+    //- Robots meta tag
+    meta(name='robots' content='index, follow')
+
+    //- Style
+    link(rel='stylesheet' href='/css/style.css')
+    //- Font Awesome
+    link(rel='stylesheet' href='https://kit.fontawesome.com/3d15514f5b.css' crossorigin='anonymous')
+    //- Tidio Chat
+    //- script(src="//code.tidio.co/138vvghmokhphfsrczyhstgzf3tj9edh.js" async)
+    //- PDF.js
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js")
+    script.
+      //- Script to equalize hights of cards.
+      const equalizeCardHeights = (className) => {
+        // Get all the card elements
+        const cards = document.querySelectorAll(className);
+
+        // Find the card with the largest height
+        let maxCardHeight = 0;
+        cards.forEach(card => {
+          const cardHeight = card.offsetHeight;
+          if (cardHeight > maxCardHeight) {
+            maxCardHeight = cardHeight;
+          }
+        });
+
+        // Set the height of all cards to the height of the card with the largest height
+        cards.forEach(card => {
+          card.style.height = `${maxCardHeight}px`;
+        });
+      }
+
+      // Asynchronously load and render the PDF
+      const pdfJs = async (pdfFiles) => {
+          for (let i = 0; i < pdfFiles.length; i++) {
+              const header = document.querySelectorAll(".pdf__heading")[i];
+              const container = document.querySelectorAll(".pdf__container")[i];
+
+              header.textContent = "Loading...";
+
+              const pdfFile = pdfFiles[i];
+              const pdf = await pdfjsLib.getDocument(pdfFile).promise;
+
+              header.textContent = pdfFile.split("/")[pdfFile.split("/").length - 1];
+
+              const renderPage = async (pageNumber) => {
+                  const page = await pdf.getPage(pageNumber);
+                  const canvas = document.createElement('canvas');
+                  container.appendChild(canvas);
+
+                  const viewport = page.getViewport({ scale: 1 });
+                  const context = canvas.getContext('2d');
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+
+                  const renderContext = {
+                      canvasContext: context,
+                      viewport: viewport,
+                  };
+                  await page.render(renderContext).promise;
+              };
+
+              // Create an array of promises for rendering each page
+              const renderPromises = Array.from({ length: pdf.numPages }, (_, i) => renderPage(i + 1));
+
+              // Wait for all pages to be rendered before proceeding
+              await Promise.all(renderPromises);
+          }
+      };
+
+    //- Styles block
+    block styles
+  body
+    //- //- Loader
+    //- include loader.pug
+
+    //- Top bar
+    .top-nav
+      a(href="/home")
+        img#nav-small(src='/data/imgs/nav-logo-mobile.png' alt='')
+        img#nav-medium(src='/data/imgs/nav-logo-tablet.png' alt='')
+        img#nav-large(src='/data/imgs/nav-logo-desktop.png' alt='')
+
+    //- Navbar
+    nav.large.hidden
+      ul
+        if path !== undefined
+          //- li(class=(path.includes('/home') || path === "/"  ? 'active' : ''))
+          //-   a(href="/home") Home
+          li(class=(path.includes('/about') ? 'active' : ''))
+            a(href="/about") About
+          li(class=(path.includes('/academics')  ? 'active' : ''))
+            a(href="/academics") Academics
+          li(class=(path.includes('/admissions')  ? 'active' : ''))
+            a(href="/admissions") Admissions
+          li(class=(path.includes('/campus')  ? 'active' : ''))
+            a(href="/campus") campus
+          li(class=(path.includes('/placements')  ? 'active' : ''))
+            a(href="/placements") Placements
+          li(class=(path.includes('/community')  ? 'active' : ''))
+            a(href="/community") Community
+
+    //- ABOUT
+    .nav-links.hide-nav-links#about-links
+      a.nav-links__heading.link-underline-animate(href="/about") About IITM 
+      div.nav-links__links
+        div
+          a.link-underline-animate(href="/about/founder") Founder
+          a.link-underline-animate(href="/about/vision-mission-and-values") Vision, Mission and Values
+          a.link-underline-animate(href="/about/leadership") College Leadeship
+          a.link-underline-animate(href="/about/organisational-chart") Organisational Chart  
+          a.link-underline-animate(href="/about/accreditations") Accreditations
+          a.link-underline-animate(href="/about/accreditations/naac") NAAC
+        div
+          a.link-underline-animate(href="/about/quality-assurance") Quality Assurance
+          a.link-underline-animate(href="/about/institutional-committees") Institutional Committees  
+          a.link-underline-animate(href="/about/contact-us") Contact Us
+          a.link-underline-animate(href="/about/feedback") Provide Feedback
+          a.link-underline-animate(href="/about/grievance") Register Grievance
+          a.link-underline-animate(href="/about/imt") About IMT
+        div.nav-links__links--icon
+          .nav-links__links--icon__item
+            a(href="/about/contact")
+              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                path(d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z")
+            a(href="/about/contact") Contacts
+          .nav-links__links--icon__item
+            a(href="/events")
+              svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512')
+                path(d='M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z')
+            a(href="/events") Events
+          .nav-links__links--icon__item
+            a(href="/about/directory")
+              svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512')
+                path(d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32v96V384c0 35.3 28.7 64 64 64H256V384H64V160H256V96H64V32zM288 192c0 17.7 14.3 32 32 32H544c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H445.3c-8.5 0-16.6-3.4-22.6-9.4L409.4 9.4c-6-6-14.1-9.4-22.6-9.4H320c-17.7 0-32 14.3-32 32V192zm0 288c0 17.7 14.3 32 32 32H544c17.7 0 32-14.3 32-32V352c0-17.7-14.3-32-32-32H445.3c-8.5 0-16.6-3.4-22.6-9.4l-13.3-13.3c-6-6-14.1-9.4-22.6-9.4H320c-17.7 0-32 14.3-32 32V480z")
+            a(href="/about/directory") Directory
+    
+    //- ACADEMICS
+    .nav-links.hide-nav-links#academics-links
+      a.nav-links__heading.link-underline-animate(href="/academics") Academics
+      div.nav-links__links
+        div
+          a.link-underline-animate(href="/academics/cs") Computer Applications
+          a.link-underline-animate(href="") Management Studies
+          a.link-underline-animate(href="/academics/faculty") Faculty
+          a.link-underline-animate(href="/academics/labs") Labs 
+        div
+          a.link-underline-animate(href="/academics/guest-lectures") Guest Lectures
+          a.link-underline-animate(href="/academics/workshops-and-bootcamps") Workshops And Bootcamps
+          a.link-underline-animate(href="/academics/syllabus") Syllabus
+          a.link-underline-animate(href="/academics/associations") Associations
+        div.nav-links__links--icon
+          .nav-links__links--icon__item
+            a(href="/academics/library")
+              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                path(d="M160 96a96 96 0 1 1 192 0A96 96 0 1 1 160 96zm80 152V512l-48.4-24.2c-20.9-10.4-43.5-17-66.8-19.3l-96-9.6C12.5 457.2 0 443.5 0 427V224c0-17.7 14.3-32 32-32H62.3c63.6 0 125.6 19.6 177.7 56zm32 264V248c52.1-36.4 114.1-56 177.7-56H480c17.7 0 32 14.3 32 32V427c0 16.4-12.5 30.2-28.8 31.8l-96 9.6c-23.2 2.3-45.9 8.9-66.8 19.3L272 512z")
+            a(href="/academics/library") Central Library
+          .nav-links__links--icon__item
+            a(href="/academics/academic-calendar")
+              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
+                path(d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z")
+            a(href="/academics/academic-calendar") Academic Calendar
+          .nav-links__links--icon__item
+            a(href="/academics/e-resources")
+              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512")
+                path(d='M0 64C0 28.7 28.7 0 64 0H288c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM208 448a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM288 64H64V384H288V64z')
+            a(href="/academics/e-resources") E-Resources
+
+    //- ADMISSIONS
+    .nav-links.hide-nav-links#admissions-links
+      a.nav-links__heading.link-underline-animate(href="/admissions") Admissions
+      div.nav-links__links
+        div
+          a.link-underline-animate(href="/admissions/tution-and-fees") Tution & Fees
+          a.link-underline-animate(href="/admissions/rules-and-regulations") Rules & Regulations
+        div
+          a.link-underline-animate(href="/admissions/scholarships") Scholarships
+        div.nav-links__links--icon
+          .nav-links__links--icon__item
+            a(href="/admissions/ug-admissions")
+              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
+                path(d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z")
+            a(href="/admissions/ug-admissions") Undergrad
+          .nav-links__links--icon__item
+            a(href="/admissions/pg-admissions")
+              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
+                path(d="M219.3 .5c3.1-.6 6.3-.6 9.4 0l200 40C439.9 42.7 448 52.6 448 64s-8.1 21.3-19.3 23.5L352 102.9V160c0 70.7-57.3 128-128 128s-128-57.3-128-128V102.9L48 93.3v65.1l15.7 78.4c.9 4.7-.3 9.6-3.3 13.3s-7.6 5.9-12.4 5.9H16c-4.8 0-9.3-2.1-12.4-5.9s-4.3-8.6-3.3-13.3L16 158.4V86.6C6.5 83.3 0 74.3 0 64C0 52.6 8.1 42.7 19.3 40.5l200-40zM111.9 327.7c10.5-3.4 21.8 .4 29.4 8.5l71 75.5c6.3 6.7 17 6.7 23.3 0l71-75.5c7.6-8.1 18.9-11.9 29.4-8.5C401 348.6 448 409.4 448 481.3c0 17-13.8 30.7-30.7 30.7H30.7C13.8 512 0 498.2 0 481.3c0-71.9 47-132.7 111.9-153.6z")
+            a(href="/admissions/pg-admissions") Postgrad
+
+    //- CAMPUS
+    .nav-links.hide-nav-links#campus-links
+      a.nav-links__heading.link-underline-animate(href="/campus") Campus
+      div.nav-links__links
+        div
+          a.link-underline-animate(href="/campus/canteen") Canteen
+        div
+          a.link-underline-animate(href="/campus/hostel") Hostel
+
+        .nav-links__links--icon 
+          .nav-links__links--icon__item
+            a(href="/campus/sports")
+              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                path(d="M511.8 267.4c-26.1 8.7-53.4 13.8-81 15.1c9.2-105.3-31.5-204.2-103.2-272.4C434.1 41.1 512 139.5 512 256c0 3.8-.1 7.6-.2 11.4zm-3.9 34.7c-5.8 32-17.6 62-34.2 88.7c-97.5 48.5-217.7 42.6-311.9-24.5c23.7-36.2 55.4-67.7 94.5-91.8c79.9 43.2 170.1 50.8 251.6 27.6zm-236-55.5c-2.5-90.9-41.1-172.7-101.9-231.7C196.8 5.2 225.8 0 256 0c2.7 0 5.3 0 7.9 .1c90.8 60.2 145.7 167.2 134.7 282.3c-43.1-2.4-86.4-14.1-126.8-35.9zM138 28.8c20.6 18.3 38.7 39.4 53.7 62.6C95.9 136.1 30.6 220.8 7.3 316.9C2.5 297.4 0 277 0 256C0 157.2 56 71.5 138 28.8zm69.6 90.5c19.5 38.6 31 81.9 32.3 127.7C162.5 294.6 110.9 368.9 90.2 451C66 430.4 45.6 405.4 30.4 377.2c6.7-108.7 71.9-209.9 177.1-257.9zM256 512c-50.7 0-98-14.7-137.8-40.2c5.6-27 14.8-53.1 27.4-77.7C232.2 454.6 338.1 468.8 433 441c-46 44-108.3 71-177 71z")
+            a(href="/campus/sports") Sports
+          .nav-links__links--icon__item
+            a(href="/campus/transportation")
+              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                path(d="M256 0C390.4 0 480 35.2 480 80V96l0 32c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32l0 160c0 17.7-14.3 32-32 32v32c0 17.7-14.3 32-32 32H384c-17.7 0-32-14.3-32-32V448H160v32c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32l0-32c-17.7 0-32-14.3-32-32l0-160c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h0V96h0V80C32 35.2 121.6 0 256 0zM96 160v96c0 17.7 14.3 32 32 32H240V128H128c-17.7 0-32 14.3-32 32zM272 288H384c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32H272V288zM112 400a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm288 0a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM352 80c0-8.8-7.2-16-16-16H176c-8.8 0-16 7.2-16 16s7.2 16 16 16H336c8.8 0 16-7.2 16-16z")
+            a(href="/campus/transportation") Transport
+
+    //- PLACEMENTS
+    .nav-links.hide-nav-links#placements-links
+      a.nav-links__heading.link-underline-animate(href="/placements") Placements
+      div.nav-links__links
+        div
+          //- a.link-underline-animate(href="/placements/internships") Internships
+          a.link-underline-animate(href="/placements/industrial-visits") Industrial Visits
+        div
+          a.link-underline-animate(href="/placements/mous") MOU's
+
+    //- COMMUNITY
+    .nav-links.hide-nav-links#community-links
+      a.nav-links__heading.link-underline-animate(href="/community") Community
+      div.nav-links__links
+        div
+          a.link-underline-animate(href="/community/news") News
+          a.link-underline-animate(href="/community/videos") Videos
+        div
+          a.link-underline-animate(href="/community/alumni") Alumni
+
+        .nav-links__links--icon.margin-left-xs
+          .nav-links__links--icon__item
+            a(href="/notifications")
+              svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                path(d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z")
+            a(href="/notifications") Notifications
+
+    //- Navbar for small devices
+    //- .nav-opener 
+    nav.small.nav-opener.hidden
+      div
+        a(href="/") 
+          ion-icon(name="home")
+        span Menu 
+      label(for="check" class="menuButton")
+        input(id="check" type="checkbox")
+        span(class="top")
+        span(class="mid")
+        span(class="bot")
+      //- label.hamburger
+        input(type='checkbox')
+        svg(viewBox='0 0 32 32')
+          path.line.line-top-bottom(d='M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22')
+          path.line(d='M7 16 27 16')
+    .small-navs-container.hidden
+      ul.small-navs__ul
+        if path !== undefined
+          li.small-navs__ul--li(class=(path.includes('/about') ? 'active' : ''))#small-about
+            | About
+            ion-icon( name="chevron-down-outline")
+          .links-ul#small-about-links.hidden
+            ul 
+              a.first.link-underline-animate(href="/about") 
+                li
+                  | About
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/founder")
+                li
+                  | Founder
+                  ion-icon(name="chevron-forward-outline")
+
+              a.link-underline-animate(href="/about/vision-mission-and-values")
+                li Vision, Mission and Values
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/leadership") 
+                li College Leadeship
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/organisational-chart")  
+                li Organisational Chart
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/accreditations")
+                li Accreditations
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/accreditations/naac")
+                li NAAC
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/quality-assurance")
+                li Quality Assurance
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/institutional-committees")  
+                li Institutional Committees
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/contact-us")
+                li Contact Us
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/feedback")
+                li Provide Feedback
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/grievance")
+                li Register Grievance
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/about/imt")
+                li About IMT
+                  ion-icon(name="chevron-forward-outline")
+            .icons-links
+              .icons-links__item
+                a(href="/about/contact")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                    path(d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z")
+                a(href="/about/contact") Contact
+              .icons-links__item
+                a(href="/events")
+                  svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512')
+                    path(d='M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z')
+                a(href="/events") Events
+              .icons-links__item
+                a(href="/about/directory")
+                  svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512')
+                    path(d="M64 32C64 14.3 49.7 0 32 0S0 14.3 0 32v96V384c0 35.3 28.7 64 64 64H256V384H64V160H256V96H64V32zM288 192c0 17.7 14.3 32 32 32H544c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32H445.3c-8.5 0-16.6-3.4-22.6-9.4L409.4 9.4c-6-6-14.1-9.4-22.6-9.4H320c-17.7 0-32 14.3-32 32V192zm0 288c0 17.7 14.3 32 32 32H544c17.7 0 32-14.3 32-32V352c0-17.7-14.3-32-32-32H445.3c-8.5 0-16.6-3.4-22.6-9.4l-13.3-13.3c-6-6-14.1-9.4-22.6-9.4H320c-17.7 0-32 14.3-32 32V480z")
+                a(href="/about/directory") Directory
+          li.small-navs__ul--li(class=(path.includes('/academics')  ? 'active' : ''))#small-academics
+            | Academics
+            ion-icon( name="chevron-down-outline")
+          .links-ul#small-academics-links.hidden
+            ul 
+              a.first.link-underline-animate(href="/academics") 
+                li
+                  | Academics
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/academics/cs")
+                li
+                  | Computer Applications
+                  ion-icon(name="chevron-forward-outline")
+
+              a.link-underline-animate(href="/academics/management")
+                li Management Studies
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/academics/faculty") 
+                li Faculty
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/academics/labs")  
+                li Labs
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/academics/guest-lectures")
+                li Guest Lectures
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/academics/workshops-and-bootcamps")
+                li Workshops And Bootcamps
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/academics/syllabus")
+                li Syllabus
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/academics/associations")
+                li Associations
+                  ion-icon(name="chevron-forward-outline")
+            .icons-links
+              .icons-links__item
+                a(href="/academics/library")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                    path(d="M160 96a96 96 0 1 1 192 0A96 96 0 1 1 160 96zm80 152V512l-48.4-24.2c-20.9-10.4-43.5-17-66.8-19.3l-96-9.6C12.5 457.2 0 443.5 0 427V224c0-17.7 14.3-32 32-32H62.3c63.6 0 125.6 19.6 177.7 56zm32 264V248c52.1-36.4 114.1-56 177.7-56H480c17.7 0 32 14.3 32 32V427c0 16.4-12.5 30.2-28.8 31.8l-96 9.6c-23.2 2.3-45.9 8.9-66.8 19.3L272 512z")
+                a(href="/academics/library") Central Library
+              .icons-links__item
+                a(href="")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
+                    path(d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z")
+                a(href="/academics/academic-calendar") Academic Calendar
+              .icons-links__item
+                a(href="/academics/e-resources")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512")
+                    path(d='M0 64C0 28.7 28.7 0 64 0H288c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM208 448a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zM288 64H64V384H288V64z')
+                a(href="/academics/e-resources") E-Resources
+          li.small-navs__ul--li(class=(path.includes('/admissions')  ? 'active' : ''))#small-admissions
+            | Admissions
+            ion-icon( name="chevron-down-outline")
+          .links-ul#small-admissions-links.hidden
+            ul 
+              a.first.link-underline-animate(href="/admissions") 
+                li
+                  | Admissions
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="admissions/tution-and-fees")
+                li
+                  | Tution & Fees
+                  ion-icon(name="chevron-forward-outline")
+
+              a.link-underline-animate(href="/admissions/rules-and-regulations")
+                li Rules & Regulations
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/admissions/scholarships") 
+                li Scholarships
+                  ion-icon(name="chevron-forward-outline")
+            .icons-links
+              .icons-links__item
+                a(href="/admissions/ug-admissions")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
+                    path(d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z")
+                a(href="/admissions/ug-admissions") Undergrad
+              .icons-links__item
+                a(href="/admissions/pg-admissions")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
+                    path(d="M219.3 .5c3.1-.6 6.3-.6 9.4 0l200 40C439.9 42.7 448 52.6 448 64s-8.1 21.3-19.3 23.5L352 102.9V160c0 70.7-57.3 128-128 128s-128-57.3-128-128V102.9L48 93.3v65.1l15.7 78.4c.9 4.7-.3 9.6-3.3 13.3s-7.6 5.9-12.4 5.9H16c-4.8 0-9.3-2.1-12.4-5.9s-4.3-8.6-3.3-13.3L16 158.4V86.6C6.5 83.3 0 74.3 0 64C0 52.6 8.1 42.7 19.3 40.5l200-40zM111.9 327.7c10.5-3.4 21.8 .4 29.4 8.5l71 75.5c6.3 6.7 17 6.7 23.3 0l71-75.5c7.6-8.1 18.9-11.9 29.4-8.5C401 348.6 448 409.4 448 481.3c0 17-13.8 30.7-30.7 30.7H30.7C13.8 512 0 498.2 0 481.3c0-71.9 47-132.7 111.9-153.6z")
+                a(href="/admissions/pg-admissions") Postgrad
+          li.small-navs__ul--li(class=(path.includes('/campus')  ? 'active' : ''))#small-campus
+            | Campus
+            ion-icon( name="chevron-down-outline")
+          .links-ul#small-campus-links.hidden
+            ul 
+              a.first.link-underline-animate(href="/campus") 
+                li
+                  | Campus
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/campus/entrepreneurship")
+                li
+                  | Entrepreneurship
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/campus/services")
+                li Campus Services
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/campus/canteen") 
+                li Canteen
+                  ion-icon(name="chevron-forward-outline")
+            .icons-links
+              .icons-links__item
+                a(href="/campus/sports")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                    path(d="M511.8 267.4c-26.1 8.7-53.4 13.8-81 15.1c9.2-105.3-31.5-204.2-103.2-272.4C434.1 41.1 512 139.5 512 256c0 3.8-.1 7.6-.2 11.4zm-3.9 34.7c-5.8 32-17.6 62-34.2 88.7c-97.5 48.5-217.7 42.6-311.9-24.5c23.7-36.2 55.4-67.7 94.5-91.8c79.9 43.2 170.1 50.8 251.6 27.6zm-236-55.5c-2.5-90.9-41.1-172.7-101.9-231.7C196.8 5.2 225.8 0 256 0c2.7 0 5.3 0 7.9 .1c90.8 60.2 145.7 167.2 134.7 282.3c-43.1-2.4-86.4-14.1-126.8-35.9zM138 28.8c20.6 18.3 38.7 39.4 53.7 62.6C95.9 136.1 30.6 220.8 7.3 316.9C2.5 297.4 0 277 0 256C0 157.2 56 71.5 138 28.8zm69.6 90.5c19.5 38.6 31 81.9 32.3 127.7C162.5 294.6 110.9 368.9 90.2 451C66 430.4 45.6 405.4 30.4 377.2c6.7-108.7 71.9-209.9 177.1-257.9zM256 512c-50.7 0-98-14.7-137.8-40.2c5.6-27 14.8-53.1 27.4-77.7C232.2 454.6 338.1 468.8 433 441c-46 44-108.3 71-177 71z")
+                a(href="/campus/sports") Sports
+              .icons-links__item
+                a(href="/campus/transportation")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                    path(d="M256 0C390.4 0 480 35.2 480 80V96l0 32c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32l0 160c0 17.7-14.3 32-32 32v32c0 17.7-14.3 32-32 32H384c-17.7 0-32-14.3-32-32V448H160v32c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32l0-32c-17.7 0-32-14.3-32-32l0-160c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h0V96h0V80C32 35.2 121.6 0 256 0zM96 160v96c0 17.7 14.3 32 32 32H240V128H128c-17.7 0-32 14.3-32 32zM272 288H384c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32H272V288zM112 400a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm288 0a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM352 80c0-8.8-7.2-16-16-16H176c-8.8 0-16 7.2-16 16s7.2 16 16 16H336c8.8 0 16-7.2 16-16z")
+                a(href="/campus/transportation") Transport
+          li.small-navs__ul--li(class=(path.includes('/placements')  ? 'active' : ''))#small-placements
+            | Placements
+            ion-icon( name="chevron-down-outline")
+          .links-ul#small-placements-links.hidden
+            ul 
+              a.first.link-underline-animate(href="/placements") 
+                li
+                  | Placements
+                  ion-icon(name="chevron-forward-outline")
+              //- a.link-underline-animate(href="/placements/internships")
+              //-   li
+              //-     | Internships
+              //-     ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/placements/industrial-visits")
+                li Industrial Visits
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/placements/mous") 
+                li MOU's
+                  ion-icon(name="chevron-forward-outline")
+          li.small-navs__ul--li(class=(path.includes('/community')  ? 'active' : ''))#small-community
+            | Community
+            ion-icon( name="chevron-down-outline")
+          .links-ul#small-community-links.hidden
+            ul 
+              a.first.link-underline-animate(href="/community") 
+                li
+                  | Community
+                  ion-icon(name="chevron-forward-outline")
+              a.link-underline-animate(href="/community/alumni")
+                li
+                  | Alumni
+                  ion-icon(name="chevron-forward-outline")
+            .icons-links
+              .icons-links__item
+                a(href="/notifications")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                    path(d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z")
+                a(href="/notifications") Notifications
+              .icons-links__item
+                a(href="/community/news")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                    path(d="M96 96c0-35.3 28.7-64 64-64H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H80c-44.2 0-80-35.8-80-80V128c0-17.7 14.3-32 32-32s32 14.3 32 32V400c0 8.8 7.2 16 16 16s16-7.2 16-16V96zm64 24v80c0 13.3 10.7 24 24 24H296c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24H184c-13.3 0-24 10.7-24 24zm208-8c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H384c-8.8 0-16 7.2-16 16zm0 96c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H384c-8.8 0-16 7.2-16 16zM160 304c0 8.8 7.2 16 16 16H432c8.8 0 16-7.2 16-16s-7.2-16-16-16H176c-8.8 0-16 7.2-16 16zm0 96c0 8.8 7.2 16 16 16H432c8.8 0 16-7.2 16-16s-7.2-16-16-16H176c-8.8 0-16 7.2-16 16z")
+                a(href="/community/news") News
+              .icons-links__item
+                a(href="/community/videos")
+                  svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512")
+                    path(d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z")
+                a(href="/community/videos") Videos
+
+    //- Modal
+    .modal-overlay
+    .modal-cont
+      .modal
+        .modal-content
+          h3 Are you sure you want to delete this item?
+          .modal-content__btns 
+            button.btn-cancel Cancel
+            form.form-confirm(action="" method="post")
+              button.btn-confirm(type="submit") Confirm
+
+    .pdf-modal-overlay
+    .pdf-modal
+      .pdf-modal__header 
+        span Notification
+      .pdf-modal__content 
+        .pdf-modal__content--container
+          //- PDF/Image will be displayed here
+      .pdf-modal__footer
+        a(href="").download-btn
+          button.del Download 
+        a(href="javascript:void(0)")
+          button.close-pvm Close
+
+    //- Block for the content of page
+    block content 
+
+    //- Footer
+    include footer.pug
+    script(src="/scripts/navbar.js") 
+
+    script.
+
+      //- ? //////////////////////////////////////////////
+      //- Function to attach event listeners to notification view buttons
+      const attachPdfEL = () => {
+        const pdfModalOverlay = document.querySelector('.pdf-modal-overlay');
+        document.querySelectorAll(".open-pvm").forEach(btn => {
+          btn.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            // For small devices, open the PDF in a modal
+            if (window.innerWidth <= 640) {
+              //- Get the extension of file
+              var extension = this.href.substring(this.href.lastIndexOf('.') + 1).toLowerCase();
+
+              displayImage("/data/imgs/notification-loading.gif");
+              document.querySelector(".pdf-modal").style.display = "flex";
+              document.body.classList.add('pdf-modal-open');
+              pdfModalOverlay.style.display = 'block';
+
+              //- If it is pdf then fetch it and display using displayPDF function
+              if(extension == "pdf") {
+                fetch(this.href)
+                .then(response => response.arrayBuffer())
+                .then(data => {
+                  displayPDF(data);
+                  //- document.querySelector(".pdf-modal").style.display = "flex";
+                  //- document.body.classList.add('pdf-modal-open');
+                  //- pdfModalOverlay.style.display = 'block';
+                });
+
+                //- Set download link of download button.
+                document.querySelector(".download-btn").setAttribute("href", this.href)
+                document.querySelector(".download-btn").setAttribute("target", "_blank")
+              } else {
+                //- Else if it is not pdf(Must be any image format then)
+                //- Display the file using displayImage function. 
+                displayImage(this.href)
+                //- document.querySelector(".pdf-modal").style.display = "flex";
+                //- document.body.classList.add('pdf-modal-open');
+                //- pdfModalOverlay.style.display = 'block';
+
+              }
+            } else {
+              // For large devices, open the PDF in a new tab
+              window.open(this.href, '_blank');
+            }
+          })
+        })
+
+        //- Attach event listener to close button
+        document.querySelector(".close-pvm").addEventListener("click", () => {
+          document.querySelector(".pdf-modal").style.display = "none";
+          document.body.classList.remove('pdf-modal-open');
+          pdfModalOverlay.style.display = 'none';
+        })
+      }
+      attachPdfEL();
+
+      // Function to display the PDF using PDF.js
+      function displayPDF(pdfData) {
+        const container = document.querySelector('.pdf-modal__content--container');
+
+        //- Empty the container
+        container.textContent = "";
+
+        pdfjsLib.getDocument({ data: pdfData }).promise.then(function (pdf) {
+          const numPages = pdf.numPages;
+          for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
+            pdf.getPage(pageNumber).then(function (page) {
+              const canvas = document.createElement('canvas');
+              container.appendChild(canvas);
+
+              const viewport = page.getViewport({ scale: 1 });
+              const context = canvas.getContext('2d');
+              canvas.height = viewport.height;
+              canvas.width = viewport.width;
+
+              const renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+              };
+
+              page.render(renderContext);
+            });
+          }
+        });
+      }
+
+      // Function to display the Image
+      function displayImage(imageData) {
+        const container = document.querySelector('.pdf-modal__content--container');
+        container.textContent = "";
+
+        const image = document.createElement('img');
+        image.setAttribute("src", imageData)
+        container.appendChild(image);
+
+        //- Set download link of download button.
+        document.querySelector(".download-btn").setAttribute("href", imageData)
+        document.querySelector(".download-btn").setAttribute("target", "_blank")
+      }
+
+      //- ? //////////////////////////////////////////////
+      //- Function to attach event listeners to modal buttons
+      const attachEventListeners = () => {
+        //- Selecting elements
+        const openModalBtns = document.querySelectorAll('.btn-open-modal');
+        const modal = document.querySelector('.modal');
+        const modalContainer = document.querySelector(".modal-cont")
+        const closeModalBtn = document.querySelector('.btn-cancel');
+        const confirmModalBtn = document.querySelector(".btn-confirm");
+        const modalOverlay = document.querySelector('.modal-overlay');
+
+        //- Open modal listener
+        openModalBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            modalContainer.style.height = "calc(100vh - 25vh)"
+            modalContainer.style.width = "100vw"
+            modal.style.display = 'block';
+            modalOverlay.style.display = 'block';
+            document.body.classList.add('modal-open');
+            const link = btn.getAttribute("data-link");
+            document.querySelector(".form-confirm").setAttribute("action", link)
+          });
+        })
+
+        //- Close modal listener
+        closeModalBtn.addEventListener('click', function() {
+          modal.style.display = 'none';
+          modalOverlay.style.display = 'none';
+          modalContainer.style.height = "0"
+          modalContainer.style.width = "0"
+          document.body.classList.remove('modal-open');
+        });
+      }
+
+      //- Loader script
+      //- document.onreadystatechange = function () {
+      //-   if (document.readyState !== "complete") {
+      //-     document.querySelector("body").style.visibility = "hidden";
+      //-     document.querySelector("body").style.height = "100%";
+      //-     document.querySelector("body").style.overflow = "hidden";
+      //-     document.querySelector(".loader").style.visibility = "visible";
+      //-   } else {
+      //-     document.querySelector(".loader").style.display = "none";
+      //-     document.querySelector("body").style.visibility = "visible";
+      //-     document.querySelector("body").style.height = "";
+      //-     document.querySelector("body").style.overflow = "";
+      //-   }
+      //- }
+
+      //- ? //////////////////////////////////////////////
+      //- Script to show specific pdf viewer on small and large devices
+      const togglePdfViewer = () => {
+        const largePdfViewers = document.querySelectorAll(".pdf");
+        const smallPdfViewers  = document.querySelectorAll(".pdf-viewer");
+        let width = window.innerWidth;
+
+        if(width >= 968) {
+          largePdfViewers?.forEach(largePdfViewer => {
+            largePdfViewer.classList.add("hidden");
+          });
+          smallPdfViewers?.forEach(smallPdfViewer => {
+            smallPdfViewer.classList.remove("hidden");
+          });
+        } else {
+          smallPdfViewers?.forEach(smallPdfViewer => {
+            smallPdfViewer.classList.add("hidden");
+          });
+          largePdfViewers?.forEach(largePdfViewer => {
+            largePdfViewer.classList.remove("hidden");
+          });
+        }
+      }
+
+      togglePdfViewer()
+      window.addEventListener('resize', togglePdfViewer)
+
+
+
+      //- ? //////////////////////////////////////////////
+      //- Script to toggle navs for small and large devices
+      const toggleNavs = () => {
+        const large = document.querySelector(".large");
+        const small  = document.querySelector(".small");
+        let width = window.innerWidth;
+
+        if(width <= 1024) {
+          large.classList.add("hidden")
+          small.classList.remove("hidden")
+        } else {
+          small.classList.add("hidden")
+          large.classList.remove("hidden")
+        }
+      }
+
+      toggleNavs()
+      window.addEventListener('resize', toggleNavs)
+
+    //- Block for script includes
+    block scripts
+    script(type='module' src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js')
+    script(nomodule='' src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js')

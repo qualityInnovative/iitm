@@ -1,0 +1,136 @@
+.pagemenu-lg {
+    position: sticky;
+    top: 100px;
+    height: auto;
+    align-self: flex-start;
+    margin-top: 15px;
+    width: 17vw;
+
+    // Heading of the sidebar
+    &__heading {
+        border-bottom: 1px solid $primary-color-hover;
+        padding: 5px 10px;
+        margin-bottom: 30px;
+    }
+
+    // Links of the sidebar
+    &__links {
+        ul {
+            a {
+                text-decoration: none;
+                color: rgb(100, 100, 100);
+
+                &:hover {
+                    // text-decoration: underline;
+                    color: $primary-color-hover;
+                }
+
+                li {
+                    font-weight: 300;
+                    list-style: none;
+                    margin: 10px 0px;
+                    font-size: 0.9em;
+                    letter-spacing: 0.5px;
+                }
+
+                .actv {
+                    font-weight: 700;
+                    color: $primary-color-hover;
+                }
+            }
+        }
+
+        // Nested ul is supposed to be slightly right shifted.
+        &--nested {
+            margin-left: 25px;
+        }
+    }
+}
+
+.pagemenu-sm {
+    margin-top: 50px;
+    position: sticky;
+    top: 60px;
+    background-color: #f1f1f1;
+    width: 80vw;
+    box-shadow: 3px 3px 15px $tertiary-color;
+    border-radius: 50px;
+    transition: border-radius 0.2s ease-out;
+    z-index: 9999;
+
+    &:hover {
+        border-radius: 25px;
+    }
+
+    .collapsible {
+        font-family: $poppins;
+        font-size: 1.2em !important;
+        background-color: $secondary-color;
+        color: white;
+        cursor: pointer;
+        padding: 10px 25px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        border-radius: 25px;
+        transition: border-radius 0.2s ease-out;
+
+        &:hover {
+            background-color: $secondary-color-hover;
+        }
+
+        &:after {
+            content: "\002B";
+            color: white;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            border-radius: 25px;
+        }
+    }
+
+    .active {
+        background-color: $secondary-color-hover;
+        border-radius: 25px 25px 0px 0px;
+        // border-radius: 50px 50px 0px 0px;
+
+        &:after {
+            content: "\2212";
+        }
+
+        &:hover {
+            background-color: $secondary-color;
+        }
+
+        .content {
+            padding-top: 25px;
+        }
+    }
+
+    .content {
+        padding: 0 18px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+        background-color: #f1f1f1;
+        border-radius: 0px 0px 25px 25px;
+        transition: padding 0.2s ease-out;
+    }
+}
+
+// NOTE: To be worked on later
+.minified {
+    width: 0;
+    .collapsible {
+        width: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::after {
+            margin: 0;
+        }
+    }
+}

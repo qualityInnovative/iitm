@@ -1,0 +1,32 @@
+extends ../layouts/base.pug
+
+block styles 
+    //- Open Graph Tags
+    meta(property="og:title" content="IITM - Admissions")
+    meta(name="og:description" content="Iqbal Institute of Technology and Management (IITM) is a prestigious educational institution dedicated to providing a transformative learning experience to our students. As an NAAC accredited institution, approved by AICTE, recognized by the J and K government, and affiliated to the University of Kashmir, we are committed to upholding the highest standards of education and excellence.")
+    meta(name="og:image" content=bannerImg)
+
+    //- Meta Description
+    meta(name="description" content="Iqbal Institute of Technology and Management (IITM) is a prestigious educational institution dedicated to providing a transformative learning experience to our students. As an NAAC accredited institution, approved by AICTE, recognized by the J and K government, and affiliated to the University of Kashmir, we are committed to upholding the highest standards of education and excellence.")
+
+block content
+    include ../layouts/banner.pug
+    main.admissions-page.container-lg.margin-bottom-md
+
+        h3.admissions-page__introduction.margin-bottom-sm Our institution is dedicated to providing a transformative education that prepares students for success. With a wide range of undergraduate programs, experienced faculty, and a vibrant learning community, we strive to empower students to thrive and make a positive impact. Explore our offerings and take the first step towards an exceptional educational experience at IITM.
+
+        div
+            .square-cards
+                .square-cards__item 
+                    a(href="/admissions/ug-admissions")
+                        img(src="/data/imgs/ug-admissions-banner.jpg")
+                        div
+                            h2 Undergraduate Student 
+                            p I'm a high school graduate seeking a Bachelor's degree.
+                            
+                .square-cards__item 
+                    a(href="/admissions/pg-admissions")
+                        img(src="/data/imgs/pg-admissions-banner.jpg")
+                        div
+                            h2 Graduate Student 
+                            p I'm seeking a Master's Degree.

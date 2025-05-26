@@ -1,0 +1,416 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                //- Course introduction
+                h1.page-heading master of computer applications
+                p Master of Computer Application (MCA) is a postgraduate degree program that focuses on advanced concepts and applications of computer science and information technology. It is designed to provide students with in-depth knowledge and skills in software development, computer networks, database management, web technologies, and data analytics.
+                p The MCA curriculum typically includes advanced courses in programming languages like Java, C#, and Python, software engineering, web development, computer networks, database management systems, data structures and algorithms, artificial intelligence, and machine learning. The program may also include elective courses or specializations based on the institute or university offering the program.
+                p MCA graduates are prepared for various career opportunities in the IT industry, including software development, system analysis, database administration, project management, IT consulting, and research and development. They can also pursue higher education or research in computer science, data science, or related fields.
+
+                //- Cards container
+                .course-specs-cards-container.align-cards-center
+                    //- Card
+                    .course-specs-card
+                        //- Header of the card
+                        .header
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                                path(d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z")
+                            h1.title Duration
+                        //- Content of the card
+                        .content
+                            p 2 Years
+                            p.small
+                                | MCA is a postgraduate degree program lasting for 
+                                span.bold 3 years
+                                | , divided into 
+                                span.bold 4 semesters
+                                | , focusing on advanced computer science concepts and applications.
+
+                    //- Card
+                    .course-specs-card
+                        .header
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                                path(d='M0 0h24v24H0z' fill='none')
+                                path(d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L369 209z")
+                            h1.title Eligibility
+                        .content
+                            p Bachelor's degree in CS or related field
+                            p.small BCA/ B.Sc IT/ Bachelor Degree in Computer Science Engineering or equivalent Degree or B.Se./ B.Com./ B.A. with Mathematics at 10+2 level or at Graduation level.. The candidates with non- Mathematical background shall be required to pass bridge course as per the norms with at least 50% marks (45% marks in case of candidates belonging to reserved category) in the qualifying examination.
+
+                    //- Card
+                    .course-specs-card
+                        .header
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
+                                path(d='M0 0h24v24H0z' fill='none')
+                                path(d="M160 64c0-35.3 28.7-64 64-64H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H336.8c-11.8-25.5-29.9-47.5-52.4-64H384V320c0-17.7 14.3-32 32-32h64c17.7 0 32 14.3 32 32v32h64V64L224 64v49.1C205.2 102.2 183.3 96 160 96V64zm0 64a96 96 0 1 1 0 192 96 96 0 1 1 0-192zM133.3 352h53.3C260.3 352 320 411.7 320 485.3c0 14.7-11.9 26.7-26.7 26.7H26.7C11.9 512 0 500.1 0 485.3C0 411.7 59.7 352 133.3 352z")
+                            h1.title Program Mode
+                        .content
+                            p Regular
+                            p.small Our MCA program is offered in a regular mode with full-time classes.
+
+                    //- Card
+                    .course-specs-card
+                        .header
+                            svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512")
+                                path(d='M0 0h24v24H0z' fill='none')
+                                path(d="M0 64C0 46.3 14.3 32 32 32H96h16H288c17.7 0 32 14.3 32 32s-14.3 32-32 32H231.8c9.6 14.4 16.7 30.6 20.7 48H288c17.7 0 32 14.3 32 32s-14.3 32-32 32H252.4c-13.2 58.3-61.9 103.2-122.2 110.9L274.6 422c14.4 10.3 17.7 30.3 7.4 44.6s-30.3 17.7-44.6 7.4L13.4 314C2.1 306-2.7 291.5 1.5 278.2S18.1 256 32 256h80c32.8 0 61-19.7 73.3-48H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H185.3C173 115.7 144.8 96 112 96H96 32C14.3 96 0 81.7 0 64z")
+                            h1.title Fee Structure
+                        .content
+                            p ₹50,000
+                            p.small this is the fee for one year (two semesters), which may be subject to minor additional charges.
+
+
+
+                //- Program Outcomes
+                .line-above-heading
+                h2.heading-with-top-border programme outcomes
+                ol.beautiful-list(style='--length: 12' role='list')
+                    li(style='--i: 1')
+                        h3 Computational Knowledge
+                        p Apply knowledge of computing fundamentals, computing specialisation, mathematics, and domain knowledge appropriate for the computing specialisation to the abstraction and conceptualisation of computing models from defined problems and requirements 
+                    li(style='--i: 2')
+                        h3 Problem Analysis
+                        p Identify, formulate, research literature, and solve complex computing problems reaching substantiated conclusions using fundamental principles of mathematics, computing sciences, and relevant domain disciplines.
+                    li(style='--i: 3')
+                        h3 Design /Development of Solutions
+                        p Design and evaluate solutions for complex computing problems, and design and evaluate systems, components, or processes that meet specified needs with appropriate consideration for public health and safety, cultural, societal, and environmental considerations.
+                    li(style='--i: 4')
+                        h3 Conduct investigations of complex Computing problems
+                        p Use research-based knowledge and research methods including design of experiments, analysis and interpretation of data, and synthesis of the information to provide valid conclusions.
+                    li(style='--i: 5')
+                        h3 Modern Tool Usage
+                        p Create, select, adapt and apply appropriate techniques, resources, and modern computing tools to complex computing activities, with an understanding of the limitations.
+                    li(style='--i: 6')
+                        h3 Professional Ethics
+                        p Understand and commit to professional ethics and cyber regulations, responsibilities, and norms of professional computing practices.
+                    li(style='--i: 7')
+                        h3 Life-long Learning
+                        p Recognise the need, and have the ability, to engage in independent learning for continual development as a computing professional.
+                    li(style='--i: 8')
+                        h3 Project management and finance
+                        p Demonstrate knowledge and understanding of the computing and management principles and apply these to one's own work, as a member and leader in a team, to manage projects and in multidisciplinary environments.
+                    li(style='--i: 9')
+                        h3 Communication Efficacy
+                        p Communicate effectively with the computing community, and with society at large, about complex computing activities by being able to comprehend and write effective reports, design documentation, make effective presentations, and give and understand clear instructions.
+                    li(style='--i: 10')
+                        h3 Societal and Environmental Concern
+                        p Understand and assess societal, environmental, health, safety, legal, and cultural issues within local and global contexts, and the consequential responsibilities relevant to professional computing practices.
+                    li(style='--i: 11')
+                        h3 Individual and Team Work
+                        p Function effectively as an individual and as a member or leader in diverse teams and in multidisciplinary environments. 
+                    li(style='--i: 12')
+                        h3 Innovation and Entrepreneurship
+                        p Identify a timely opportunity and using innovation to pursue that opportunity to create value and wealth for the betterment of the individual and society at large.
+
+                //- Course structure
+                .line-above-heading
+                h2.heading-with-top-border course structure
+                .courses-table
+                    //- .header BCA
+                    table(cellspacing='0')
+                        //- Semester 1
+                        tr
+                            th(colspan=5).border-bottom-solid Semester - I
+
+                        //- Headers
+                        tr 
+                            th.border-bottom-solid S. No.
+                            th.border-bottom-solid Course Code 
+                            th.border-bottom-solid Course Name
+                            th.border-bottom-solid Course Type
+                            th.border-bottom-solid Credits
+
+                        //- Core Credits
+                        tr 
+                            th(colspan=5).border-bottom-dotted Core Credits (14 Credits)
+                        tr
+                            td 1.
+                            td MCA21101CR
+                            td Programming with C++
+                            td CR
+                            td 4
+                        tr
+                            td 2.
+                            td MCA21102CR
+                            td Database Systems
+                            td CR
+                            td 4
+                        tr
+                            td 3.
+                            td MCA21103CR
+                            td Computer Networks
+                            td CR
+                            td 4
+                        tr
+                            td.border-bottom-dotted 4.
+                            td.border-bottom-dotted MCA21104CR
+                            td.border-bottom-dotted Accounting and Management Control
+                            td.border-bottom-dotted 4
+                            td.border-bottom-dotted CR
+
+                        //- Discipline Centric
+                        tr 
+                            th(colspan=5).border-bottom-dotted Discipline Centric Elective Courses (8 Credits)
+                        tr
+                            td 5.
+                            td MCA21105DCE
+                            td Discrete Mathematics
+                            td DCE
+                            td 4
+                        tr
+                            td 6.
+                            td MCA21106DCE
+                            td Numerical Techniques
+                            td DCE
+                            td 4
+                        tr
+                            td.border-bottom-dotted 7.
+                            td.border-bottom-dotted MCA21107DCE
+                            td.border-bottom-dotted Computer Architecture and ALP
+                            td.border-bottom-dotted DCE
+                            td.border-bottom-dotted 4
+
+                        //- OE
+                        tr 
+                            th(colspan=5).border-bottom-dotted OE (2 Credits) For Students of other Departments
+                        tr
+                            td.border-bottom-solid-bold 8.
+                            td.border-bottom-solid-bold MCA21101OE
+                            td.border-bottom-solid-bold Fundamentals of Computers
+                            td.border-bottom-solid-bold OE
+                            td.border-bottom-solid-bold 
+
+                        //- Semester 2
+                        tr
+                            th(colspan=5).border-bottom-solid Semester - II
+
+                        //- Headers
+                        tr 
+                            th.border-bottom-solid S. No.
+                            th.border-bottom-solid Course Code 
+                            th.border-bottom-solid Course Name
+                            th.border-bottom-solid Course Type
+                            th.border-bottom-solid Credits
+
+                        //- Core Credits
+                        tr 
+                            th(colspan=5).border-bottom-dotted Core Credits (14 Credits)
+                        tr
+                            td 1.
+                            td MCA21201CR
+                            td Data Structures using C++
+                            td CR
+                            td 4
+                        tr
+                            td 2.
+                            td MCA21202CR
+                            td Python
+                            td CR
+                            td 2
+                        tr
+                            td 3.
+                            td MCA21203CR
+                            td Artificial Intelligence
+                            td CR
+                            td 4
+                        tr
+                            td.border-bottom-dotted 4.
+                            td.border-bottom-dotted MCA21204CR
+                            td.border-bottom-dotted Software Engineering
+                            td.border-bottom-dotted CR
+                            td.border-bottom-dotted 4
+
+                        //- Discipline Centric
+                        tr 
+                            th(colspan=5).border-bottom-dotted Discipline Centric Elective Courses (8 Credits)
+                        tr
+                            td 5.
+                            td MCA21205DCE
+                            td Web Programming
+                            td DCE
+                            td 4
+                        tr
+                            td 6.
+                            td MCA21206DCE
+                            td Cryptography and Network Security
+                            td DCE
+                            td 4                        
+                        tr
+
+                            td.border-bottom-dotted 7.
+                            td.border-bottom-dotted MCA21207DCE
+                            td.border-bottom-dotted Computer Graphics and Multimedia
+                            td.border-bottom-dotted DCE
+                            td.border-bottom-dotted 4
+
+                        //- OE
+                        tr 
+                            th(colspan=5).border-bottom-dotted OE (2 Credits) For Students of other Departments
+                        tr
+                            td.border-bottom-solid-bold 8.
+                            td.border-bottom-solid-bold MCA21201OE
+                            td.border-bottom-solid-bold Web Designing
+                            td.border-bottom-solid-bold OE
+                            td.border-bottom-solid-bold 2
+
+                        //- Semester 3
+                        tr
+                            th(colspan=5).border-bottom-solid Semester - III
+
+                        //- Headers
+                        tr 
+                            th.border-bottom-solid S. No.
+                            th.border-bottom-solid Course Code 
+                            th.border-bottom-solid Course Name
+                            th.border-bottom-solid Course Type
+                            th.border-bottom-solid Credits
+
+                        //- Core Credits
+                        tr 
+                            th(colspan=5).border-bottom-dotted Core Credits (14 Credits)
+                        tr
+                            td 1.
+                            td MCA21301CR
+                            td Design and Analysis of Algorithms
+                            td CR
+                            td 4
+                        tr
+                            td 2.
+                            td MCA21302CR
+                            td Java Programming
+                            td CR
+                            td 4
+                        tr
+                            td 3.
+                            td MCA21303CR
+                            td Operating System
+                            td CR
+                            td 4
+                        tr
+                            td.border-bottom-dotted 4.
+                            td.border-bottom-dotted MCA21304CR
+                            td.border-bottom-dotted Machine Learning
+                            td.border-bottom-dotted CR
+                            td.border-bottom-dotted 2
+
+                        //- Discipline Centric
+                        tr 
+                            th(colspan=5).border-bottom-dotted Discipline Centric Elective Courses (8 Credits)
+                        tr
+                            td 5.
+                            td MCA21305DCE
+                            td Theory of Computation
+                            td DCE
+                            td 4
+                        tr
+                            td 6.
+                            td MCA21306DCE
+                            td Wireless and Mobile Communication
+                            td DCE
+                            td 4
+                        tr
+                            td.border-bottom-dotted 7.
+                            td.border-bottom-dotted MCA21307DCE
+                            td.border-bottom-dotted Organizational Behaviour
+                            td.border-bottom-dotted DCE
+                            td.border-bottom-dotted 4
+
+                        //- OE
+                        tr 
+                            th(colspan=5).border-bottom-dotted OE (2 Credits) For Students of other Departments
+                        tr
+                            td.border-bottom-solid-bold 8.
+                            td.border-bottom-solid-bold MCA21301OE
+                            td.border-bottom-solid-bold Fundamentals of Programming with C
+                            td.border-bottom-solid-bold OE
+                            td.border-bottom-solid-bold 2
+
+                        //- Semester 4
+                        tr
+                            th(colspan=5).border-bottom-solid Semester - III
+
+                        //- Headers
+                        tr 
+                            th.border-bottom-solid S. No.
+                            th.border-bottom-solid Course Code 
+                            th.border-bottom-solid Course Name
+                            th.border-bottom-solid Course Type
+                            th.border-bottom-solid Credits
+
+                        //- Core Credits
+                        tr 
+                            th(colspan=5).border-bottom-dotted Core Credits (14 Credits)
+                        tr
+                            td 1.
+                            td MCA21401CR
+                            td Project: Problem Identification
+                            td CR
+                            td 4
+                        tr
+                            td 2.
+                            td MCA21402CR
+                            td Project: Problem Analysis
+                            td CR
+                            td 4
+                        tr
+                            td.border-bottom-dotted 3.
+                            td.border-bottom-dotted MCA21403CR
+                            td.border-bottom-dotted Project: Dissertation
+                            td.border-bottom-dotted CR
+                            td.border-bottom-dotted 6
+
+                        //- Discipline Centric
+                        tr 
+                            th(colspan=5).border-bottom-dotted Discipline Centric Elective Courses (8 Credits)
+                        tr
+                            td 4.
+                            td MCA21404DCE
+                            td Project: In-Home Software Development
+                            td DCE
+                            td 4
+                        tr
+                            td 5.
+                            td MCA21404DCE
+                            td Project: In-Home Research Component
+                            td DCE
+                            td 4
+                        tr
+                            td 6.
+                            td MCA21406DCE
+                            td Project: Industrial Software Development
+                            td DCE
+                            td 4
+                        tr
+                            td.border-bottom-dotted 7.
+                            td.border-bottom-dotted MCA21407DCE
+                            td.border-bottom-dotted Project: Industrial Research Component
+                            td.border-bottom-dotted DCE
+                            td.border-bottom-dotted 4
+
+
+                        //- OE
+                        tr 
+                            th(colspan=5).border-bottom-dotted OE (2 Credits) For Students of other Departments
+                        tr
+                            td.border-right 8.
+                            td.border-right MCA21401OE
+                            td.border-right Management Information System
+                            td.border-right OE
+                            td.border-right 2
+
+                div.btn-two
+                    a(href="")
+                        button.btn-two Download Course Structure
+
+
+
+
+
+

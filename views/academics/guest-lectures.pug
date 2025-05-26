@@ -1,0 +1,62 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading Guest Lectures
+                p At our college, we believe in providing our students with enriching educational experiences beyond the traditional classroom setting. One way we achieve this is by inviting distinguished experts, industry professionals, and thought leaders to deliver guest lectures. These guest lectures serve as a valuable platform for our students to gain insights, broaden their perspectives, and engage with experts in various fields.
+
+                .line-above-heading 
+                h2.heading-with-top-border Discover
+
+                each guestLecture in guestLectures
+                    .text-card
+                        .text-card__heading
+                            span #{guestLecture.title}
+                        p #{guestLecture.description}
+                        .text-card__footer
+                            div
+                                svg(fill='#9fa4aa' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 512 512')
+                                    path(d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z")
+                                | #{new Date(guestLecture.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}
+                            if guestLecture.speaker
+                                div
+                                    svg(fill='#9fa4aa' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 512 512')
+                                        path(d='M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z')
+                                    | #{guestLecture.speaker}
+                            div
+                                svg(fill='#000000' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns='http://www.w3.org/2000/svg' version='1.1' viewbox='-2.5 0 32 32')
+                                    g#SVGRepo_bgCarrier(stroke-width='0')
+                                    g#SVGRepo_tracerCarrier(stroke-linejoin='round' stroke-linecap='round')
+                                    g#SVGRepo_iconCarrier
+                                        g#icomoon-ignore  
+                                        path(fill='#000000' d='M0 10.284l0.505 0.36c0.089 0.064 0.92 0.621 2.604 0.621 0.27 0 0.55-0.015 0.836-0.044 3.752 4.346 6.411 7.472 7.060 8.299-1.227 2.735-1.42 5.808-0.537 8.686l0.256 0.834 7.63-7.631 8.309 8.309 0.742-0.742-8.309-8.309 7.631-7.631-0.834-0.255c-2.829-0.868-5.986-0.672-8.686 0.537-0.825-0.648-3.942-3.3-8.28-7.044 0.11-0.669 0.23-2.183-0.575-3.441l-0.352-0.549-8.001 8.001zM1.729 10.039l6.032-6.033c0.385 1.122 0.090 2.319 0.086 2.334l-0.080 0.314 0.245 0.214c7.409 6.398 8.631 7.39 8.992 7.546l-0.002 0.006 0.195 0.058 0.185-0.087c2.257-1.079 4.903-1.378 7.343-0.836l-13.482 13.481c-0.55-2.47-0.262-5.045 0.837-7.342l0.104-0.218-0.098-0.221-0.031 0.013c-0.322-0.632-1.831-2.38-7.498-8.944l-0.185-0.215-0.282 0.038c-0.338 0.045-0.668 0.069-0.981 0.069-0.595 0-1.053-0.083-1.38-0.176z')
+                                | #{guestLecture.place}
+                            .text-card__footer--participants
+                                span
+                                    svg(xmlns='http://www.w3.org/2000/svg' fill='none' viewbox='0 0 24 24')
+                                        g#SVGRepo_bgCarrier(stroke-width='0')
+                                        g#SVGRepo_tracerCarrier(stroke-linejoin='round' stroke-linecap='round')
+                                        g#SVGRepo_iconCarrier
+                                            path(stroke-width='2' stroke='#ffffff' d='M17 8C17 10.7614 14.7614 13 12 13C9.23858 13 7 10.7614 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z')
+                                            path(stroke-linecap='round' stroke-width='2' stroke='#ffffff' d='M3 21C3.95728 17.9237 6.41998 17 12 17C17.58 17 20.0427 17.9237 21 21')
+                                span
+                                    svg(xmlns='http://www.w3.org/2000/svg' fill='none' viewbox='0 0 24 24')
+                                        g#SVGRepo_bgCarrier(stroke-width='0')
+                                        g#SVGRepo_tracerCarrier(stroke-linejoin='round' stroke-linecap='round')
+                                        g#SVGRepo_iconCarrier
+                                            path(stroke-width='2' stroke='#ffffff' d='M17 8C17 10.7614 14.7614 13 12 13C9.23858 13 7 10.7614 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z')
+                                            path(stroke-linecap='round' stroke-width='2' stroke='#ffffff' d='M3 21C3.95728 17.9237 6.41998 17 12 17C17.58 17 20.0427 17.9237 21 21')
+                                span
+                                    svg(xmlns='http://www.w3.org/2000/svg' fill='none' viewbox='0 0 24 24')
+                                        g#SVGRepo_bgCarrier(stroke-width='0')
+                                        g#SVGRepo_tracerCarrier(stroke-linejoin='round' stroke-linecap='round')
+                                        g#SVGRepo_iconCarrier
+                                            path(stroke-width='2' stroke='#ffffff' d='M17 8C17 10.7614 14.7614 13 12 13C9.23858 13 7 10.7614 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z')
+                                            path(stroke-linecap='round' stroke-width='2' stroke='#ffffff' d='M3 21C3.95728 17.9237 6.41998 17 12 17C17.58 17 20.0427 17.9237 21 21')
+                                span #{guestLecture.participants}

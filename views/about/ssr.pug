@@ -1,0 +1,29 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading SSR Report 
+                p The SSR (Self Study Report) is a valuable document that captures the comprehensive evaluation of Iqbal Institute of Technology and Management. It encompasses an in-depth analysis of our institution's academic programs, infrastructure, faculty development, student support services, and overall quality enhancement initiatives. The SSR serves as a roadmap for continuous improvement, guiding our efforts to provide an enriching and transformative learning environment. You can explore the SSR by downloading the PDF below.
+
+                .line-above-heading
+                h2.heading-with-top-border Explore the SSR
+
+                iframe.pdf-viewer.hidden(src="/data/documents/ssr-report.pdf")
+                .pdf.margin-top-sm.hidden
+                    .pdf__heading
+                    .pdf__container
+                    .pdf__download
+                        a(href="/data/documents/ssr-report.pdf" target="_blank")
+                            button Download
+
+    script.
+        //- Show pdf using pdfJs function defined in base.pug script.(For small devies)
+        pdfJs(["/data/documents/ssr-report.pdf"])
+
+

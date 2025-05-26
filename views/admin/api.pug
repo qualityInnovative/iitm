@@ -1,0 +1,72 @@
+extends ../layouts/cms-base.pug
+
+block styles 
+
+block content 
+    main.cont-sm.api 
+        if details.length != 1 
+            h3.results #{details.length} results found
+        .profile-cards 
+            if type == "student"
+                - for(let i = 0; i < details.length; i++) {
+                    .profile-cards__item 
+                        .profile-cards__item--image 
+                            a(href=`/data/profiles/${details[i].photograph}` target="_blank") 
+                                img(src="/data/imgs/profile-placeholder.jpg" alt="Profile Image")
+                        .profile-cards__item--details 
+                            h3 #{details[i].name} | #{details[i].studentId}
+                            span #{details[i].program}, Batch #{details[i].batch} | #{details[i].rollNo}
+                            if details[i].enrollmentNo
+                                span University Reg. No.: #{details[i].uniReg}
+                            if details[i].enrollmentNo
+                                span Enrollment Number: #{details[i].enrollmentNo}
+                        hr
+                        .profile-cards__item--information 
+                            .profile-cards__item--information__personal 
+                                h3 Personal Details 
+                                span
+                                    | Email: 
+                                    a(href=`mailto:`) #{details[i].emailId}
+                                span
+                                    | Phone: 
+                                    a(href=`tel:`) #{details[i].contact}
+                                span DOB: #{new Date(details[i].dob).toLocaleString('en-IN', {year: 'numeric', month: 'numeric', day: 'numeric'})}
+                                span Gender: #{details[i].gender}
+                                span Adhaar: #{details[i].adhaar}
+                                span Religion: #{details[i].religion}
+                                span Community: #{details[i].community} 
+                                span Category: #{details[i].category} 
+                            .profile-cards__item--information__parental 
+                                h3 Parental Details
+                                span Father's Name: #{details[i].fathersName}
+                                span Mother's Name: #{details[i].mothersName}
+                                span Parent Contact: #{details[i].parentContact}
+                            .profile-cards__item--information__residential
+                                h3 Residential Details
+                                span Country: #{details[i].country} 
+                                span State: #{details[i].state}
+                                span District: #{details[i].district}
+                                span Tehsil: #{details[i].tehsil}
+                                span Pincode: #{details[i].pincode} 
+                                span Address: #{details[i].address}
+                - }
+            else 
+                - for(let i = 0; i < details.length; i++) {
+                    .profile-cards__item 
+                        .profile-cards__item--image 
+                            a(href=`/data/profiles/${details[i].photograph}` target="_blank") 
+                                img(src="/data/imgs/profile-placeholder.jpg" alt="Profile Image")
+                        .profile-cards__item--details 
+                            h3 #{details[i].name} | #{details[i].eid}
+                            span #{details[i].designation}
+                        hr
+                        .profile-cards__item--information 
+                            .profile-cards__item--information__personal 
+                                h3 Personal Details 
+                                span
+                                    | Email: 
+                                    a(href=`mailto:`) #{details[i].email}
+                                span
+                                    | Phone: 
+                                    a(href=`tel:`) #{details[i].contact}
+                - }

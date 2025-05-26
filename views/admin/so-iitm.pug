@@ -1,0 +1,18 @@
+extends ../layouts/cms-base.pug
+
+block content 
+    main
+        .cont-sm.cms-admin
+            //- Buttons
+            .cms-admin-btns
+                //- Contact Submissions dash button
+                a(href="/cms/contact-form-submissions").cms-admin-btns-btn
+                    ion-icon(name="document-text" size="large")
+                    h3 Contact Submissions
+                    span Dashboard
+
+                //- Notifications dash button
+                a(href="/cms/admin-notifications").cms-admin-btns-btn
+                    ion-icon(name="notifications" size="large")
+                    h3 Notifications 
+                    span Dashboard

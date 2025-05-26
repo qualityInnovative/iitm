@@ -1,0 +1,179 @@
+//- This page recieves news and isAuthenticated from the render function. news contains the latest one news that is displayed on the page load. And isAuthenticated is a boolean that specifies if the interactor is user or admin. 
+
+extends ../layouts/base.pug
+
+block styles 
+    //- Open Graph meta tags
+    if news.length
+        meta(property="og:title" content=news[0].headline)
+        meta(property="og:description" content=news[0].news.split(" ").slice(0, 25).join(" ").replace(/<[^>]*>/g, ''))
+        meta(property="og:image" content=news[0].path)
+
+
+block content 
+    //- Sidebar
+    main.container-lg.news
+        //- News Sidebar
+        .news__sidebar 
+            //- Sidebar heading
+            h2 College News
+            //- News will be appended here dynamically
+
+        //- News
+        .news__news
+            //- If no news is 
+            if !news.length 
+                h1 no news here
+            else
+                //- News Heading
+                .news__news--heading
+                    //- Headline
+                    h1 #{news[0].headline}
+                    //- Date
+                    span #{new Date(news[0].date).toLocaleString('en-US', {day: 'numeric', month: 'long', year: 'numeric'})}
+                if isNewsAdmin
+                    button.btn-open-modal.btn-news-open-modal(data-link=`/cms/delete-news/${news[0].nid}`) delete
+
+                //- News
+                .news__news--content 
+                    //- News image/poster
+                    img(src=news[0].path alt="")
+                    //- News content.
+                    div
+                        - let newsContent = news[0].news
+                        != newsContent
+
+    script.
+
+        //- Variable to store limit and current offset to fetch data asynchronoulsy.
+        let limit = 10;
+        let offset = 0;
+
+        // Function to fetch news items from /fetch-news route
+        async function fetchNews() {
+            //- Retrieves current news id from url to send to /fetch-news route to exclude current shown news from sidebar. If it is first news then send -1 to tell the route to exclude first news from the sidebar
+
+            //- URL from where news is asynchronously fetched for sidebar
+            let url = `/community/fetch-news?limit=${limit}&offset=${offset}`;
+
+            let response = await fetch(url);
+            let news = await response.json();
+            return news;
+        }
+
+        //- Variable tracks if the interactor is user or admin
+        let isAdmin = false;
+
+        //- Function to print news
+        const printNews = (news) => {
+            //- If there are any elements in the array
+            if (news.length > 0) {
+                //- Create and array of html elements to append it to the newsContainer
+                var newsItems = news.map(function(item) {
+                    //- WE HAVE TO CREATE ARRAY OF BELOW HTML ELEMENTS FOR EACH NEWS ITEM RETURNED BY /fetch-news
+                    //- <div class="news__sidebar--item">
+                    //-     <div class="news__sidebar--item__news">
+                    //-         <a href="/news/x">Headline </a>
+                    //-     </div>
+                    //-     <div class="news__sidebar--item__date">
+                    //-         <ion-icon name="calendar" role="img" class="md hydrated"></ion-icon>
+                    //-         <span>Day, Month dd, yyyy</span>
+                    //-     </div>
+                    //- </div>
+
+                    //- Create anchor tag
+                    let a = document.createElement('a');
+                    a.setAttribute("href", `/community/news/${item.nid}`);
+
+                    const currNewsId = window.location.href.split("/")[window.location.href.split("/").length - 1] > 0 ? window.location.href.split("/")[window.location.href.split("/").length - 1] : -1
+
+                    if(item.nid == currNewsId) {
+                        a.classList.add("curr");
+                        a.classList.add("disabled-link");
+                    }
+
+                    a.textContent = item.headline
+
+                    //- Create div that is parent of above anchor tag and append that to this div
+                    let linkDiv = document.createElement("div");
+                    linkDiv.classList.add("news__sidebar--item__news");
+                    linkDiv.appendChild(a);
+
+                    //- Create div that is parent of icon and date
+                    let dateDiv = document.createElement("div");
+                    dateDiv.classList.add("news__sidebar--item__date")
+                    //- Create icon
+                    let icon = document.createElement("ion-icon");
+                    icon.setAttribute("name", "calendar")
+                    //- Create span that contains date and setup data format
+                    let span = document.createElement("span");
+                    const date = new Date(item.date).toLocaleString('en-US', {day: 'numeric', month: 'short', year: 'numeric'})
+                    span.textContent = date;
+                    //- Appends icon and span to its parent div
+                    dateDiv.appendChild(icon);
+                    dateDiv.appendChild(span);
+
+                    //- Create parent of linkDiv and dateDiv and append them to the parent
+                    let containerDiv = document.createElement("div");
+                    containerDiv.classList.add("news__sidebar--item");
+
+                    if(item.nid == currNewsId)
+                        containerDiv.classList.add("curr");
+
+                    containerDiv.appendChild(linkDiv);
+                    containerDiv.appendChild(dateDiv);
+
+                    attachEventListeners();
+
+                    return containerDiv;
+                });
+
+                //- For each html element in array, append it to the newsContainer
+                newsItems.forEach(function(item) {
+                    newsContainer.appendChild(item);
+                });
+            }
+        }
+
+        const newsContainer = document.querySelector(".news__sidebar");
+
+        // Bind scroll event listener to the scrollable div container to fetch data on scroll
+        newsContainer.addEventListener('scroll', async function() {
+            if (newsContainer.scrollTop + newsContainer.clientHeight >= newsContainer.scrollHeight) {
+                // append a new page of news items to the existing ones in the scrollable div newsContainer
+                fetchNews().then(news => {
+                    printNews(news)
+
+                    //- Updates offset
+                    offset += limit;
+                }).catch(function(error) {
+                    console.log(error);
+                });
+            }
+        });
+
+        //- Fetch initial news items
+        fetchNews().then(function(news) {
+            printNews(news);
+
+            offset += limit // Update offset
+        }).catch(function(error) {
+        console.log(error);
+        });
+
+        window.onload = function() {
+            let flag = window.location.href.split("/").pop() > 0 ? window.location.href.split("/").pop() : -1;
+            if (flag === -1) {
+                const firstItem = newsContainer.querySelector('div');
+                const firstLink = newsContainer.querySelector('div').querySelector("div").querySelector("a");
+                firstLink.classList.add("curr");
+                firstLink.classList.add("disabled-link");
+                firstItem.classList.add("curr");
+            }
+            attachEventListeners()
+        };
+
+block scripts
+    //- ION-ICON SCRIPTS
+    script(type='module' src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js')
+    script(nomodule='' src='https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js')

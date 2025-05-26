@@ -1,0 +1,115 @@
+extends ../layouts/base.pug
+
+block styles 
+    //- Open Graph Tags
+    meta(name="og:title", content="IITM - About")
+    meta(name="og:description", content="Iqbal Institute of Technology and Management (IITM) is a prestigious educational institution dedicated to providing a transformative learning experience to our students. As an NAAC accredited institution, approved by AICTE, recognized by the J and K government, and affiliated to the University of Kashmir, we are committed to upholding the highest standards of education and excellence.")
+
+    //- Meta Description
+    meta(name="description" content="Iqbal Institute of Technology and Management (IITM) is a prestigious educational institution dedicated to providing a transformative learning experience to our students. As an NAAC accredited institution, approved by AICTE, recognized by the J and K government, and affiliated to the University of Kashmir, we are committed to upholding the highest standards of education and excellence.")
+
+block content
+    include ../layouts/banner.pug
+    main.about-page.container-lg
+
+        h3.about-page__introduction At IITM, we take pride in nurturing our students to become more than just technical manpower. We strive to develop highly motivated and creative professionals with a deep understanding of their respective fields and a strong foundation of ethical values. Our approach to education goes beyond imparting theoretical knowledge; we believe in engaging students in practical learning experiences. 
+
+        .about-page__explained
+            div
+                p Nestled in the heart of Srinagar, the Iqbal Institute of Technology and Management (IITM) stands as a beacon of excellence in technical education. Established on June 01, 2006, IITM Srinagar boasts an impressive 2,45,025 sq. ft. campus, approximately 45 kanals, showcasing state-of-the-art infrastructure and facilities. The institute's Built-up Area spans an impressive 75,000 sq. ft., providing students with a conducive learning environment to nurture their intellectual growth.
+                p At IITM Srinagar, the pursuit of knowledge goes beyond conventional boundaries. As trailblazers in the field of education, the institution has led the way in fostering the next generation of technologists and professionals. Notably, IITM has spearheaded the establishment of an online testing center and a local academy affiliated with CISCO, bolstering students' expertise and equipping them for the digital age.
+                p With a commitment to academic excellence, IITM offers a diverse range of graduate and professional programs, empowering students to embrace a global perspective and attain industry-leading skills. A cornerstone of the institution's philosophy is the belief in nurturing holistic individuals, instilling in them not only technical prowess but also a sense of leadership, cooperation, cultural appreciation, ethical values, social responsibility, and healthy habits. By doing so, IITM aims to cultivate a dynamic workforce capable of contributing to the technological, economic, and social advancement of the state.
+                p Within the sprawling campus lies a sanctuary of knowledge - the 
+                    a(href="/academics/library").link-inside-p IITM Library. 
+                    | Home to a remarkable collection of 6700 volumes, the library covers an array of subjects, from computer science to English literature, religious scriptures, and various journals and magazines. The library's rich resources and conducive environment encourage students to embark on intellectual quests and broaden their horizons.
+                p IITM takes pride in being at the forefront of technological advancement. The entire campus is fully WIFI enabled, ensuring that students have seamless access to cutting-edge information and resources, enabling them to stay connected and engage in the ever-evolving digital landscape.
+                p Visionary in its approach, the institute's vision is unequivocal - to contribute significantly to society through excellence in technical education and produce a globally competitive workforce. This vision is achieved through a harmonious blend of education, training, and industry partnerships, nurturing individuals who can thrive and excel on a global stage. To realize its mission, IITM is committed to imparting quality professional and technical education that transcends boundaries, fostering a sense of national and global awareness.
+                p In addition to academic excellence, the institution aims to instill in its students a sense of leadership, cooperation, cultural appreciation, ethical values, social responsibility, and healthy habits - all crucial attributes for personal and societal growth.
+                p Furthermore, IITM serves as a social catalyst through its 
+                    a(href="/admissions/scholarships/sakhawat-centre").link-inside-p Sakhawat Center J&K, 
+                    | engaging in dedicated social service initiatives aimed at helping the underprivileged and promoting social upliftment. By combining academic prowess with a compassionate outlook, the institute seeks to make a lasting positive impact on the community it serves.
+                p In its pursuit of educational excellence, IITM is guided by ambitious objectives. These include the establishment and operation of educational institutions of the highest standards, wherein moral education holds a central place alongside academic pursuits. Moreover, the institution is committed to implementing comprehensive social service programs to uplift the disadvantaged and drive economic development.
+                p In essence, IITM Srinagar stands as a visionary institution dedicated to molding individuals into well-rounded professionals and conscientious citizens. With its world-class infrastructure, holistic educational approach, and commitment to societal welfare, IITM continues to be a beacon of hope and a source of inspiration for the region and beyond.
+            
+            iframe(src="https://www.youtube.com/embed/XKQTGSCO2OU" title="2022 Stem Scholarship Award Ceremony" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen)
+            
+        .line-above-heading
+        h2.about-page__key-facts-heading Key Facts
+        .about-page__key-facts
+            div
+                .about-page__key-facts--heading 
+                    h3 History
+                .about-page__key-facts--item
+                    h4 Incorporated 
+                    .line
+                    span 1999
+                .about-page__key-facts--item
+                    h4 Chairman  
+                    .line
+                    span Dr. Yousuful Umar
+                .about-page__key-facts--heading 
+                    h3 Campus
+                .about-page__key-facts--item
+                    h4 Location
+                    .line 
+                    a.link-underline-animate(href="https://www.google.com/maps/place/Iqbal+Institute+of+Technology+and+Management+(I.I.T.M)/@34.0477806,74.7718076,17z/data=!3m1!4b1!4m6!3m5!1s0x38e1902f3274d87f:0xbe87de3622d8769b!8m2!3d34.0477806!4d74.7739963!16s%2Fg%2F11cl_5by78" target="_blank")
+                        span Hyderpora, Srinagar
+                .about-page__key-facts--item
+                    h4 buildings  
+                    .line 
+                    span 7
+                .about-page__key-facts--item
+                    h4 Size  
+                    .line 
+                    span 2,45,025 sq. ft
+                .about-page__key-facts--item
+                    h4 playing field  
+                    .line 
+                    span 1,22,500 sq. ft
+                .about-page__key-facts--item
+                    h4 gardens + green spaces
+                    .line 
+                    span 10+
+                .about-page__key-facts--item
+                    h4 Students 
+                    .line 
+                    span 516
+                .about-page__key-facts--item
+                    h4 Total Employees (Faculty + Staff) 
+                    .line 
+                    span 45
+
+            //- div.about-page__key-facts--picture
+            img(src="/data/collegeImgs/college-1.png" alt="")
+
+        .section-news.about-page__latest
+            .section-news__cards 
+                .section-news__cards--card 
+                    img(src="/data/imgs/vision-mission-and-values-banner.jpg" alt="" loading="lazy")
+                    .section-news__cards--card__content
+                        h2 
+                            a(href="/about/vision-mission-and-values") Vision, Mission & Values
+                        p At Iqbal Institute of Technology and Management, our Vision, Mission, and Values serve as the guiding principles that shape our institution. Our vision reflects the ambitious direction we strive to achieve, our mission defines our purpose and goals, and our values form the core of our culture and operations...
+                        a(href="/about/vision-mission-and-values")
+                            button.btn-psu Explore
+                .section-news__cards--card 
+                    img(src="/data/imgs/accreditations-banner.jpg" alt="" , loading="lazy")
+                    .section-news__cards--card__content
+                        h2 
+                            a(href="/about/accreditations") Accreditations
+                        p We take pride in our commitment to maintaining the highest standards of quality in education. Our dedication to excellence has been recognized through prestigious accreditations. These accreditations serve as a testament to our unwavering pursuit of educational innovation and continuous improvement...
+                        a(href="/about/history")
+                            button.btn-psu Explore
+                .section-news__cards--card 
+                    img(src="/data/imgs/quality-assurance-banner.jpg" alt="" loading="lazy")
+                    .section-news__cards--card__content
+                        h2 
+                            a(href="/about/quality-assurance") Quality Assurance
+                        p At Iqbal Institute of Technology and Management, we are committed to delivering a top-quality educational experience to our students. To ensure the highest standards of excellence, we have implemented a comprehensive Quality Assurance framework. This framework encompasses various processes and...
+                        a(href="about/quality-assurance/")
+                            button.btn-psu Explore
+
+
+    script.
+        equalizeCardHeights(".section-news__cards--cards")
+

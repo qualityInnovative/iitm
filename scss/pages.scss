@@ -1,0 +1,57 @@
+.page-layout {
+    width: 90vw;
+    margin: 0 auto;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    @include devices(1500px) {
+        width: 92vw;
+    }
+
+    @include devices(1280px) {
+        width: 95vw;
+    }
+
+    @include devices(968px) {
+        flex-direction: column;
+        align-items: center;
+        // width: 98vw;
+    }
+
+    .main {
+        margin-top: 50px;
+        width: 50vw;
+
+        @include devices(1500px) {
+            width: 60vw;
+        }
+
+        @include devices(1280px) {
+            width: 70vw;
+        }
+
+        @include devices(968px) {
+            width: 85vw;
+        }
+
+        h1.page-heading {
+            text-align: left;
+            font-size: 3rem;
+            color: $primary-color;
+            line-height: 4rem;
+
+            @include devices(968px) {
+                text-align: center;
+            }
+        }
+
+        p {
+            font-weight: 350;
+            text-align: justify;
+            line-height: 30px;
+            margin-bottom: 20px;
+        }
+    }
+}

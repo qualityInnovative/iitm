@@ -1,0 +1,53 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading Associations
+                p At IITM, we are proud to be associated with renowned organizations and institutions that contribute to the overall development and success of our college. Our associations include Kashmir University, AICTE (All India Council for Technical Education), and the Department of Higher Education (Government of India). These collaborations provide us with valuable resources, support, and opportunities that enhance the quality of education and research at IITM.
+
+                //- Explore
+                .line-above-heading
+                h2.heading-with-top-border Explore
+                //- Cards container
+                .courses-cards.align-cards-center
+                    //- Card
+                    article.courses-card
+                        //- Card image
+                        div 
+                            img(src="../data/imgs/uok.jpg" alt="alt")
+                        //- Card content
+                        .courses-card__content
+                            span.courses-card__content--title University of Kashmir
+                            span.courses-card__content--subtitle Partnering with Kashmir University for Academic Excellence and Research Collaboration.
+                            p.courses-card__content--description Through our affiliation with Kashmir University, we ensure a high-quality education, access to state-of-the-art research facilities, and opportunities for collaborative research projects. Join us to experience academic excellence and enriching learning experiences within a prestigious institution.
+                            //- Card button
+                            a(href="/academics/associations/uok")
+                                button.btn-psu Explore
+
+                    //- Card
+                    article.courses-card
+                        div 
+                            img(src="../data/imgs/aicte.jpg" alt="alt")
+                        .courses-card__content
+                            span.courses-card__content--title AICTE
+                            span.courses-card__content--subtitle Ensuring Quality Education and Industry-Relevant Curriculum through AICTE Recognition.
+                            p.courses-card__content--description Being approved by AICTE guarantees our commitment to quality education, industry-aligned curriculum, and enhanced job prospects. Our association offers access to research grants, faculty development programs, and valuable industry collaborations. Prepare for a successful career with us.
+                            a(href="/academics/associations/aicte")
+                                button.btn-psu Explore
+
+                    //- Card
+                    article.courses-card
+                        div 
+                            img(src="../data/imgs/higher-education.jpg" alt="alt")
+                        .courses-card__content
+                            span.courses-card__content--title Department of Higher Education
+                            span.courses-card__content--subtitle Recognized by the Government for Quality Education and National Contribution.
+                            p.courses-card__content--description Our recognition by the Department of Higher Education validates our dedication to providing quality education. Benefit from government scholarships and grants, and contribute to national education initiatives. Join us to be a part of a progressive learning environment and make a difference.
+                            a(href="/academics/associations/higher-education")
+                                button.btn-psu Explore

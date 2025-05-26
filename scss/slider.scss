@@ -1,0 +1,106 @@
+.slider {
+  // background-color: red;
+  height: 85vh;
+  box-sizing: content-box;
+
+  video {
+    position: fixed;
+    bottom: -100px;
+    right: 50%; /* Center the video horizontally */
+    transform: translateX(50%); /* Center the video horizontally */
+    min-width: 100vw; /* Use full viewport width */
+    min-height: 100%;
+    width: auto;
+    height: 85vh;
+    z-index: -100;
+    overflow: hidden;
+    object-fit: cover;
+    object-position: center; /* Center the video within the container */
+
+    // Parallex scrolling effect
+    // background-attachmenlt: fixed;
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-size: cover;
+  }
+
+  .slider__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+    padding: 0px 75px;
+    background-color: rgba($primary-color, $alpha: 0.5);
+
+    @include devices(tablet) {
+      padding: 0px 50px;
+    }
+
+    h1 {
+      color: white;
+      font-size: 3.5rem;
+      font-weight: 600;
+      font-style: italic;
+      margin-top: 5vh;
+      transform: translateY(-50px);
+
+      @include devices(phone) {
+        font-size: 3rem;
+        transform: translateY(0px);
+      }
+    }
+
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      // transform: translateY(-50px);
+    }
+
+    a {
+      transform: translateY(-50px);
+      margin: 10px 5px;
+      // padding: 15px 20px;
+      @include devices(phone) {
+        transform: translateY(0px);
+      }
+
+      &:nth-child(odd) {
+        color: black;
+        border: 2px solid lightgray;
+      }
+      &:nth-child(even) {
+        color: white;
+        border: 2px solid $secondary-color;
+      }
+
+      div.odd {
+        background-color: lightgray;
+        text-shadow: 1px 1px 3px grey;
+
+        &:hover {
+          background-color: rgb(193, 193, 193);
+        }
+      }
+      div.even {
+        background-color: $secondary-color;
+        text-shadow: 1px 1px 3px grey;
+
+        &:hover {
+          background-color: $secondary-color-hover;
+        }
+      }
+    }
+    .link {
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 0.9em;
+      display: inline-block;
+      text-align: center;
+    }
+  }
+}

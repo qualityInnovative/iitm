@@ -1,0 +1,309 @@
+//- This view recieves notifications from render function that contains first 25 notifications. Other are fetched asynchronously on page scroll.
+
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+    main.notifications-page.cont-sm.margin-top-md
+        select.select-input#notification-category(name="category" required="")
+            option(value="" disabled selected) Select Category
+            option(value=-1) All 
+            option(value="academics") Academics: Exams, Class Schedules, Assignments & Academic 
+            option(value="events") Events: Extracurricular Activities, Workshops, Seminars, Conferences & Cultural Events
+            option(value="important-dates") Important Dates: Registration Deadlines, Fee Payment Dates, Admissions, Holidays & Other Significant Dates
+            option(value="scholarships-and-financial-aid") Scholarships & Financial Aid:  Scholarships, Grants & Financial Assistance Programs
+            option(value="job-opportunities") Job Opportunities: Job Openings, Internships & Career Fairs
+            option(value="clubs-and-organizations") Clubs & Organizations: Clubs, Student Organizations & Their Activities.
+            option(value="health-and-wellness") Health & Wellness: Health Services, Wellness Programs & Counseling
+            option(value="sports-and-recreation") Sports and Recreation: Sports Events, Tournaments, Fitness Classes & Recreational Activities
+            option(value="campus-news") Campus News: General News & Announcements About The Institution, Faculty & Staff
+
+        .notifications-container.margin-top-sm
+            //- Container to hold notifications
+
+        button.load-more.btn-secondary.margin-top-sm.margin-bottom-xl
+            ion-icon(name="cloud-download-sharp")
+            | load more
+
+        //- End message. Hidden by default
+        div.end-message.margin-top-sm.margin-bottom-lg.hidden
+            | No more notification
+            br
+            | :-|
+
+    script.
+
+        const notificationsContainer = document.querySelector(".notifications-container");
+        const notificationCatSelect = document.querySelector("#notification-category");
+        const loadMoreBtn = document.querySelector(".load-more");
+
+        //- Variable tracks if the interactor is user or admin
+        let isAdmin = false;
+
+        //- Function to authenticate admin
+        const authenticate = async() => {
+            let url = `/authenticate`;
+            return fetch(url)
+            .then(response => {
+                if(response.ok)
+                    return response.json();
+                else 
+                    throw new Error('Failed to authenticate');
+            })
+            .then(data => {
+                return data;
+            })
+        }
+
+        //- Function to copy to clipboard
+        const copyToClipboard = (id) => {
+            let input = document.createElement("input");
+            input.value = `iitm.edu.in/notifications/${id}`;
+            document.body.appendChild(input);
+            input.select();
+            input.setSelectionRange(0,99999); //- For mobile devices
+            document.execCommand("copy");
+            document.body.removeChild(input);
+
+            //- Show copy toast
+            document.querySelector(`#copy-toast-${id}`).style.display = "flex";
+            setTimeout(() => {
+                document.querySelector(`#copy-toast-${id}`).style.display = "none";
+            }, 2000)
+        }
+
+        //- Function to print notifications on first load and load more action
+        //- If flag is set to 0, notifications container needs to be cleared first and then notfications should be inserted into the container and if flag is set to 1, notifications needs to be appended below already present notifications in the container.
+        const printNotifications = (notifications, flag) => {
+            //- If there are any notifications passed
+            if (notifications.length > 0) {
+                let viewBtn = "";
+                let delBtn = "";
+
+                if(flag == 0)
+                    notificationsContainer.innerHTML = "";
+
+                //- For each element of array insert a notification item in the notifications container
+                for(let i = 0; i < notifications.length; i++) {
+                    //- Remove previous value of viewBtn
+                    viewBtn = "";
+
+                    //- If notification has a file linked with it then show view button
+                    if(notifications[i].path !== null) {
+                        viewBtn = `
+                            <a class="view open-pvm" href=${notifications[i].path} target="_blank">
+                                <button>
+                                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" height="1em" viewbox="0 0 576 512">
+                                        <path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"></path>
+                                    </svg>
+                                    View
+                                </button>
+                            </a>
+                        `;
+                    }
+
+                    //- If it is admin then show delete button
+                    if(isAdmin) {
+                        delBtn = `
+                            <a class="delete" href="javascript:void(0)">
+                                <button class="btn-open-modal" data-link=/cms/delete-notification/${notifications[i].nid}>
+                                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" height="1em" viewbox="0 0 448 512">
+                                        <path
+                                        d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                                    </svg>
+                                    Delete
+                                </button>
+                            </a>
+                        `;
+                    }
+
+                    //- If notification has links attached with it then show them
+                    let linksHTML = document.createElement("div");
+                    linksHTML.className = "text-card__attached-links";
+                    if(notifications[i].links !== null && notifications[i].links !== "") {
+                        linksHTML.innerHTML = "<p>Attached Links:</p>"
+                        const links = notifications[i].links.split(",");
+                        links.forEach(link => {
+                            //- If link does not have protocol then add http:// to it
+                            let protocol = ""
+                            if(!link.includes("https://") && !link.includes("http://"))
+                                protocol = "http://"
+
+                            linksHTML.insertAdjacentHTML("beforeend", `<a href=${protocol}${link} target="_blank">${link.split("").slice(0, 20).join("")}...</a>`);
+                        })
+                    }
+
+                    
+                    let audience = notifications[i].audience;
+                    if(audience == "ug")
+                        audience = "Undergrads";
+                    else if(audience == "pg")
+                        audience = "Postgrads";
+                    else if(audience == "cs")
+                        audience = "Computer Science Students";
+                    else if(audience == "ms")
+                        audience = "Management Students";
+                    else if(audience == "bca")
+                        audience = "BCA Students";
+                    else if(audience == "bba")
+                        audience = "BBA Students";
+                    else if(audience == "mca")
+                        audience = "MCA Students";
+                    else if(audience == "mba")
+                        audience = "MBA Students";
+                    else
+                        audience = "All";
+
+                    let item = `
+                        <div class="text-card">
+                            <p>${notifications[i].notification}</p>
+                            <div class="text-card__copy-toast" id="copy-toast-${notifications[i].nid}">Copied</div>
+                            <div class="text-card__copy-btn">
+                                <button onclick=copyToClipboard(${notifications[i].nid})>
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="26" width="22" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg>
+                                </button>
+                            </div>
+                            ${linksHTML.outerHTML}
+                            <div class="text-card__footer margin-top-xs">
+                                <div>
+                                    <svg fill="#9fa4aa" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512">
+                                        <path d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path>
+                                    </svg>
+                                    ${new Date(notifications[i].date).toLocaleString('en-US', {day: 'numeric', month: 'short', year: 'numeric'})}
+                                </div>
+                                <div>
+                                    <svg fill="#9fa4aa" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512">
+                                        <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path>
+                                    </svg>
+                                    ${audience}
+                                </div>
+                            </div>
+                            ${viewBtn}
+                            ${delBtn}
+                        </div>
+                    `
+                    notificationsContainer.insertAdjacentHTML("beforeend", item)
+                }
+            }
+        }
+
+        //- Set limit and offset to fetch notifications from database
+        const limit = 25;
+        let offset = 0;
+
+        //- Varibale tracks the category of notification user is interested in. (-1 fetches all)
+        let notificationCategory = -1;
+
+        //- Function to fetch notification from server asynchronously
+        async function fetchNotifications(limit, offset, category) {
+            let url = `/fetch-notifications?limit=${limit}&offset=${offset}&category=${category}`;
+            let response = await fetch(url);
+            let notifications = await response.json();
+
+            return notifications;
+        }
+
+        notificationCatSelect.addEventListener("change", function() {
+            //- Reset offset
+            offset = 0;
+
+            //- Update notification category
+            notificationCategory = this.value;
+
+            //- Fetch notifications user is interested in.
+            fetchNotifications(limit, offset, notificationCategory).then(notifications => {
+
+                //- Manage load more and end message.
+                manageLoadMore(checkEnd(notifications))
+
+                //- If no notifications of that category are present, show no notifications message
+                if(notifications.length == 0) {
+                    notificationsContainer.innerHTML = `
+                    <div class='empty-container margin-bottom-md'>
+                        <ion-icon name="alert-circle-sharp"></ion-icon>
+                        No Notifications Here
+                        <br>
+                        Come Back Later
+                        <br>
+                        ;-)
+                    </div>`;
+
+                    //- Here too end-message will be shown but we already showed one("No Notifications Here!") so need to hide end-message
+                    document.querySelector(".end-message").classList.add("hidden");
+                }
+
+                printNotifications(notifications, 0);
+
+                //- Attach event listeners(confirm-modal listeners) to delete button(if present).
+                attachEventListeners();
+                attachPdfEL();
+
+                //- Update offset
+                offset += limit
+
+            }).catch(err => console.log(err))
+        });
+
+        //- On page load check if the interactor is user or admin then fetch notifications. If it was admin, set isAdmin variable to true in order to add delete buttons to notifications while inserting them in the container.
+        authenticate().then(res => {
+            if(res)
+                isAdmin = true;
+
+            return fetchNotifications(limit, offset, notificationCategory);
+        })
+        .then((notifications) => {
+            printNotifications(notifications, 0);
+
+            manageLoadMore(checkEnd(notifications))
+
+            //- Attach event listeners(confirm-modal listeners) to delete button(if present).
+            attachEventListeners();
+            attachPdfEL();
+
+            //- Update offset
+            offset += limit;
+        }).catch((error) => console.log(error));
+
+        //- Load more functionality
+        loadMoreBtn.addEventListener("click", () => {
+            //- Fetches next 25 notifications of current category prints them, updates offset, attaches event listeners, manages load more and end message
+            fetchNotifications(limit, offset, notificationCategory)
+            .then(notifications => {
+                printNotifications(notifications, 1);
+
+                //- Update offset
+                offset += limit;
+
+                //- Attach event listeners(confirm-modal listeners) to delete button(if present).
+                attachEventListeners();
+                attachPdfEL();
+
+                manageLoadMore(checkEnd(notifications))
+
+            }).catch(err => console.log(err))
+        })
+
+        /////////////////////////////////////////////////////////////////////
+        //- HELPER FUNCTIONS
+
+        //- Checks if all notifications are fetched or not.
+        const checkEnd = (notifications) => {
+            //- If returned array has length 0 or less than 25 then all notificaitons has been fetched
+            if(notifications.length == 0 || notifications.length < 25)
+                end = true;
+            else
+                end = false;
+
+            return end;
+        }
+
+        //- Shows and hides load more button and end message.
+        const manageLoadMore = (end) => {
+            if(end) {
+                loadMoreBtn.classList.add("hidden");
+                document.querySelector(".end-message").classList.remove("hidden");
+            } else {
+                loadMoreBtn.classList.remove("hidden");
+                document.querySelector(".end-message").classList.add("hidden");
+            }
+        }

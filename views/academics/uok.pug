@@ -1,0 +1,19 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading University of Kashmir
+                p Iqbal Institute of Technology and Management is proud to be affiliated with Kashmir University, a prestigious educational institution known for its academic excellence and rich heritage. This affiliation serves as a testament to our commitment to providing high-quality education and upholding the standards set by Kashmir University.
+                p As an affiliated college, we benefit from the expertise of Kashmir University's faculty members who contribute to our academic programs and curriculum development. This collaboration ensures that our courses are aligned with the university's guidelines and industry requirements. It also allows us to tap into the vast knowledge base and research facilities available at Kashmir University, providing our students with access to cutting-edge research opportunities.
+                p Through our affiliation, students at IITM have the advantage of receiving a degree from Kashmir University upon successful completion of their programs. This recognition adds value to their qualifications and opens doors to numerous career opportunities. Additionally, our association with Kashmir University enables us to participate in intercollegiate events, competitions, and academic conferences, fostering a vibrant and enriching learning environment for our students.
+
+                .btn-yellow-bg.margin-top-sm
+                    .btn-yellow-bg__overlay
+                    a(href="https://www.kashmiruniversity.net/" target="_blank")
+                        button University of Kashmir

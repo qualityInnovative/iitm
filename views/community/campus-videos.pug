@@ -1,0 +1,150 @@
+extends ../layouts/base.pug
+
+block content
+    include ../layouts/banner.pug
+    main.academics-page.container-lg
+
+        .line-above-heading.margin-top-sm
+        h2.heading-with-top-border Campus Videos
+
+        .video-cont.margin-top-xs
+            //- Container to hold campus videos
+
+        button.load-more.btn-secondary.margin-top-sm.margin-bottom-xl
+            ion-icon(name="cloud-download-sharp")
+            | load more
+
+        //- End message. Hidden by default
+        div.end-message.margin-top-sm.margin-bottom-lg.hidden
+            | No more videos
+            br
+            | :-|
+
+    script.
+        const videoCont = document.querySelector('.video-cont');
+        const loadMoreBtn = document.querySelector('.load-more');
+
+        //- Variable tracks if the interactor is user or admin
+        let isAdmin = false;
+
+        const authenticate = async() => {
+            let url = `/authenticate-videos-admin`;
+            return fetch(url)
+            .then(response => {
+                if(response.ok)
+                    return response.json();
+                else 
+                    throw new Error('Failed to authenticate');
+            })
+            .then(data => {
+                return data;
+            })
+        }
+
+        //- Set limit and offset to fetch videos from database
+        let limit = 6;
+        let offset = 0;
+
+        //- Function to fetch videos from server asynchronously
+        async function fetchVideos(offset, limit) {
+            let url = `/community/fetch-campus-videos?offset=${offset}&limit=${limit}`;
+            let response = await fetch(url);
+            let videos = await response.json();
+            return videos;
+        }
+
+        //- Function to create a video element
+        const printVideos = (videos) => {
+            if(videos.length > 0) {
+                let delBtn = "";
+
+                videos.forEach(video => {
+                    //- If it is admin then show delete button
+                    if(isAdmin) {
+                        delBtn = `
+                            <a class="delete" href="javascript:void(0)">
+                                <button class="btn-open-modal" data-link=/cms/delete-video/${video.vid}>
+                                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" height="1em" viewbox="0 0 448 512">
+                                        <path
+                                        d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                                    </svg>
+                                    Delete  
+                                </button>
+                            </a>
+                        `;
+                    }
+
+                    let item = `
+                        <div>
+                            <iframe src="${video.link}" title="${video.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+                            ${delBtn}
+                        </div>
+                    `
+
+                    videoCont.insertAdjacentHTML('beforeend', item);
+                })
+            }
+        }
+
+        //- On page load check if the interactor is user or admin then fetch videos. If it was admin, set isAdmin variable to true in order to add delete buttons to videos while inserting them in the container.
+        authenticate().then(res => {
+            if(res)
+                isAdmin = true;
+
+            return fetchVideos(offset, limit);
+        })
+        .then((videos) => {
+            printVideos(videos);
+
+            manageLoadMore(checkEnd(videos))
+
+            //- Attach event listeners(confirm-modal listeners) to delete button(if present).
+            attachEventListeners();
+
+            //- Update offset
+            offset += limit;
+        }).catch((error) => console.log(error));
+
+        //- Load more functionality
+        loadMoreBtn.addEventListener("click", () => {
+            //- Fetches next 6 videos of current category prints them, updates offset, attaches event listeners, manages load more and end message
+            fetchVideos(offset, limit)
+            .then(videos => {
+                printVideos(videos);
+
+                //- Update offset
+                offset += limit;
+
+                //- Attach event listeners(confirm-modal listeners) to delete button(if present).
+                attachEventListeners();
+
+                manageLoadMore(checkEnd(videos))
+
+            }).catch(err => console.log(err))
+        })
+
+        /////////////////////////////////////////////////////////////////////
+        //- HELPER FUNCTIONS
+
+        //- Checks if all videos are fetched or not.
+        const checkEnd = (videos) => {
+            //- If returned array has length 0 or less than 25 then all notificaitons has been fetched
+            if(videos.length == 0 || videos.length < 6)
+                end = true;
+            else
+                end = false;
+
+            return end;
+        }
+
+        //- Shows and hides load more button and end message.
+        const manageLoadMore = (end) => {
+            if(end) {
+                loadMoreBtn.classList.add("hidden");
+                document.querySelector(".end-message").classList.remove("hidden");
+            } else {
+                loadMoreBtn.classList.remove("hidden");
+                document.querySelector(".end-message").classList.add("hidden");
+            }
+        }

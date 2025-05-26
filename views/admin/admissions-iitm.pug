@@ -1,0 +1,106 @@
+extends ../layouts/cms-base.pug
+
+block styles 
+
+block content 
+    main.cont-sm 
+        form.form-1.margin-top-sm(action="/cms/admissions-iitm" method="get")
+            h3 Filter Admissions
+
+            select.form-input(name="type" required="")
+                - var select0 = false 
+                - var select1 = false
+                if type == "0"
+                    - select0 = true
+                else
+                    - select1 = true
+
+                option(value="0" selected=select0) New Admissions
+                option(value="1" selected=select1) Admitted
+            .center 
+                div 
+                    input.form-input.half(type="text" name="course" placeholder="Course" autocomplete="off" value=course)
+                div 
+                    input.form-input.half(type="text" name="year" placeholder="Year" autocomplete="off" value=year)
+            button(type="submit") Filter
+
+        .line-above-heading
+        h3.heading-with-top-border.uppercase
+            if type == "0"
+                if admissions.length > 0
+                    | #{admissions.length} new admissions for #{course} #{year}
+                else if admissions.length == 1
+                    | #{admissions.length} new admission for #{course} #{year}
+                else 
+                    | No admissions yet :-(
+            else 
+                if admissions.length > 0
+                    | #{admissions.length} #{course} students admitted in #{year}
+                else if admissions.length == 1
+                    | #{admissions.length} #{course} student admitted in #{year}
+                else 
+                    | No #{course} student admitted in #{year} :-(
+
+        .new-admissions.margin-top-sm 
+            each admission in admissions
+                .new-admissions__item
+                    span.new-admissions__item--date #{new Date(admission.date).toLocaleString("en-US", {month:"short", day:"numeric", year:"numeric"})}
+                    h4 Personal Details 
+                    div
+                        span.new-admissions__item--title Name: 
+                        span #{admission.name}
+                    div
+                        span.new-admissions__item--title Parentage: 
+                        span #{admission.parentage}
+                    div
+                        span.new-admissions__item--title Address: 
+                        span #{admission.address}
+                    h4 Admission Details
+                    div
+                        span.new-admissions__item--title Qualification: 
+                        span #{admission.qualification}
+                    div
+                        span.new-admissions__item--title Course Interested In: 
+                        span.uppercase #{admission.interestedIn}
+                    div
+                        span.new-admissions__item--title Application Number: 
+                        span #{admission.applicationNo}
+                    h4 Contact Details
+                    div
+                        span.new-admissions__item--title Phone: 
+                        a(href=`tel:${admission.phone}`)
+                            span #{admission.phone}
+                    div
+                        span.new-admissions__item--title Email:
+                        a(href=`mailto:${admission.email}`)
+                            span #{admission.email}
+                    if admission.remark
+                        h4 Remark
+                        span #{admission.remark}
+
+                    if type == "0"
+                        button.new-admissions__itme--admit-btn(data-id = admission.aid) Admit
+
+
+    script.
+        const admitBtns = document.querySelectorAll(".new-admissions__itme--admit-btn");
+
+        admitBtns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const id = e.target.dataset.id;
+                fetch(`/cms/admissions-iitm/admit-student/${id}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({id})
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    if(data.status == 1) {
+                        btn.textContent = "Admitted";
+                    }
+                })
+            })
+        })
