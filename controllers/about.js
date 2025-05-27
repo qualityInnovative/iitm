@@ -77,7 +77,7 @@ exports.getAbout = (req, res, next) => {
         `IITM - ${pageTitle}`,
         "/",
         "/data/collegeImgs/college-1.png",
-        '"Empowering students to thrive in their careers through transformative education at IITM"'
+        '"Empowering students to thrive in their careers through transformative education at IITM hello world"'
       ),
       { isAuthenticated: req.session.isLoggedIn }
     )
