@@ -1,0 +1,25 @@
+extends ../layouts/cms-base.pug
+
+block content
+  .visionaries-container
+    h1 Manage Visionaries
+    a.button(href="/cms/admin-visionaries/new") Add New Visionary
+
+    if successMessage
+      .alert.success= successMessage
+    if errorMessage
+      .alert.error= errorMessage
+
+    .visionaries-list
+      each visionary in visionaries
+        .visionary-card(data-id=visionary.id)
+          .visionary-image
+            img(src=visionary.image_path, alt=visionary.name)
+          .visionary-details
+            h3= visionary.name
+            p= visionary.role
+            p= visionary.title
+            .actions
+              a.button(href=`/cms/admin-visionaries/${visionary.id}/edit`) Edit
+              form.inline-form(method="POST" action=`/cms/admin-visionaries/${visionary.id}/delete`)
+                button.button.danger(type="submit") Delete

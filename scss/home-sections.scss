@@ -61,6 +61,16 @@ section.section-statistics {
     margin-bottom: 30px;
   }
 
+  .section-statistics__tab span.suffix {
+    margin-left: 0px;
+    font-size: 2.5em;
+    color: #14416f;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+    
+  }
+
   ul {
     list-style-type: none;
     display: flex;
@@ -89,6 +99,7 @@ section.section-statistics {
     @include devices(720px) {
       width: 75vw;
     }
+
     a {
       font-weight: 400;
       color: black;
@@ -142,9 +153,9 @@ section.section-statistics {
           transition: --num 3s;
           counter-set: num var(--num);
           // font: 800 40px system-ui;
-          &::before {
-            content: counter(num);
-          }
+          // &::before {
+          //   content: counter(num);
+          // }
 
           // &:hover {
           //     --num: 100;
@@ -168,6 +179,7 @@ section.section-statistics {
       font-size: 1.1em;
       margin-bottom: 25px;
     }
+
     // margin-bottom: 500px;
   }
 }
@@ -191,9 +203,11 @@ section.section-carousal {
   margin: 0;
   padding-bottom: 75px;
 }
+
 .section-news {
   background-color: #f0f0f1;
   padding-bottom: 50px !important;
+
   &__cards {
     transform: translateY(-50px);
     display: flex;
@@ -230,6 +244,7 @@ section.section-carousal {
           transform: translateY(-30px);
         }
       }
+
       // @include devices(tablet) {
       //     width: 300px;
       // }
@@ -408,7 +423,7 @@ section.section-carousal {
         opacity: 1;
       }
 
-      &:hover > img {
+      &:hover>img {
         opacity: 0.7;
         scale: 1.1;
       }
@@ -606,6 +621,7 @@ section.section-carousal {
           grid-row-end: 13;
         }
       }
+
       &-10 {
         grid-column-start: 4;
         grid-column-end: 6;
@@ -1023,6 +1039,7 @@ section.section-carousal {
           font-style: italic;
           font-size: 1.5em;
           margin-bottom: 10px;
+
           @include devices(tablet) {
             text-align: center;
           }
@@ -1035,12 +1052,10 @@ section.section-carousal {
             font-weight: 600;
             color: $secondary-color;
             overflow: hidden;
-            background: linear-gradient(
-              to right,
-              $secondary-color,
-              $secondary-color 50%,
-              #14416f 50%
-            );
+            background: linear-gradient(to right,
+                $secondary-color,
+                $secondary-color 50%,
+                #14416f 50%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -1063,6 +1078,7 @@ section.section-carousal {
           font-size: 0.9em;
           width: 100%;
           line-height: 25px;
+
           @include devices(tablet) {
             text-align: center;
           }
@@ -1080,9 +1096,11 @@ section.section-carousal {
           left: 50%;
           transform: translateX(-50%);
           margin: 20px 0px 0px 0px;
+
           @include devices(tablet) {
             margin-top: 2px;
           }
+
           cursor: pointer;
 
           &:hover {

@@ -1,0 +1,59 @@
+extends ../layouts/cms-base.pug
+
+block content
+  main
+    .cont-lg.cms-admin
+      h1 Statistics Management
+      
+      if successMessage
+        .alert.success= successMessage
+      if errorMessage
+        .alert.error= errorMessage
+
+      //- Add New Statistic Button
+      a.button(href="/cms/admin-statistics/new") Add New Statistic
+      
+      //- Statistics Table
+      table.statistics-table
+        thead
+          tr
+            th Category
+            th Title
+            th Value
+            th Year
+            th Priority
+            th Status
+            th Actions
+        tbody
+          each stat in statistics
+            tr
+              td= stat.category
+              td= stat.title
+              td= stat.value + (stat.suffix ? stat.suffix : '')
+              td= stat.year
+              td= stat.priority
+              td= stat.is_active ? 'Active' : 'Inactive'
+              td
+                a.button.small(href=`/cms/admin-statistics/${stat.id}/edit`) Edit
+                form.inline-form(method="POST" action=`/cms/admin-statistics/${stat.id}/delete`)
+                  button.button.small.danger(type="submit") Delete
+
+      //- Year Filter
+      .filter-controls
+        form(method="GET" action="/cms/admin-statistics")
+          label(for="year") Filter by Year:
+          select(name="year" id="year" onchange="this.form.submit()")
+            option(value="") All Years
+            each year in availableYears
+              option(value=year selected=(year === selectedYear))= year
+
+block scripts
+  script.
+    // Confirm before deletion
+    document.querySelectorAll('form.inline-form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        if (!confirm('Are you sure you want to delete this statistic?')) {
+          e.preventDefault();
+        }
+      });
+    });

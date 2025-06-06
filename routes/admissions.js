@@ -13,6 +13,9 @@ router.get("/pg-admissions", admissionsController.getPGAdmissions);
 // Route to /tution-and-fees at /admissions
 router.get("/tution-and-fees", admissionsController.getTutionAndFees);
 
+// admissions/faq
+router.get("/faq", admissionsController.getFaq);
+
 // Route to /rules-and-regulations at /admissions
 router.get(
   "/rules-and-regulations",

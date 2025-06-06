@@ -24,6 +24,8 @@ app.set("views", "views");
 // app.use(compression()); //Compress all routes
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json()); // for JSON body
+app.use(express.urlencoded({ extended: true })); //
 app.use(express.static(path.join(__dirname, "public")));
 
 // Middleware for parsing form data

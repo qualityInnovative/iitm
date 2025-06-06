@@ -1,0 +1,217 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  style.
+    :root {
+      --primary-color: #6366f1;
+      --success-color: #10b981;
+      --secondary-color: #64748b;
+      --border-color: #e2e8f0;
+      --focus-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .cms-marquee-form {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .cms-marquee-form h1 {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .cms-marquee-form h1::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 60px;
+      height: 3px;
+      background: var(--primary-color);
+      border-radius: 3px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #334155;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .form-control,
+    .form-select {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      transition: all 0.2s ease;
+      width: 100%;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      border-color: var(--primary-color);
+      box-shadow: var(--focus-shadow);
+      outline: none;
+    }
+
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .form-check-input {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+
+    .form-check-input:checked {
+      background-color: var(--success-color);
+      border-color: var(--success-color);
+    }
+
+    .form-check-input:focus {
+      box-shadow: var(--focus-shadow);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .btn-success {
+      background-color: var(--success-color);
+      border: none;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #0d9f6e;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      color: var(--secondary-color);
+    }
+
+    .btn-secondary:hover {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .btn-marquee {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .btn-marquee:hover {
+      background-color: #4f46e5;
+      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+      .cms-marquee-form {
+        padding: 1.5rem;
+        border-radius: 0;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+    }
+
+block content
+  main(style="min-height: 80vh")
+    .cont.cms-banners
+      .cms-marquee-form
+        h1 #{banner ? 'Edit' : 'Add'} Banner
+
+        form(method="POST", action=banner ? `/cms/banners/update/${banner.id}` : "/cms/banners/create", enctype="multipart/form-data")
+          
+          if banner
+            input(type="hidden", name="id", value=banner.id)
+          .mb-3
+            label.form-label(for="banner_text") Banner Text
+            input.form-control(type="text", name="banner_text", id="banner_text", required, value=banner && banner.banner_text || '')
+
+          .mb-3
+            label.form-label(for="banner_subtext") Banner Subtext
+            input.form-control(type="text", name="banner_subtext", id="banner_subtext", value=banner && banner.banner_subtext || '')
+
+          .mb-3
+            label.form-label(for="has_button") Show Button?
+            select.form-select(name="has_button", id="has_button")
+              option(value="1", selected=banner && banner.has_button === 1) Yes
+              option(value="0", selected=banner && banner.has_button === 0) No
+
+          .mb-3
+            label.form-label(for="button_text") Button Text
+            input.form-control(type="text", name="button_text", id="button_text", value=banner && banner.button_text || '')
+
+          .mb-3
+            label.form-label(for="button_link") Button Link
+            input.form-control(type="url", name="button_link", id="button_link", value=banner && banner.button_link || '')
+
+          .mb-3
+            label.form-label(for="priority") Priority
+            input.form-control(type="number", name="priority", id="priority", value=(banner && banner.priority != null) ? banner.priority : 0)
+
+          .mb-3
+            label.form-label(for="is_active") Status
+            select.form-select(name="is_active", id="is_active")
+              option(value="1", selected=banner && banner.is_active === 1) Active
+              option(value="0", selected=banner && banner.is_active === 0) Inactive
+
+          .mb-3
+            label.form-label(for="image") Banner Image
+            input.form-control(type="file", name="image", id="image", accept="image/*")
+
+          if banner && banner.image
+            .mb-3
+              label Current Image:
+              br
+              img(src=`/uploads/banners/${banner.image}`, alt="Current Banner Image", style="max-width: 300px; max-height: 150px; border: 1px solid #ccc; margin-top: 10px;")
+
+          button.btn-marquee(type="submit") Save Banner

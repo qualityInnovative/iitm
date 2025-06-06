@@ -65,6 +65,18 @@ const homeController = (req, res, next) => {
     ),
     query("SELECT * FROM placementTestimonials ORDER BY date DESC LIMIT 10"),
     query("SELECT * FROM notifications ORDER BY date DESC LIMIT 5"),
+    query(`
+      SELECT text, url, title 
+      FROM marquee_links 
+      WHERE is_active = 1 
+        AND (start_date IS NULL OR start_date <= NOW()) 
+        AND (end_date IS NULL OR end_date >= NOW())
+      ORDER BY priority ASC
+    `),
+    query("SELECT * FROM visionaries WHERE is_active = 1 ORDER BY priority ASC"),
+    query("SELECT * FROM statistics WHERE is_active = 1 AND year = ? ORDER BY category, priority", [currentYear-1 ]),
+    query("SELECT * FROM banners WHERE is_active = 1 ORDER BY priority ASC")
+
   ])
     .then(
       ([
@@ -75,6 +87,11 @@ const homeController = (req, res, next) => {
         events,
         testimonials,
         notifications,
+        marqueeLinks,
+        visionaries,
+        statistics,
+        banners
+
       ]) => {
         // Sanitize Events and formate start and end dates
         sanitizeAndFormateDate(events);
@@ -86,8 +103,17 @@ const homeController = (req, res, next) => {
             allowedAttributes: {},
           });
         });
+        const statsByCategory = {
+          overview: [],
+          academic: [],
+          campus: [],
+          student: []
+        };
 
-        // Renders view
+        statistics.forEach(stat => {
+          statsByCategory[stat.category].push(stat);
+        });
+      
         res.render("home", {
           pageTitle: "IITM - Home",
           path: "/",
@@ -98,8 +124,14 @@ const homeController = (req, res, next) => {
           events,
           notifications,
           testimonials,
+          marqueeLinks,
+          visionaries,
+          statistics: statsByCategory,
+          statsYear: currentYear - 1,
+          banners,
           isAuthenticated: req.session.isLoggedIn,
         });
+       
       }
     )
     .catch((err) => {

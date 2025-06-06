@@ -8,14 +8,27 @@ const mainParams = require("../utils/params");
 const params = mainParams(
   `${pageTitle}`,
   `${pagePath}`,
-  [["Canteen"], ["Sports Facilities"], ["Transportation Services"], ["Hostel"]],
+  [["Canteen"],["Virtual Campus Tour"] ["Sports Facilities"], ["Transportation Services"], ["Hostel"]],
   [
     [`${pagePath}/canteen`],
+    [`${pagePath}/virtual-tour`],
     [`${pagePath}/sports`],
     [`${pagePath}/transportation`],
     [`${pagePath}/hostel`],
   ]
 );
+
+exports.getVirtualTour = (req, res, next) => {
+  res.render(
+    `campus/virtual-tour`,
+    params(
+      `${pageTitle} - Virtual Tour`,
+      `/virtual-tour`,
+      "/data/imgs/virtual-tour-banner.jpg",
+      ""
+    )
+  );
+}
 
 exports.getCampus = (req, res, next) => {
   res.render(

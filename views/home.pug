@@ -1,10 +1,11 @@
 extends layouts/base.pug
 
 block styles
-    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" defer)
-    script(type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" defer)
     script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js")
+    script(type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" defer)
     link(rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css")
+    link(rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css")
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" defer)
     //- Open Graph Tags
     meta(property="og:title" content="Iqbal Institute of Technology and Management")
     meta(property="og:description" content="Founded in 2006, IITM offers transformative education backed by Iqbal Memorial Trust. NAAC-accredited, AICTE-approved, and affiliated with the University of Kashmir. Join us for a career-ready journey in a vibrant, hands-on learning environment.")
@@ -14,34 +15,74 @@ block styles
     meta(name="description", content="Founded in 2006, IITM offers transformative education backed by Iqbal Memorial Trust. NAAC-accredited, AICTE-approved, and affiliated with the University of Kashmir. Join us for a career-ready journey in a vibrant, hands-on learning environment.")
     meta(property="og:image" content="/data/collegeImgs/college-1.png")
 
-
+       
+    
+    
 block content
-    //- Slider
-    .slider#play-pause
-        video#parallax-video(src='./data/videos/college-highlights-with-sound.mp4' autoplay='' muted loop='' playsinline poster="/data/collegeImgs/college-1.png")
-        //- check how many button's both text and link fields are empty
-        - var allEmpty = 0;
-        each button in buttons
-            if button.text == "" || button.link == ""
-                - allEmpty++;
-
-        //- If at least one button's both text and link field is not empty, then show the slider content    
-        if allEmpty != 4
-            .slider__content
-                h1
-                    include ../public/data/homeHeading.txt
-                div
-                    //- Track the order of the buttons, as we need to alternate the colors
-                    - var orderTracker = 1;
-                    each button in buttons
-                        if button.text != "" && button.link != ""
-                            a(href=button.link)
-                                if (orderTracker) % 2 == 0
-                                    .link.even #{button.text}
-                                else
-                                    .link.odd #{button.text}
+    section.marquee-bar
+            .marquee-container
+                ul.marquee-content
+                    each link in marqueeLinks
+                        li.marquee-item
+                            a(href=link.url title=link.title)= link.text
+    
+           
+    if banners && banners.length
+    section.banner-carousel-section
+        .swiper.banner-carousel
+            .swiper-wrapper
+                each banner in banners
+                    .swiper-slide
+                        .heading-banner
+                            img.swiper-lazy(
+                                src=`/uploads/banners/${banner.image}`
+                                data-src=`/uploads/banners/${banner.image}`
+                                alt=banner.banner_text || 'Promotional banner'
+                            )
                             
-                            - orderTracker++;
+                            .heading-banner__banner-text
+                                if banner.banner_text
+                                    h1= banner.banner_text
+                                if banner.banner_subtext
+                                    p= banner.banner_subtext
+                                if banner.has_button && banner.button_text && banner.button_link
+                                    a.banner-button(
+                                        href=banner.button_link
+                                        target="_blank"
+                                    )= banner.button_text
+            
+            //- Add navigation buttons container
+            .swiper-button-container
+                .swiper-button-prev
+                    
+                .swiper-button-next
+                    
+    //- Slider
+    //- .slider#play-pause
+    //-     video#parallax-video(src='./data/videos/college-highlights-with-sound.mp4' autoplay='' muted loop='' playsinline poster="/data/collegeImgs/college-1.png")
+    //-     //- check how many button's both text and link fields are empty
+    //-     - var allEmpty = 0;
+    //-     each button in buttons
+    //-         if button.text == "" || button.link == ""
+    //-             - allEmpty++;
+
+    //-     //- If at least one button's both text and link field is not empty, then show the slider content    
+    //-     if allEmpty != 4
+    //-         .slider__content
+    //-             h1
+    //-                 include ../public/data/homeHeading.txt
+    //-             div
+    //-                 //- Track the order of the buttons, as we need to alternate the colors
+    //-                 - var orderTracker = 1;
+    //-                 each button in buttons
+    //-                     if button.text != "" && button.link != ""
+    //-                         a(href=button.link)
+    //-                             if (orderTracker) % 2 == 0
+    //-                                 .link.even #{button.text}
+    //-                             else
+    //-                                 .link.odd #{button.text}
+                            
+    //-                         - orderTracker++;
 
     main
         //- Accredetions-Memberships-Certifications Section
@@ -52,70 +93,98 @@ block content
                 img.fit(src="./data/imgs/iqac.jpeg")
                 img.fit(src="./data/imgs/pearson.jpeg")
 
+
         //- College Statistics Section
         section.section-statistics.cont
-            h1.primary_heading IITM Statistics 2022-2023
-            span.heading-sm-secondary  This year IITM achieved B Grade accredition from NAAC. 
+            h1.primary_heading IITM Statistics #{statsYear}-#{statsYear + 1}
+            span.heading-sm-secondary This year IITM achieved B Grade accreditation from NAAC.
             .section-statistics__tabs
                 ul
                     li.active
-                        a(href='javascript:void(0)') overview
+                        a(href='javascript:void(0)' data-tab="overview") overview
                     li
-                        a(href='javascript:void(0)') academic
+                        a(href='javascript:void(0)' data-tab="academic") academic
                     li
-                        a(href='javascript:void(0)') campus
+                        a(href='javascript:void(0)' data-tab="campus") campus
                     li
-                        a(href='javascript:void(0)') student
+                        a(href='javascript:void(0)' data-tab="student") student
             .section-statistics__tab
-                div.section-statistics__tab--overview
-                    div
-                        span.count(data-count=5)
-                        span.count-of programs
-                    div
-                        span.count(data-count=20) :1
-                        span.count-of student to faculty ratio
-                    div
-                        span.count(data-count=100) +
-                        span.count-of placements
-                    div
-                        span.count(data-count=7) LPA
-                        span.count-of average package
-                div.section-statistics__tab--academic.hidden
-                    div
-                        span.count(data-count=3)
-                        span.count-of undergraduate programs
-                    div
-                        span.count(data-count=2)
-                        span.count-of graduate programs
-                    div
-                        span.count(data-count=91)
-                        span.count-of total courses
-                    div
-                        span.count(data-count=36)
-                        span.count-of average class size
-                div.section-statistics__tab--campus.hidden
-                    div
-                        span.count(data-count=7)
-                        span.count-of buildings 
-                    div
-                        span.count(data-count=14)
-                        span.count-of classrooms
-                    div
-                        span.count(data-count=5)
-                        span.count-of labs
-                    div
-                        span.count(data-count=200) +
-                        span.count-of computers
-                div.section-statistics__tab--student.hidden
-                    div
-                        span.count(data-count=500) +
-                        span.count-of students
-                    div
-                        span.count(data-count=300) +
-                        span.count-of undergraduate degrees awarded
-                    div
-                        span.count(data-count=2568) +
-                        span.count-of graduate degrees awarded
+                each category in ['overview', 'academic', 'campus', 'student']
+                    div(class=`section-statistics__tab--${category} ${category === 'overview' ? '' : 'hidden'}`)
+                        each stat in statistics[category]
+                            div
+                                span.count(data-count=stat.value)= stat.value
+                                if stat.suffix
+                                    span.suffix= stat.suffix  
+                                span.count-of= stat.title      
+                                
+
+
+
+        //- College Statistics Section
+        //- section.section-statistics.cont
+        //-     h1.primary_heading IITM Statistics 2022-2023
+        //-     span.heading-sm-secondary  This year IITM achieved B Grade accredition from NAAC. 
+        //-     .section-statistics__tabs
+        //-         ul
+        //-             li.active
+        //-                 a(href='javascript:void(0)') overview
+        //-             li
+        //-                 a(href='javascript:void(0)') academic
+        //-             li
+        //-                 a(href='javascript:void(0)') campus
+        //-             li
+        //-                 a(href='javascript:void(0)') student
+        //-     .section-statistics__tab
+        //-         div.section-statistics__tab--overview
+        //-             div
+        //-                 span.count(data-count=5)
+        //-                 span.count-of programs
+        //-             div
+        //-                 span.count(data-count=20) :1
+        //-                 span.count-of student to faculty ratio
+        //-             div
+        //-                 span.count(data-count=100) +
+        //-                 span.count-of placements
+        //-             div
+        //-                 span.count(data-count=7) LPA
+        //-                 span.count-of average package
+        //-         div.section-statistics__tab--academic.hidden
+        //-             div
+        //-                 span.count(data-count=3)
+        //-                 span.count-of undergraduate programs
+        //-             div
+        //-                 span.count(data-count=2)
+        //-                 span.count-of graduate programs
+        //-             div
+        //-                 span.count(data-count=91)
+        //-                 span.count-of total courses
+        //-             div
+        //-                 span.count(data-count=36)
+        //-                 span.count-of average class size
+        //-         div.section-statistics__tab--campus.hidden
+        //-             div
+        //-                 span.count(data-count=7)
+        //-                 span.count-of buildings 
+        //-             div
+        //-                 span.count(data-count=14)
+        //-                 span.count-of classrooms
+        //-             div
+        //-                 span.count(data-count=5)
+        //-                 span.count-of labs
+        //-             div
+        //-                 span.count(data-count=200) +
+        //-                 span.count-of computers
+        //-         div.section-statistics__tab--student.hidden
+        //-             div
+        //-                 span.count(data-count=500) +
+        //-                 span.count-of students
+        //-             div
+        //-                 span.count(data-count=300) +
+        //-                 span.count-of undergraduate degrees awarded
+        //-             div
+        //-                 span.count(data-count=2568) +
+        //-                 span.count-of graduate degrees awarded
 
         if homeCarousel.length > 0
             section.section-carousal 
@@ -240,9 +309,9 @@ block content
                 br
                 | ;-)
         else
-            div.cont.notifications-slider(style="background-color:#fff; display: flex; justify-content: center; align-items: center;")
+            div.cont.notifications-slider(style="background-color:#fff; display: flex; justify-content: center; align-items: center;margin-bottom: 1rem;")
                 each notification in notifications
-                    .text-card.home-notifications(style="padding: 1rem")
+                    .text-card.home-notifications(style="padding: 1rem;")
                         p #{notification.notification}
                         .text-card__copy-toast(id=`copy-toast-${notification.nid}`)
                             | Copied
@@ -319,125 +388,106 @@ block content
                 h1.primary_heading Our visionaries
                 span.heading-sm-secondary Under their visionarieship, the institution is able to innovate and adapt to changing circumstances, ensuring that it remains at the forefront of higher education.
             .section-visionaries__cards
-                //- Visionary Card
-                .section-visionaries-card#card_1
-                    .section-visionaries-card__image 
-                        img(src="/data/collegeImgs/chairman.jpg" alt="image")
-                    .section-visionaries-card__content
-                        div
-                            h3 Chairman IITM
-                            h2
-                                a(href="") Dr. Yousuf ul Umar, PhD IIT Dehli
-
-                            p  Man is born with a basic instinct to learn and express his ideas. Once this process of learning and expressing one's ideas becomes stagnant and outdated, the intellectual growth along with physical growth of society is a big casualty. Therefore, education must provide a stimulus for learning which in turn may transform the individual and the society for the good of humanity. That is what IITM stands for.
-                            button.nextButton
-                                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
-                                    path(d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L370.7 256 233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L178.7 256 41.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z")
-
-                //- Visionary Card
-                .section-visionaries-card#card_2
-                    .section-visionaries-card__image 
-                        img(src="/data/collegeImgs/director.jpg" alt="BCA")
-                    .section-visionaries-card__content
-                        div
-                            h3 Director at IITM
-                            h2
-                                a(href="") Dr. R.A. Thakur
-                            p At IITM, we are dedicated to providing a transformative educational experience that empowers our students to excel in their chosen paths. Our committed faculty, state-of-the-art facilities, and vibrant learning community create an inspiring environment for growth, innovation, and personal development. Together, let us embark on a journey of learning, discovery, and success.
-                            button.nextButton
-                                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
-                                    path(d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L370.7 256 233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L178.7 256 41.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z")
-
-                //- Visionary Card
-                .section-visionaries-card#card_3
-                    .section-visionaries-card__image 
-                        img(src="/data/collegeImgs/sabina-tariq.JPG" alt="BCA")
-                    .section-visionaries-card__content
-                        div
-                            h3 HOD Computer Science Department 
-                            h2
-                                a(href="") Sabina Tariq
-                            p  We are committed to fostering a dynamic learning environment that nurtures a passion for computer science. With our dedicated faculty, advanced infrastructure, and industry-aligned curriculum, we aim to empower you for academic excellence and professional growth. Let's embark on a journey of exploration, innovation, and success in the world of computer science together.
-                            button.nextButton
-                                svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
-
-                                    path(d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L370.7 256 233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L178.7 256 41.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z")
-
-                //- Visionary Card
-                .section-visionaries-card#card_4
-                    .section-visionaries-card__image 
-                        img(src="/data/collegeImgs/asma-gulzar.JPG" alt="BCA")
-                    .section-visionaries-card__content
-                        div
-                            h3 HOD Management Department
-                            h2
-                                a(href="") Asma Gulzar, Ph.D.
-                            p It is my privilege to lead this department, where we strive to foster a dynamic learning environment that prepares our students for success in the field of management. With our experienced faculty, industry-relevant curriculum, and experiential learning opportunities, we aim to develop your skills, knowledge, and leadership abilities. Together, let us embark on a transformative journey of growth, innovation, and professional achievement in the realm of management.
-                            button.nextButton
-                                svg( xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
-                                    path(d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160zm352-160l-160 160c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L269.3 256 406.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0z")
-
+                each visionary, index in visionaries
+                    .section-visionaries-card(id=`card_${index+1}`)
+                        .section-visionaries-card__image 
+                            img(src=visionary.image_path, alt=visionary.name)
+                        .section-visionaries-card__content
+                            div
+                                h3= visionary.role
+                                h2
+                                    if visionary.link
+                                        a(href=visionary.link)= visionary.name
+                                    else
+                                        = visionary.name
+                                p= visionary.description
+                                button.nextButton
+                                    svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512")
+                                        path(d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L370.7 256 233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160zm-352 160l160-160c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L178.7 256 41.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0z")
 block scripts 
     script.
         document.addEventListener('DOMContentLoaded', function() {
              // Get the video element
-            const video = document.getElementById('parallax-video');
-            video.play();
-            video.muted = false;
+                  if (document.querySelector('.banner-carousel')) {
+                var bannerSwiper = new Swiper('.banner-carousel', {
+                    loop: true,
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    },
+                    lazy: {
+                        loadPrevNext: true,
+                        loadOnTransitionStart: true,
+                    },
+                    
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+            }
+            //- const video = document.getElementById('parallax-video');
+            //- video.play();
+            //- video.muted = false;
 
-            document.querySelector("#play-pause").addEventListener("click", function() {
-                if (video.muted) {
-                    video.muted = false;
-                } else {
-                    video.muted = true;
-                }
-            });
+            //- document.querySelector("#play-pause").addEventListener("click", function() {
+            //-     if (video.muted) {
+            //-         video.muted = false;
+            //-     } else {
+            //-         video.muted = true;
+            //-     }
+            //- });
 
             // Function to handle scroll events
             function handleScroll() {
+                console.log ('Scroll event triggered');
                 // Calculate the new position for the video based on the scroll position
                 const scrollPosition = window.scrollY;
                 const newPosition = scrollPosition * 0.5; // Adjust the multiplier to control the parallax speed
 
                 // Apply the new position to the video using translate
-                video.style.transform = `translate(50%, -${newPosition}px)`;
+                //- video.style.transform = `translate(50%, -${newPosition}px)`;
             }
 
-            const options = {
-                root: null,
-                rootMargin: '0px',
-            };
+            //- const options = {
+            //-     root: null,
+            //-     rootMargin: '0px',
+            //- };
 
-            const observer = new IntersectionObserver(handleIntersection, options);
+            //- const observer = new IntersectionObserver(handleIntersection, options);
 
-            observer.observe(video);
+            //- observer.observe(video);
 
-            function handleIntersection(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Video goes out of viewport
-                        video.play();
-                    } else {
-                        video.pause(); 
-                        video.muted = true;
-                    }
-                });
-            }
+            //- function handleIntersection(entries) {
+            //-     entries.forEach(entry => {
+            //-         if (entry.isIntersecting) {
+            //-             // Video goes out of viewport
+            //-             video.play();
+            //-         } else {
+            //-             video.pause(); 
+            //-             video.muted = true;
+            //-         }
+            //-     });
+            //- }
 
             // Add a scroll event listener
             window.addEventListener('scroll', handleScroll);
                 
-            $('.notifications-slider').slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                speed: 500,
-                autoplay: true,
-                autoplaySpeed: 3000,
-                infinite: true,
-                arrows: false,
-            });
+           if (typeof $ != 'undefined') {
+                $('.notifications-slider').slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    speed: 500,
+                    autoplay: true,
+                    autoplaySpeed: 3000,
+                    infinite: true,
+                    arrows: false,
+                    adaptiveHeight: true  // Added for better content fitting
+                });
+            } else {
+                console.error('jQuery is not loaded!');
+            }
         })
-
         //- Function to copy to clipboard
         const copyToClipboard = (id) => {
             let input = document.createElement("input");
@@ -629,5 +679,6 @@ block scripts
         });
 
     script(type="module" src="/scripts/tabs.js") 
+    script(src="https://unpkg.com/swiper/swiper-bundle.min.js")
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous")
 

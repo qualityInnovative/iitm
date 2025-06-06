@@ -1,0 +1,182 @@
+extends ../layouts/base.pug
+
+block styles
+  style.
+    .faq-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .faq-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .faq-header h1 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .faq-header p {
+      color: #7f8c8d;
+      font-size: 1.2rem;
+    }
+    .faq-section {
+      margin-bottom: 3rem;
+    }
+    .faq-section h2 {
+      color: #3498db;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+    .faq-item {
+      background: #f9f9f9;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .faq-question {
+      background: #3498db;
+      color: white;
+      padding: 1rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-question:hover {
+      background: #2980b9;
+    }
+    .faq-answer {
+      padding: 1.5rem;
+      background: white;
+      color: #34495e;
+      line-height: 1.6;
+      display: none;
+    }
+    .faq-answer ul {
+      padding-left: 1.5rem;
+    }
+    .faq-answer li {
+      margin-bottom: 0.5rem;
+    }
+    .toggle-icon {
+      font-weight: bold;
+      margin-left: 1rem;
+    }
+    @media (max-width: 768px) {
+      .faq-container {
+        padding: 1rem;
+      }
+      .faq-header h1 {
+        font-size: 2rem;
+      }
+    }
+
+block content
+  main
+    .faq-container
+      .faq-header
+        h1 General FAQs – Iqbal Institute of Technology and Management (IITM)
+        p Find answers to common questions about our programs and campus life
+
+      .faq-section
+        .faq-item
+          .faq-question Q1. What courses does IITM offer?
+            span.toggle-icon -
+          .faq-answer We currently offer undergraduate programs in BBA and BCA, and postgraduate programs in MBA and MCA.
+
+        .faq-item
+          .faq-question Q2. Is IITM affiliated and recognized?
+            span.toggle-icon -
+          .faq-answer Yes. IITM is affiliated with the University of Kashmir and approved by AICTE, ensuring our degrees hold both academic and professional value.
+
+        .faq-item
+          .faq-question Q3. What's the admission process like?
+            span.toggle-icon -
+          .faq-answer Admission is based on merit and entrance tests where applicable. Our team guides students through each step once applications open.
+
+        .faq-item
+          .faq-question Q4. Is there a placement cell at IITM?
+            span.toggle-icon -
+          .faq-answer Yes. We have a dedicated placement cell that works with companies to provide job and internship opportunities for our students.
+
+        .faq-item
+          .faq-question Q5. What kind of campus facilities are available?
+            span.toggle-icon -
+          .faq-answer We offer smart classrooms, a well-stocked library, high-speed internet, computer labs, a seminar hall, and a supportive faculty network.
+
+        .faq-item
+          .faq-question Q6. Are there extracurricular activities?
+            span.toggle-icon -
+          .faq-answer Absolutely. From tech fests to cultural events and student clubs, there's plenty to engage with beyond the classroom.
+
+      .faq-section
+        h2 BBA FAQs
+        .faq-item
+          .faq-question Q1. Is BBA suitable if I want to start my own business?
+            span.toggle-icon -
+          .faq-answer Definitely. The program covers the basics of management, marketing, finance, and entrepreneurship — ideal for future business owners.
+
+        .faq-item
+          .faq-question Q2. Will I get exposure to real business environments?
+            span.toggle-icon -
+          .faq-answer Yes. We focus on case studies, projects, and local business interactions to bridge classroom learning with real-world practice.
+
+      .faq-section
+        h2 BCA FAQs
+        .faq-item
+          .faq-question Q1. Do I need coding knowledge before joining BCA?
+            span.toggle-icon -
+          .faq-answer Not at all. We teach coding from the ground up, so beginners are more than welcome.
+
+        .faq-item
+          .faq-question Q2. What kind of jobs can a BCA graduate get?
+            span.toggle-icon -
+          .faq-answer From software development to technical support, database management to web development — the options are many.
+
+      .faq-section
+        h2 MBA FAQs
+        .faq-item
+          .faq-question Q1. What backgrounds do MBA students come from?
+            span.toggle-icon -
+          .faq-answer Our MBA students come from diverse fields — commerce, arts, engineering, and business — which adds to the learning experience.
+
+        .faq-item
+          .faq-question Q2. Does IITM help with placements after MBA?
+            span.toggle-icon -
+          .faq-answer Yes. We have regular placement drives and industry connections that help students get placed in reputed firms.
+
+      .faq-section
+        h2 MCA FAQs
+        .faq-item
+          .faq-question Q1. What makes the MCA program at IITM different?
+            span.toggle-icon -
+          .faq-answer We balance strong fundamentals with industry-relevant tools and languages. Our focus is on hands-on learning.
+
+        .faq-item
+          .faq-question Q2. Can I switch to tech after doing a non-tech undergrad?
+            span.toggle-icon -
+          .faq-answer Yes. As long as you meet the eligibility, MCA can be your gateway into the tech world, even if your undergrad wasn't computer-related.
+
+block scripts
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      // Accordion functionality
+      const questions = document.querySelectorAll('.faq-question');
+      
+      questions.forEach(question => {
+        question.addEventListener('click', () => {
+          const answer = question.nextElementSibling;
+          const toggleIcon = question.querySelector('.toggle-icon');
+          const isOpen = answer.style.display === 'block';
+          
+          // Toggle current answer
+          answer.style.display = isOpen ? 'none' : 'block';
+          toggleIcon.textContent = isOpen ? '+' : '-';
+        });
+      });
+    });

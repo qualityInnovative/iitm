@@ -1,11 +1,15 @@
 const express = require("express");
 
 const adminController = require("../controllers/admin");
-
+const bannerController = require("../controllers/bannersController");
+const bannerUpload = bannerController.uploadBannerImage;
+const upload = adminController.uploadVisionary;
 const router = express.Router();
 
 // CMS ADMIN ROUTE
 router.get("/cms/admin-cms", adminController.getAdminDash);
+
+
 
 // CMS ADMIN ROUTE TO MANAGE HOME PAGE
 router.get("/cms/admin-home", adminController.getHomeDash);
@@ -13,6 +17,49 @@ router.post("/cms/upload-homeButton", adminController.postHomeButton);
 router.post("/cms/upload-homeHeading", adminController.postHomeHeading);
 router.post("/cms/upload-gallery", adminController.postGallery);
 router.post("/cms/upload-homeCarousel", adminController.postHomeCarousel);
+
+// manage marquee links
+router.get("/cms/admin-marquee", adminController.getMarqueeLinksDash);
+router.get("/cms/marquee-links/new", adminController.getCreateMarqueeLink);
+router.get("/cms/marquee-links/edit/:id", adminController.getEditMarqueeLink);
+router.post("/cms/marquee-links/save", adminController.postSaveMarqueeLink);
+router.post("/cms/marquee-links/delete/:id", adminController.deleteMarqueeLink); 
+router.post("/cms/marquee-links/update-priority", adminController.updateMarqueeLinkPriority); 
+
+router.get('/cms/admin-visionaries', adminController.getVisionariesDash);
+router.get('/cms/admin-visionaries/new', adminController.getVisionaryForm);
+router.get('/cms/admin-visionaries/:id/edit', adminController.getVisionaryForm);
+router.post('/cms/admin-visionaries/new', upload.single('image'), adminController.postSaveVisionary);
+router.post('/cms/admin-visionaries/:id/edit', upload.single('image'), adminController.postSaveVisionary);
+router.post('/cms/admin-visionaries/:id/delete', adminController.deleteVisionary);
+router.post('/cms/admin-visionaries/update-priority', adminController.updateVisionaryPriority);
+
+
+router.get('/cms/admin-statistics', adminController.getStatisticsDash);
+router.get('/cms/admin-statistics/new', adminController.getStatisticsForm);
+router.get('/cms/admin-statistics/:id/edit', adminController.getStatisticsForm);
+router.post('/cms/admin-statistics/new', adminController.postSaveStatistic);
+router.post('/cms/admin-statistics/:id/edit', adminController.postSaveStatistic);
+router.post('/cms/admin-statistics/:id/delete', adminController.deleteStatistic);
+
+router.get('/cms/courses', adminController.getCourses);
+router.get('/cms/courses/new', adminController.getCourseForm);
+router.get('/cms/courses/:id/edit', adminController.getCourseForm);
+router.post('/cms/courses/new', adminController.saveCourse);
+router.post('/cms/courses/:id/edit', adminController.saveCourse);
+router.post('/cms/courses/:id/delete', adminController.deleteCourse);
+
+router.get('/cms/banners', bannerController.getBanners);
+
+router.get('/cms/banners', bannerController.getBanners);
+
+// Show form to create a new banner
+router.get('/cms/banners/new', bannerController.getBannerForm);
+router.get('/cms/banners/edit/:id', bannerController.getBannerForm);
+router.post('/cms/banners/create', bannerUpload.single('image'), bannerController.saveBanner);
+router.post('/cms/banners/update/:id', bannerUpload.single('image'), bannerController.saveBanner);
+router.post('/cms/banners/delete/:id', bannerController.deleteBanner);
+
 
 // NOTIFICATION ADMIN RELATED ROUTES
 router.get("/cms/admin-notifications", adminController.getNotificationDash);
@@ -41,6 +88,7 @@ router.get(
   "/cms/contact-form-submissions",
   adminController.getContactFormSubmissions
 );
+
 router.get("/cms/fetch-contacts", adminController.fetchContacts);
 router.post("/cms/delete-contact-us/:cid", adminController.postDeleteContact);
 

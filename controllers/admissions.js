@@ -1,7 +1,7 @@
 const pageTitle = "Admissions";
 const pagePath = "/admissions";
 const bannerPath = "/data/imgs/";
-
+const query = require("../utils/db");
 const mainParams = require("../utils/params");
 
 const params = mainParams(
@@ -11,6 +11,7 @@ const params = mainParams(
     ["UG Admissions"],
     ["PG Admissions"],
     ["Tution & Fees"],
+    ["FAQ"],
     ["Rules and Regulations"],
     ["Scholarships", "STEM Scholarship", "Sakhawat Center"],
   ],
@@ -18,6 +19,7 @@ const params = mainParams(
     [`${pagePath}/ug-admissions`],
     [`${pagePath}/pg-admissions`],
     [`${pagePath}/tution-and-fees`],
+    [`${pagePath}/faq`],
     [`${pagePath}/rules-and-regulations`],
     [
       `${pagePath}/scholarships`,
@@ -26,6 +28,65 @@ const params = mainParams(
     ],
   ]
 );
+
+exports.getTutionAndFees = async (req, res, next) => {
+  try {
+    const courses = await query(`
+      SELECT * FROM courses 
+      WHERE is_active = 1 
+      ORDER BY priority
+    `);
+
+    res.render(
+      "admissions/tution-and-fees",
+      Object.assign(
+        params(
+          `${pageTitle} - Tution and Fees`,
+          `/tution-and-fees`,
+          `${bannerPath}tution-and-fees-banner.jpg`,
+          ""
+        ),
+        {
+          isAuthenticated: req.session.isLoggedIn,
+          courses
+        }
+      )
+    );
+  } catch (err) {
+    console.error("Error fetching courses:", err);
+    res.render(
+      "admissions/tution-and-fees",
+      Object.assign(
+        params(
+          `${pageTitle} - Tution and Fees`,
+          `/tution-and-fees`,
+          `${bannerPath}tution-and-fees-banner.jpg`,
+          ""
+        ),
+        {
+          isAuthenticated: req.session.isLoggedIn,
+          courses: [] // fallback empty array
+        }
+      )
+    );
+  }
+};
+
+
+exports.getFaq = (req, res, next) => {
+  res.render(
+    "admissions/faq",
+    Object.assign(
+      params(
+        `IITM - ${pageTitle} - FAQ`,
+        `${pagePath}/faq`,
+        // `${bannerPath}faq-banner.jpg`,
+        '"Frequently Asked Questions"'
+      ),
+      { isAuthenticated: req.session.isLoggedIn }
+    )
+  );
+}
 
 //? ADMISSIONS
 exports.getAdmissions = (req, res, next) => {
@@ -71,20 +132,21 @@ exports.getPGAdmissions = (req, res, next) => {
   );
 };
 
-exports.getTutionAndFees = (req, res, next) => {
-  res.render(
-    "admissions/tution-and-fees",
-    Object.assign(
-      params(
-        `${pageTitle} - Tution and Fees`,
-        `/tution-and-fees`,
-        `${bannerPath}tution-and-fees-banner.jpg`,
-        ""
-      ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
-};
+// exports.getTutionAndFees = (req, res, next) => {
+//   res.render(
+//     "admissions/tution-and-fees",
+//     Object.assign(
+//       params(
+//         `${pageTitle} - Tution and Fees`,
+//         `/tution-and-fees`,
+//         `${bannerPath}tution-and-fees-banner.jpg`,
+//         ""
+//       ),
+//       { isAuthenticated: req.session.isLoggedIn }
+//     )
+//   );
+// };
+
 
 exports.getRulesAndRegulations = (req, res, next) => {
   res.render(

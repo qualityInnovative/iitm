@@ -17,6 +17,9 @@ router.get("/sports", campusController.getSports);
 // Route to /transportation at /campus
 router.get("/transportation", campusController.getTransportation);
 
+// Virtual Campus Tour
+router.get("/virtual-tour", campusController.getVirtualTour);
+
 // Route to /hostel at /campus
 router.get("/hostel", campusController.getHostel);
 

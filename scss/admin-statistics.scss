@@ -1,0 +1,123 @@
+/* admin-statistics.scss */
+@import './variables'; // Assuming you have a variables file
+
+// Table Styles
+.statistics-table {
+  width: calc(100% - 4rem);
+  margin: 2rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  transition: all 0.3s ease;
+  
+  th, td {
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid rgba($primary-color, 0.1);
+    transition: all 0.2s ease;
+  }
+  
+  th {
+    background: linear-gradient(135deg, $primary-color, lighten($primary-color, 10%));
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    position: relative;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: rgba(white, 0.2);
+    }
+  }
+  
+  tr {
+    &:last-child td {
+      border-bottom: none;
+    }
+    
+    &:hover td {
+      background: rgba($primary-color, 0.03);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+  }
+  
+  .button.small {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    &.danger {
+      background: linear-gradient(135deg, #ff5e62, #ff2400);
+      &:hover {
+        background: linear-gradient(135deg, darken(#ff5e62, 5%), darken(#ff2400, 5%));
+      }
+    }
+    
+    &:not(.danger) {
+      background: linear-gradient(135deg, $secondary-color, lighten($secondary-color, 5%));
+      color: white;
+      &:hover {
+        background: linear-gradient(135deg, darken($secondary-color, 5%), $secondary-color);
+      }
+    }
+  }
+  
+  // Status badges
+  td:nth-child(6) {
+    font-weight: 500;
+    
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    
+    &:contains("Active") {
+      color: $secondary-color;
+      &:before {
+        background: $secondary-color;
+      }
+    }
+    
+    &:contains("Inactive") {
+      color: 'rgba($primary-color, 0.6)';
+      &:before {
+        background: rgba($primary-color, 0.6);
+      }
+    }
+  }
+}
+
+
+// Responsive Design
+@media (max-width: 768px) {
+  .statistics-table {
+    width: calc(100% - 1rem);
+    margin: 1rem;
+    
+    th, td {
+      padding: 0.875rem;
+    }
+  }
+  
+  
+}

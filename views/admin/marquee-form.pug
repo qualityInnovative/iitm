@@ -1,0 +1,227 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  style.
+    :root {
+      --primary-color: #6366f1;
+      --success-color: #10b981;
+      --secondary-color: #64748b;
+      --border-color: #e2e8f0;
+      --focus-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .cms-marquee-form {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .cms-marquee-form h1 {
+      color: var(--primary-color);
+      font-weight: 600;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .cms-marquee-form h1::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 60px;
+      height: 3px;
+      background: var(--primary-color);
+      border-radius: 3px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #334155;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .form-control {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      transition: all 0.2s ease;
+      width: 100%;
+       margin-bottom:10px !important;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: var(--focus-shadow);
+      outline: none;
+    }
+
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .form-check-input {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+     
+    }
+
+    .form-check-input:checked {
+      background-color: var(--success-color);
+      border-color: var(--success-color);
+    }
+
+    .form-check-input:focus {
+      box-shadow: var(--focus-shadow);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .btn-success {
+      background-color: var(--success-color);
+      border: none;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #0d9f6e;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: white;
+      border: 1px solid var(--border-color);
+      color: var(--secondary-color);
+    }
+
+    .btn-secondary:hover {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    @media (max-width: 768px) {
+      .cms-marquee-form {
+        padding: 1.5rem;
+        border-radius: 0;
+      }
+      
+      .form-actions {
+        flex-direction: column;
+      }
+    }
+
+block content
+  main(style="padding: 2rem 0; background: #f8fafc; min-height: calc(100vh - 120px)")
+    .cont.cms-marquee-form
+      h1 #{pageName}
+
+      form(method="POST" action="/cms/marquee-links/save")
+        if link
+          input(type="hidden" name="id" value=link.id)
+
+        .mb-4
+          label.form-label(for="text") Text
+          input.form-control(
+            type="text",
+            id="text",
+            name="text",
+            required,
+            placeholder="Enter display text",
+            value=link && link.text ? link.text : ''
+          )
+
+        .mb-4
+          label.form-label(for="url") URL
+          input.form-control(
+            type="url",
+            id="url",
+            name="url",
+            placeholder="https://example.com",
+            value=link && link.url ? link.url : ''
+          )
+
+        .mb-4
+          label.form-label(for="title") Title (Tooltip)
+          input.form-control(
+            type="text",
+            id="title",
+            name="title",
+            placeholder="Optional title attribute",
+            value=link && link.title ? link.title : ''
+          )
+
+        .mb-4
+          label.form-label(for="priority") Priority
+          input.form-control(
+            type="number",
+            id="priority",
+            name="priority",
+            min="0",
+            placeholder="0",
+            value=link && link.priority != null ? link.priority : 0
+          )
+
+        .row.mb-4
+          .col-md-6
+            label.form-label(for="start_date") Start Date
+            input.form-control(
+              type="date",
+              id="start_date",
+              name="start_date",
+              value=link && link.start_date ? link.start_date.toISOString().substring(0, 10) : ''
+            )
+          .col-md-6
+            label.form-label(for="end_date") End Date
+            input.form-control(
+              type="date",
+              id="end_date",
+              name="end_date",
+              value=link && link.end_date ? link.end_date.toISOString().substring(0, 10) : ''
+            )
+
+        .mb-4
+          .form-check
+            input.form-check-input(
+              type="checkbox",
+              id="is_active",
+              name="is_active",
+              checked=link && link.is_active ? 'checked' : '',
+            )
+            label.form-check-label(for="is_active") Active Status
+
+        .form-actions
+          button.btn.btn-success(type="submit")
+            ion-icon(name="save-outline")
+            | #{link ? 'Update' : 'Create'} Link
+          a.btn.btn-secondary(href="/cms/admin-marquee")
+            ion-icon(name="arrow-undo-outline")
+            | Cancel

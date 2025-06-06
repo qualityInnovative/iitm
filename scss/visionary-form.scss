@@ -1,0 +1,106 @@
+.visionary-form-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .page-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .visionary-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  
+    label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+  
+    input[type="text"],
+    input[type="url"],
+    input[type="number"],
+    input[type="file"],
+    textarea {
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+  
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+  }
+  
+  .form-group.checkbox {
+    flex-direction: row;
+    align-items: center;
+  
+    input {
+      margin-right: 0.5rem;
+    }
+  }
+  
+  .existing-image {
+    max-width: 100px;
+    margin: 0.5rem 0;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  
+    .button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
+  
+      &.primary {
+        background-color: #007bff;
+        color: white;
+  
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+  
+      &.danger {
+        background-color: #dc3545;
+        color: white;
+  
+        &:hover {
+          background-color: #a71d2a;
+        }
+      }
+    }
+  }
+  

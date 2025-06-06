@@ -1,0 +1,55 @@
+extends ../layouts/cms-base.pug
+
+block content
+  .visionary-form-wrapper
+    h1.page-title= pageTitle
+
+    if errorMessage
+      .alert.error= errorMessage
+
+    form.visionary-form(method="POST" enctype="multipart/form-data" action= visionary ? `/cms/admin-visionaries/${visionary.id}/edit` : "/cms/admin-visionaries/new")
+      .form-header
+        h2.form-title= visionary ? "Edit Visionary" : "Add New Visionary"
+      
+      if visionary
+        input(type="hidden" name="id" value= visionary.id)
+
+      .form-group
+        label(for="name") Name
+        input#name(type="text" name="name" value= visionary ? visionary.name : "" required)
+
+      .form-group
+        label(for="role") Role
+        input#role(type="text" name="role" value= visionary ? visionary.role : "" required)
+
+      .form-group
+        label(for="title") Title
+        input#title(type="text" name="title" value= visionary ? visionary.title : "")
+
+      .form-group
+        label(for="description") Description
+        textarea#description(name="description" required)= visionary ? visionary.description : ""
+
+      .form-group
+        label(for="link") Link (optional)
+        input#link(type="url" name="link" value= visionary ? visionary.link : "")
+
+      .form-group
+        label(for="image") Image
+        if visionary && visionary.image_path
+          img.existing-image(src=visionary.image_path)
+          input(type="hidden" name="existing_image" value=visionary.image_path)
+        input#image(type="file" name="image" accept="image/*")
+
+      .form-group
+        label(for="priority") Priority
+        input#priority(type="number" name="priority" value= visionary ? visionary.priority : 0 min="0")
+
+      .form-group.checkbox
+        label
+          input#is_active(type="checkbox" name="is_active" checked= visionary ? visionary.is_active : true)
+          | Active
+
+      .form-actions
+        button.button.primary(type="submit") Save
+        a.button(href="/cms/admin-visionaries") Cancel

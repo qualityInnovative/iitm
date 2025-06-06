@@ -177,27 +177,15 @@ block content
                 h3.heading-with-top-border Fees
                 .courses-table
                     table(cellspacing='0')
-                        //- Table headers
                         tr
                             th.border-bottom-solid Course
                             th.border-bottom-solid Fees
 
-                        //- BCA
-                        tr 
-                            td.border-right.border-bottom-solid BCA
-                            td.border-bottom-solid 30,000/- per annum
-                        //- BBA
-                        tr 
-                            td.border-right.border-bottom-solid BBA
-                            td.border-bottom-solid 30,000/- per annum
-                        //- MCA
-                        tr 
-                            td.border-right.border-bottom-solid MCA
-                            td.border-bottom-solid 50,000/- per annum
-                        //- MBA
-                        tr 
-                            td.border-right MBA
-                            td 65,000/- per annum
+                        each course, index in courses
+                            tr
+                                td.border-right(class={ 'border-bottom-solid': index < courses.length - 1 })= course.name
+                                td(class={ 'border-bottom-solid': index < courses.length - 1 })= course.fee
+
 
                 .line-above-heading 
                 h3.heading-with-top-border Scholarships and Financial Aid

@@ -3,11 +3,23 @@ const multer = require("multer");
 const fs = require("fs");
 const marked = require("marked");
 const sanitizeHtml = require("sanitize-html");
-
+const path = require("path");
 const authFns = require("../utils/authenticate");
 
 const mail = require("../utils/mail");
 const { getCampusVideos } = require("./community");
+
+const visionariesStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/visionaries");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname.replace(/ /g, "-"));
+  }
+});
+
+exports.uploadVisionary = multer({ storage: visionariesStorage });
+
 
 // Admin dashboard controller
 exports.getAdminDash = (req, res, next) => {
@@ -27,16 +39,607 @@ exports.getAdminDash = (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+
       res.send(500).send("Internal Server Error");
     });
 };
 
+
+// adminController.js
+
+// Add these methods to your existing admin controller
+// coursesController.js
+exports.getCourses = async (req, res) => {
+  try {
+    const courses = await query("SELECT * FROM courses ORDER BY priority ASC");
+    res.render('admin/courses', {
+      courses,
+      successMessage: req.session.successMessage,
+      errorMessage: req.session.errorMessage
+    });
+    delete req.session.successMessage;
+    delete req.session.errorMessage;
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.getCourseForm = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const course = id ? (await query("SELECT * FROM courses WHERE id = ?", [id]))[0] : null;
+    res.render('admin/course-form', { course });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.saveCourse = async (req, res) => {
+  try {
+    const { id, name, code, fee, duration, description, priority, is_active } = req.body;
+    const isActive = is_active === 'on' ? 1 : 0;
+
+    if (id) {
+      await query(
+        `UPDATE courses SET 
+         name=?, code=?, fee=?, duration=?, 
+         description=?, priority=?, is_active=?
+         WHERE id=?`,
+        [name, code, fee, duration, description, priority, isActive, id]
+      );
+      req.session.successMessage = "Course updated successfully";
+    } else {
+      await query(
+        `INSERT INTO courses 
+         (name, code, fee, duration, description, priority, is_active)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [name, code, fee, duration, description, priority, isActive]
+      );
+      req.session.successMessage = "Course added successfully";
+    }
+    res.redirect('/cms/courses');
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = "Error saving course";
+    res.redirect(req.originalUrl);
+  }
+};
+
+exports.deleteCourse = async (req, res) => {
+  try {
+    await query("DELETE FROM courses WHERE id = ?", [req.params.id]);
+    req.session.successMessage = "Course deleted successfully";
+    res.redirect('/cms/courses');
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = "Error deleting course";
+    res.redirect('/cms/courses');
+  }
+};
+// Statistics Dashboard
+exports.getStatisticsDash = async (req, res) => {
+  try {
+    const year = req.query.year;
+    let queryStr = "SELECT * FROM statistics";
+    let queryParams = [];
+
+    if (year) {
+      queryStr += " WHERE year = ?";
+      queryParams.push(year);
+    }
+
+    queryStr += " ORDER BY year DESC, category, priority";
+
+    const statistics = await query(queryStr, queryParams);
+    const years = await query("SELECT DISTINCT year FROM statistics ORDER BY year DESC");
+
+    res.render("admin/admin-statistics", {
+      pageTitle: "CMS - Statistics",
+      pageName: "Statistics",
+      statistics,
+      availableYears: years.map(y => y.year),
+      selectedYear: year,
+      isAuthenticated: req.session.isLoggedIn
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+// Statistics Form
+exports.getStatisticsForm = async (req, res) => {
+  try {
+    const id = req.params.id;
+    let statistic = null;
+
+    if (id) {
+      [statistic] = await query("SELECT * FROM statistics WHERE id = ?", [id]);
+      if (!statistic) {
+        req.session.errorMessage = "Statistic not found";
+        return res.redirect("/cms/admin-statistics");
+      }
+    }
+
+    res.render("admin/statistics-form", {
+      pageTitle: id ? "Edit Statistic" : "Create Statistic",
+      pageName: "Statistics",
+      statistic,
+      isAuthenticated: req.session.isLoggedIn
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+// Save Statistic
+exports.postSaveStatistic = async (req, res) => {
+  try {
+    const {
+      id,
+      category,
+      title,
+      value,
+      suffix,
+      year,
+      priority,
+      is_active
+    } = req.body;
+
+    const isActive = is_active === "on" ? 1 : 0;
+
+    if (id) {
+      // Update existing
+      await query(
+        `UPDATE statistics SET 
+         category = ?, title = ?, value = ?, suffix = ?, 
+         year = ?, priority = ?, is_active = ? 
+         WHERE id = ?`,
+        [category, title, value, suffix, year, priority, isActive, id]
+      );
+      req.session.successMessage = "Statistic updated successfully";
+    } else {
+      // Create new
+      await query(
+        `INSERT INTO statistics 
+         (category, title, value, suffix, year, priority, is_active) 
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [category, title, value, suffix, year, priority, isActive]
+      );
+      req.session.successMessage = "Statistic created successfully";
+    }
+
+    res.redirect("/cms/admin-statistics");
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = "Failed to save statistic";
+    res.redirect(id ? `/cms/admin-statistics/${id}/edit` : "/cms/admin-statistics/new");
+  }
+};
+
+// Delete Statistic
+exports.deleteStatistic = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await query("DELETE FROM statistics WHERE id = ?", [id]);
+    req.session.successMessage = "Statistic deleted successfully";
+    res.redirect("/cms/admin-statistics");
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = "Failed to delete statistic";
+    res.redirect("/cms/admin-statistics");
+  }
+};
 //? ////////////////////////////////////////////////////////
 //? ////////////////////////////////////////////////////////
 // HOME ADMIN PANEL
 //? ////////////////////////////////////////////////////////
 //? ////////////////////////////////////////////////////////
+// marquee links 
+exports.getMarqueeLinksDash = (req, res, next) => {
+  query("SELECT username FROM users WHERE uid = ?", [req.session.user])
+    .then(([user]) => {
+      user = user.username;
+      if (user !== "admin@cms") {
+        return res.redirect("/cms");
+      }
+
+      return query(`
+        SELECT * FROM marquee_links 
+        WHERE (start_date IS NULL OR start_date <= NOW())
+          AND (end_date IS NULL OR end_date >= NOW())
+        ORDER BY priority ASC, created_at DESC
+      `);
+    })
+    .then((links) => {
+      const successMessage = req.session.successMessage;
+      const errorMessage = req.session.errorMessage;
+
+      delete req.session.successMessage;
+      delete req.session.errorMessage;
+
+      res.render("admin/admin-marquee", {
+        pageTitle: "CMS - Marquee Links",
+        pageName: "Marquee Links",
+        isAuthenticated: req.session.isLoggedIn,
+        links: links || [],
+        successMessage,
+        errorMessage
+      });
+    })
+    .catch((err) => {
+      console.error("Error in getMarqueeLinksDash:", err);
+      req.session.errorMessage = "Failed to load marquee links";
+      res.redirect("/cms/admin-home");
+    });
+};
+
+// marquee links 
+exports.getMarqueeLinksDash = (req, res, next) => {
+  query("SELECT username FROM users WHERE uid = ?", [req.session.user])
+    .then(([user]) => {
+      user = user.username;
+      if (user !== "admin@cms") {
+        return res.redirect("/cms");
+      }
+
+      return query("SELECT * FROM marquee_links ORDER BY priority ASC, created_at DESC");
+    })
+    .then((links) => {
+      const successMessage = req.session.successMessage;
+      const errorMessage = req.session.errorMessage;
+
+      delete req.session.successMessage;
+      delete req.session.errorMessage;
+
+      res.render("admin/admin-marquee", {
+        pageTitle: "CMS - Marquee Links",
+        pageName: "Marquee Links",
+        isAuthenticated: req.session.isLoggedIn,
+        links: links || [],
+        successMessage,
+        errorMessage
+      });
+    })
+    .catch((err) => {
+      console.error("Error in getMarqueeLinksDash:", err);
+      req.session.errorMessage = "Failed to load marquee links";
+      res.redirect("/cms/admin-home");
+    });
+};
+
+// GET - Render form to create new marquee link
+exports.getCreateMarqueeLink = (req, res) => {
+  res.render("admin/marquee-form", {
+    pageTitle: "Create Marquee Link",
+    pageName: "Create Marquee",
+    link: null,
+    isAuthenticated: req.session.isLoggedIn
+  });
+};
+
+exports.getEditMarqueeLink = (req, res, next) => {
+  const id = req.params.id;
+
+
+
+
+  query("SELECT * FROM marquee_links WHERE id = ?", [id])
+    .then(([rows]) => {
+
+      if (!rows || rows.length === 0) {
+
+        req.session.errorMessage = "Marquee link not found.";
+        return res.redirect("/cms/admin-marquee");
+      }
+
+      res.render("admin/marquee-form", {
+        pageTitle: "Edit Marquee Link",
+        pageName: "Edit Marquee",
+        link: rows,
+        isAuthenticated: req.session.isLoggedIn,
+      });
+    })
+    .catch((err) => {
+      console.error("Error in getEditMarqueeLink:", err);
+      req.session.errorMessage = "Error loading marquee link.";
+      res.redirect("/cms/admin-marquee");
+    });
+};
+
+
+// POST - Save new or updated marquee link
+exports.postSaveMarqueeLink = (req, res) => {
+  const {
+    id,
+    text,
+    url,
+    title,
+    priority,
+    is_active,
+    start_date,
+    end_date
+  } = req.body;
+
+  const isActive = is_active === "on" ? 1 : 0;
+  const parsedPriority = Number(priority) || 0;
+
+  // Normalize dates
+  const startDate = start_date || null;
+  const endDate = end_date || null;
+
+  if (id) {
+    // Update existing
+    query(
+      `UPDATE marquee_links 
+       SET text = ?, url = ?, title = ?, priority = ?, is_active = ?, start_date = ?, end_date = ? 
+       WHERE id = ?`,
+      [text, url, title, parsedPriority, isActive, startDate, endDate, id]
+    )
+      .then(() => {
+        req.session.successMessage = "Marquee link updated successfully.";
+        res.redirect("/cms/admin-marquee");
+      })
+      .catch((err) => {
+        console.error("Error in postSaveMarqueeLink (update):", err);
+        req.session.errorMessage = "Failed to update marquee link.";
+        res.redirect("/cms/admin-marquee");
+      });
+  } else {
+    // Insert new
+    query(
+      `INSERT INTO marquee_links 
+       (text, url, title, priority, is_active, start_date, end_date, created_at) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
+      [text, url, title, parsedPriority, isActive, startDate, endDate]
+    )
+      .then(() => {
+        req.session.successMessage = "Marquee link created successfully.";
+        res.redirect("/cms/admin-marquee");
+      })
+      .catch((err) => {
+        console.error("Error in postSaveMarqueeLink (insert):", err);
+        req.session.errorMessage = "Failed to create marquee link.";
+        res.redirect("/cms/admin-marquee");
+      });
+  }
+};
+
+
+// POST - Delete marquee link
+exports.deleteMarqueeLink = (req, res) => {
+  const id = req.params.id;
+
+  query("DELETE FROM marquee_links WHERE id = ?", [id])
+    .then(() => {
+      req.session.successMessage = "Marquee link deleted successfully.";
+      res.redirect("/cms/admin-marquee");
+    })
+    .catch((err) => {
+      console.error("Error in deleteMarqueeLink:", err);
+      req.session.errorMessage = "Failed to delete marquee link.";
+      res.redirect("/cms/admin-marquee");
+    });
+};
+
+// Visionaries Admin Dashboard
+exports.getVisionariesDash = (req, res, next) => {
+  query("SELECT username FROM users WHERE uid = ?", [req.session.user])
+    .then(([user]) => {
+      user = user.username;
+      if (user !== "admin@cms") {
+        return res.redirect("/cms");
+      }
+
+      return query("SELECT * FROM visionaries ORDER BY priority ASC, created_at DESC");
+    })
+    .then((visionaries) => {
+      const successMessage = req.session.successMessage;
+      const errorMessage = req.session.errorMessage;
+
+      delete req.session.successMessage;
+      delete req.session.errorMessage;
+
+      res.render("admin/admin-visionaries", {
+        pageTitle: "CMS - Visionaries",
+        pageName: "Visionaries",
+        isAuthenticated: req.session.isLoggedIn,
+        visionaries: visionaries || [],
+        successMessage,
+        errorMessage
+      });
+    })
+    .catch((err) => {
+      console.error("Error in getVisionariesDash:", err);
+      req.session.errorMessage = "Failed to load visionaries";
+      res.redirect("/cms/admin-home");
+    });
+};
+
+// GET - Render form to create/edit visionary
+exports.getVisionaryForm = (req, res) => {
+  const id = req.params.id;
+
+  if (id) {
+    // Edit existing
+    query("SELECT * FROM visionaries WHERE id = ?", [id])
+      .then(([visionary]) => {
+        if (!visionary) {
+          req.session.errorMessage = "Visionary not found.";
+          return res.redirect("/cms/admin-visionaries");
+        }
+
+        res.render("admin/visionary-form", {
+          pageTitle: "Edit Visionary",
+          pageName: "Edit Visionary",
+          visionary,
+          isAuthenticated: req.session.isLoggedIn
+        });
+      })
+      .catch(err => {
+        console.error("Error fetching visionary:", err);
+        req.session.errorMessage = "Error loading visionary.";
+        res.redirect("/cms/admin-visionaries");
+      });
+  } else {
+    // Create new
+    res.render("admin/visionary-form", {
+      pageTitle: "Create Visionary",
+      pageName: "Create Visionary",
+      visionary: null,
+      isAuthenticated: req.session.isLoggedIn
+    });
+  }
+};
+
+exports.postSaveVisionary = (req, res) => {
+  const {
+    id,
+    name,
+    role,
+    title,
+    description,
+    link,
+    priority,
+    is_active
+  } = req.body;
+
+  // Handle image upload
+  const imagePath = req.file ? `/uploads/visionaries/${req.file.filename}` : req.body.existing_image;
+  const isActive = is_active === "on" ? 1 : 0;
+  const parsedPriority = Number(priority) || 0;
+
+
+  if (id) {
+    // UPDATE existing visionary
+    query(
+      `UPDATE visionaries 
+       SET name = ?, role = ?, title = ?, description = ?, link = ?, 
+           image_path = ?, priority = ?, is_active = ?
+       WHERE id = ?`,
+      [name, role, title, description, link, imagePath, parsedPriority, isActive, id]
+    )
+      .then(() => {
+        req.session.successMessage = "Visionary updated successfully.";
+        res.redirect("/cms/admin-visionaries");
+      })
+      .catch((err) => {
+        console.error("Error updating visionary:", err);
+        req.session.errorMessage = "Failed to update visionary.";
+        res.redirect(`/cms/admin-visionaries/${id}/edit`);
+      });
+  } else {
+    // INSERT new visionary
+    query(
+      `INSERT INTO visionaries 
+       (name, role, title, description, link, image_path, priority, is_active)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [name, role, title, description, link, imagePath, parsedPriority, isActive]
+    )
+      .then(() => {
+        req.session.successMessage = "Visionary created successfully.";
+        res.redirect("/cms/admin-visionaries");
+      })
+      .catch((err) => {
+        console.error("Error creating visionary:", err);
+        req.session.errorMessage = "Failed to create visionary.";
+        res.redirect("/cms/admin-visionaries/new");
+      });
+  }
+};
+
+// POST - Delete visionary
+exports.deleteVisionary = (req, res) => {
+  const id = req.params.id;
+
+  // First get image path to delete the file
+  query("SELECT image_path FROM visionaries WHERE id = ?", [id])
+    .then(([visionary]) => {
+      if (visionary && visionary.image_path) {
+        const filePath = path.join(__dirname, '../public', visionary.image_path);
+        fs.unlink(filePath, (err) => {
+          if (err) console.error("Error deleting image file:", err);
+        });
+      }
+
+      return query("DELETE FROM visionaries WHERE id = ?", [id]);
+    })
+    .then(() => {
+      req.session.successMessage = "Visionary deleted successfully.";
+      res.redirect("/cms/admin-visionaries");
+    })
+    .catch((err) => {
+      console.error("Error deleting visionary:", err);
+      req.session.errorMessage = "Failed to delete visionary.";
+      res.redirect("/cms/admin-visionaries");
+    });
+};
+
+// POST - Update priority (drag & drop)
+exports.updateVisionaryPriority = (req, res) => {
+  const visionaries = req.body.visionaries;
+
+  if (!Array.isArray(visionaries)) {
+    return res.status(400).json({
+      success: false,
+      error: "Invalid request: 'visionaries' must be an array",
+    });
+  }
+
+  const updates = visionaries.map((visionary) =>
+    query("UPDATE visionaries SET priority = ? WHERE id = ?", [
+      visionary.priority,
+      visionary.id,
+    ])
+  );
+
+  Promise.all(updates)
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      console.error("Error updating visionary priorities:", err);
+      res.status(500).json({
+        success: false,
+        error: "Failed to update priorities",
+      });
+    });
+};
+
+// POST - Update priority (via drag & drop)
+exports.updateMarqueeLinkPriority = (req, res) => {
+  const links = req.body.links;
+
+
+  if (!Array.isArray(links)) {
+    return res.status(400).json({
+      success: false,
+      error: "Invalid request: 'links' must be an array",
+    });
+  }
+
+  const updates = links.map((link) =>
+    query("UPDATE marquee_links SET priority = ? WHERE id = ?", [
+      link.priority,
+      link.id,
+    ])
+  );
+
+  Promise.all(updates)
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      console.error("Error in updateMarqueeLinkPriority:", err);
+      res.status(500).json({
+        success: false,
+        error: "Failed to update priorities",
+      });
+    });
+};
 
 // Home dashboard controller
 exports.getHomeDash = (req, res, next) => {
@@ -991,12 +1594,12 @@ exports.redressGrievance = (req, res, next) => {
             <h1>Your Grievance has been Redressed</h1>
             <p>Dear <strong>${name}</strong>,</p>
             <p>We are pleased to inform you that your grievance which you had raised on ${new Date(
-              date
-            ).toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })} has been redressed.</p>
+        date
+      ).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })} has been redressed.</p>
             <p>Here are the key details:</p>
             <h3>Grievance</h3>
             <p><b>${grievance}</b></p>
@@ -1598,3 +2201,6 @@ exports.getAPI = (req, res, next) => {
       res.status(500).send("Can't get data from database. Try again!");
     });
 };
+
+
+
