@@ -174,7 +174,7 @@ block content
             input(type="hidden", name="id", value=banner.id)
           .mb-3
             label.form-label(for="banner_text") Banner Text
-            input.form-control(type="text", name="banner_text", id="banner_text", required, value=banner && banner.banner_text || '')
+            input.form-control(type="text", name="banner_text", id="banner_text", value=banner && banner.banner_text || '')
 
           .mb-3
             label.form-label(for="banner_subtext") Banner Subtext

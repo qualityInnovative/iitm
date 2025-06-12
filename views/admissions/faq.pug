@@ -3,7 +3,7 @@ extends ../layouts/base.pug
 block styles
   style.
     .faq-container {
-      max-width: 1000px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 2rem;
     }
@@ -77,90 +77,92 @@ block styles
     }
 
 block content
-  main
-    .faq-container
-      .faq-header
-        h1 General FAQs – Iqbal Institute of Technology and Management (IITM)
-        p Find answers to common questions about our programs and campus life
+  main.page-layout 
+        include ../layouts/pagemenu.pug
+  
+        .faq-container
+          .faq-header
+            h1 General FAQs – Iqbal Institute of Technology and Management (IITM)
+            p Find answers to common questions about our programs and campus life
 
-      .faq-section
-        .faq-item
-          .faq-question Q1. What courses does IITM offer?
-            span.toggle-icon -
-          .faq-answer We currently offer undergraduate programs in BBA and BCA, and postgraduate programs in MBA and MCA.
+          .faq-section
+            .faq-item
+              .faq-question Q1. What courses does IITM offer?
+                span.toggle-icon -
+              .faq-answer We currently offer undergraduate programs in BBA and BCA, and postgraduate programs in MBA and MCA.
 
-        .faq-item
-          .faq-question Q2. Is IITM affiliated and recognized?
-            span.toggle-icon -
-          .faq-answer Yes. IITM is affiliated with the University of Kashmir and approved by AICTE, ensuring our degrees hold both academic and professional value.
+            .faq-item
+              .faq-question Q2. Is IITM affiliated and recognized?
+                span.toggle-icon -
+              .faq-answer Yes. IITM is affiliated with the University of Kashmir and approved by AICTE, ensuring our degrees hold both academic and professional value.
 
-        .faq-item
-          .faq-question Q3. What's the admission process like?
-            span.toggle-icon -
-          .faq-answer Admission is based on merit and entrance tests where applicable. Our team guides students through each step once applications open.
+            .faq-item
+              .faq-question Q3. What's the admission process like?
+                span.toggle-icon -
+              .faq-answer Admission is based on merit and entrance tests where applicable. Our team guides students through each step once applications open.
 
-        .faq-item
-          .faq-question Q4. Is there a placement cell at IITM?
-            span.toggle-icon -
-          .faq-answer Yes. We have a dedicated placement cell that works with companies to provide job and internship opportunities for our students.
+            .faq-item
+              .faq-question Q4. Is there a placement cell at IITM?
+                span.toggle-icon -
+              .faq-answer Yes. We have a dedicated placement cell that works with companies to provide job and internship opportunities for our students.
 
-        .faq-item
-          .faq-question Q5. What kind of campus facilities are available?
-            span.toggle-icon -
-          .faq-answer We offer smart classrooms, a well-stocked library, high-speed internet, computer labs, a seminar hall, and a supportive faculty network.
+            .faq-item
+              .faq-question Q5. What kind of campus facilities are available?
+                span.toggle-icon -
+              .faq-answer We offer smart classrooms, a well-stocked library, high-speed internet, computer labs, a seminar hall, and a supportive faculty network.
 
-        .faq-item
-          .faq-question Q6. Are there extracurricular activities?
-            span.toggle-icon -
-          .faq-answer Absolutely. From tech fests to cultural events and student clubs, there's plenty to engage with beyond the classroom.
+            .faq-item
+              .faq-question Q6. Are there extracurricular activities?
+                span.toggle-icon -
+              .faq-answer Absolutely. From tech fests to cultural events and student clubs, there's plenty to engage with beyond the classroom.
 
-      .faq-section
-        h2 BBA FAQs
-        .faq-item
-          .faq-question Q1. Is BBA suitable if I want to start my own business?
-            span.toggle-icon -
-          .faq-answer Definitely. The program covers the basics of management, marketing, finance, and entrepreneurship — ideal for future business owners.
+          .faq-section
+            h2 BBA FAQs
+            .faq-item
+              .faq-question Q1. Is BBA suitable if I want to start my own business?
+                span.toggle-icon -
+              .faq-answer Definitely. The program covers the basics of management, marketing, finance, and entrepreneurship — ideal for future business owners.
 
-        .faq-item
-          .faq-question Q2. Will I get exposure to real business environments?
-            span.toggle-icon -
-          .faq-answer Yes. We focus on case studies, projects, and local business interactions to bridge classroom learning with real-world practice.
+            .faq-item
+              .faq-question Q2. Will I get exposure to real business environments?
+                span.toggle-icon -
+              .faq-answer Yes. We focus on case studies, projects, and local business interactions to bridge classroom learning with real-world practice.
 
-      .faq-section
-        h2 BCA FAQs
-        .faq-item
-          .faq-question Q1. Do I need coding knowledge before joining BCA?
-            span.toggle-icon -
-          .faq-answer Not at all. We teach coding from the ground up, so beginners are more than welcome.
+          .faq-section
+            h2 BCA FAQs
+            .faq-item
+              .faq-question Q1. Do I need coding knowledge before joining BCA?
+                span.toggle-icon -
+              .faq-answer Not at all. We teach coding from the ground up, so beginners are more than welcome.
 
-        .faq-item
-          .faq-question Q2. What kind of jobs can a BCA graduate get?
-            span.toggle-icon -
-          .faq-answer From software development to technical support, database management to web development — the options are many.
+            .faq-item
+              .faq-question Q2. What kind of jobs can a BCA graduate get?
+                span.toggle-icon -
+              .faq-answer From software development to technical support, database management to web development — the options are many.
 
-      .faq-section
-        h2 MBA FAQs
-        .faq-item
-          .faq-question Q1. What backgrounds do MBA students come from?
-            span.toggle-icon -
-          .faq-answer Our MBA students come from diverse fields — commerce, arts, engineering, and business — which adds to the learning experience.
+          .faq-section
+            h2 MBA FAQs
+            .faq-item
+              .faq-question Q1. What backgrounds do MBA students come from?
+                span.toggle-icon -
+              .faq-answer Our MBA students come from diverse fields — commerce, arts, engineering, and business — which adds to the learning experience.
 
-        .faq-item
-          .faq-question Q2. Does IITM help with placements after MBA?
-            span.toggle-icon -
-          .faq-answer Yes. We have regular placement drives and industry connections that help students get placed in reputed firms.
+            .faq-item
+              .faq-question Q2. Does IITM help with placements after MBA?
+                span.toggle-icon -
+              .faq-answer Yes. We have regular placement drives and industry connections that help students get placed in reputed firms.
 
-      .faq-section
-        h2 MCA FAQs
-        .faq-item
-          .faq-question Q1. What makes the MCA program at IITM different?
-            span.toggle-icon -
-          .faq-answer We balance strong fundamentals with industry-relevant tools and languages. Our focus is on hands-on learning.
+          .faq-section
+            h2 MCA FAQs
+            .faq-item
+              .faq-question Q1. What makes the MCA program at IITM different?
+                span.toggle-icon -
+              .faq-answer We balance strong fundamentals with industry-relevant tools and languages. Our focus is on hands-on learning.
 
-        .faq-item
-          .faq-question Q2. Can I switch to tech after doing a non-tech undergrad?
-            span.toggle-icon -
-          .faq-answer Yes. As long as you meet the eligibility, MCA can be your gateway into the tech world, even if your undergrad wasn't computer-related.
+            .faq-item
+              .faq-question Q2. Can I switch to tech after doing a non-tech undergrad?
+                span.toggle-icon -
+              .faq-answer Yes. As long as you meet the eligibility, MCA can be your gateway into the tech world, even if your undergrad wasn't computer-related.
 
 block scripts
   script.

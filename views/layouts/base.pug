@@ -105,12 +105,15 @@ html(lang='en')
           //-   a(href="/home") Home
           li(class=(path.includes('/about') ? 'active' : ''))
             a(href="/about") About
-          li(class=(path.includes('/academics')  ? 'active' : ''))
-            a(href="/academics") Academics
-          li(class=(path.includes('/admissions')  ? 'active' : ''))
-            a(href="/admissions") Admissions
           li(class=(path.includes('/campus')  ? 'active' : ''))
             a(href="/campus") campus
+
+          li(class=(path.includes('/academics')  ? 'active' : ''))
+            a(href="/academics") Academics
+            
+          li(class=(path.includes('/admissions')  ? 'active' : ''))
+            a(href="/admissions") Admissions
+          
           li(class=(path.includes('/placements')  ? 'active' : ''))
             a(href="/placements") Placements
           li(class=(path.includes('/community')  ? 'active' : ''))
@@ -197,12 +200,12 @@ html(lang='en')
             a(href="/admissions/ug-admissions")
               svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
                 path(d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z")
-            a(href="/admissions/ug-admissions") Undergrad
+            a(href="/admissions/ug-admissions") Graduate Programs
           .nav-links__links--icon__item
             a(href="/admissions/pg-admissions")
               svg(xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512")
                 path(d="M219.3 .5c3.1-.6 6.3-.6 9.4 0l200 40C439.9 42.7 448 52.6 448 64s-8.1 21.3-19.3 23.5L352 102.9V160c0 70.7-57.3 128-128 128s-128-57.3-128-128V102.9L48 93.3v65.1l15.7 78.4c.9 4.7-.3 9.6-3.3 13.3s-7.6 5.9-12.4 5.9H16c-4.8 0-9.3-2.1-12.4-5.9s-4.3-8.6-3.3-13.3L16 158.4V86.6C6.5 83.3 0 74.3 0 64C0 52.6 8.1 42.7 19.3 40.5l200-40zM111.9 327.7c10.5-3.4 21.8 .4 29.4 8.5l71 75.5c6.3 6.7 17 6.7 23.3 0l71-75.5c7.6-8.1 18.9-11.9 29.4-8.5C401 348.6 448 409.4 448 481.3c0 17-13.8 30.7-30.7 30.7H30.7C13.8 512 0 498.2 0 481.3c0-71.9 47-132.7 111.9-153.6z")
-            a(href="/admissions/pg-admissions") Postgrad
+            a(href="/admissions/pg-admissions") Post Graduate Programs
 
     //- CAMPUS
     .nav-links.hide-nav-links#campus-links

@@ -3,9 +3,54 @@ extends ../layouts/base.pug
 block content
     include ../layouts/banner.pug
     main.about-page.container-lg
+        div
+            if submitted
+                .success-note.margin-top-xs.margin-bottom-lg
+                    .svg
+                        svg(fill="green" xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
+                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z')
+                    .text Thank you for your admission inquiry! We deeply appreciate your interest in joining our college. Our dedicated team is eagerly reviewing your inquiry and will reach out to you promptly. Your enthusiasm is valued, and we look forward to welcoming you to our vibrant community soon!
+
+            if error
+                .error-note.margin-top-xs.margin-bottom-xs
+                    .svg
+                        svg(xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
+                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z')
+                    .text Oops! Something unexpected happend. Try again!
+
+            if !submitted
+                form.form-1.margin-top-xs(action="/post-new-admission" method="post") 
+                    h3 Admission Inquiry
+                    .center 
+                        div 
+                            input.form-input.half(type="text" name="name" placeholder="Name" autocomplete="off" required)
+                        div 
+                            input.form-input.half(type="email" name="email" placeholder="Email" autocomplete="off" required)
+                    
+                    select.form-input(name="qualification" required="")
+                        option(value="" disabled selected) Qualification
+                        option(value="intermediate") Intermediate (12th pass)
+                        option(value="Graduate") Graduate
+                        option(value="Post Graduate") Post Graduate
+                    .center 
+                        div 
+                            select.form-input.half(name="interestedIn" required="")
+                                option(value="" disabled selected) Course Interested In
+                                option(value="bca") BCA
+                                option(value="bba") BBA
+                                option(value="mca") MCA
+                                option(value="mba") MBA
+                        div 
+                            input.form-input.half(type="text" name="applicationNo" placeholder="Application Number. (CUET/CMAT/GMAT/CAT...)" autocomplete="off" required)
+                    .center 
+                        div 
+                            input.form-input.half(type="tel" name="phone" placeholder="Phone" autocomplete="off" required)
+                       
+
+                    textarea.form-input(name="remark" rows="6" placeholder="Remark (if any)")
+                    button(type="submit") Send Inquiry
 
         h1.primary_heading.margin-top-sm.margin-bottom-sm Choose Your Path to an Extraordinary Future
-
         .cards.margin-bottom-md
             .card.card-1
                 .card__icon
@@ -40,50 +85,3 @@ block content
                         | Explore
                         ion-icon(name="arrow-forward-outline")
 
-        div
-            if submitted
-                .success-note.margin-top-xs.margin-bottom-lg
-                    .svg
-                        svg(fill="green" xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
-                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z')
-                    .text Thank you for your admission inquiry! We deeply appreciate your interest in joining our college. Our dedicated team is eagerly reviewing your inquiry and will reach out to you promptly. Your enthusiasm is valued, and we look forward to welcoming you to our vibrant community soon!
-
-            if error
-                .error-note.margin-top-xs.margin-bottom-xs
-                    .svg
-                        svg(xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
-                            path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z')
-                    .text Oops! Something unexpected happend. Try again!
-
-            if !submitted
-                form.form-1.margin-top-xs(action="/post-new-admission" method="post") 
-                    h3 Admission Inquiry
-                    .center 
-                        div 
-                            input.form-input.half(type="text" name="name" placeholder="Name" autocomplete="off" required)
-                        div 
-                            input.form-input.half(type="text" name="parentage" placeholder="Parentage" autocomplete="off" required)
-                    input.form-input(type="text" name="address" placeholder="Address" autocomplete="off" required)
-                    select.form-input(name="qualification" required="")
-                        option(value="" disabled selected) Qualification
-                        option(value="intermediate") Intermediate (12th pass)
-                        option(value="Graduate") Graduate
-                        option(value="Post Graduate") Post Graduate
-                    .center 
-                        div 
-                            select.form-input.half(name="interestedIn" required="")
-                                option(value="" disabled selected) Course Interested In
-                                option(value="bca") BCA
-                                option(value="bba") BBA
-                                option(value="mca") MCA
-                                option(value="mba") MBA
-                        div 
-                            input.form-input.half(type="text" name="applicationNo" placeholder="Application Number. (CUET/CMAT/GMAT/CAT...)" autocomplete="off" required)
-                    .center 
-                        div 
-                            input.form-input.half(type="tel" name="phone" placeholder="Phone" autocomplete="off" required)
-                        div 
-                            input.form-input.half(type="email" name="email" placeholder="Email" autocomplete="off" required)
-
-                    textarea.form-input(name="remark" rows="6" placeholder="Remark (if any)")
-                    button(type="submit") Send Inquiry

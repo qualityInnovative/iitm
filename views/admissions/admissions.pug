@@ -11,22 +11,24 @@ block styles
 
 block content
     include ../layouts/banner.pug
-    main.admissions-page.container-lg.margin-bottom-md
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+        main.admissions-page.container-lg.margin-bottom-md.text-center
 
-        h3.admissions-page__introduction.margin-bottom-sm Our institution is dedicated to providing a transformative education that prepares students for success. With a wide range of undergraduate programs, experienced faculty, and a vibrant learning community, we strive to empower students to thrive and make a positive impact. Explore our offerings and take the first step towards an exceptional educational experience at IITM.
+            h5.admissions-page__introduction.margin-bottom-sm Our institution is dedicated to providing a transformative education that prepares students for success. With a wide range of undergraduate programs, experienced faculty, and a vibrant learning community, we strive to empower students to thrive and make a positive impact. Explore our offerings and take the first step towards an exceptional educational experience at IITM.
 
-        div
-            .square-cards
-                .square-cards__item 
-                    a(href="/admissions/ug-admissions")
-                        img(src="/data/imgs/ug-admissions-banner.jpg")
-                        div
-                            h2 Undergraduate Student 
-                            p I'm a high school graduate seeking a Bachelor's degree.
-                            
-                .square-cards__item 
-                    a(href="/admissions/pg-admissions")
-                        img(src="/data/imgs/pg-admissions-banner.jpg")
-                        div
-                            h2 Graduate Student 
-                            p I'm seeking a Master's Degree.
+            div
+                .square-cards
+                    .square-cards__item 
+                        a(href="/admissions/ug-admissions")
+                            img(src="/data/imgs/ug-admissions-banner.jpg")
+                            div
+                                h2 Graduate Programs 
+                                p I'm a high school graduate seeking a Bachelor's degree.
+                                
+                    .square-cards__item 
+                        a(href="/admissions/pg-admissions")
+                            img(src="/data/imgs/pg-admissions-banner.jpg")
+                            div
+                                h2 Post Graduate Programs 
+                                p I'm seeking a Master's Degree.

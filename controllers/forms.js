@@ -226,8 +226,8 @@ exports.postGrievance = (req, res, next) => {
 
 exports.postNewAdmission = (req, res, next) => {
   const name = req.body.name || null;
-  const parentage = req.body.parentage || null;
-  const address = req.body.address || null;
+  const parentage = req.body.parentage || "";
+  const address = req.body.address || "";
   const qualification = req.body.qualification || null;
   const phone = req.body.phone || null;
   const email = req.body.email || null;
