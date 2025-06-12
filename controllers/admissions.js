@@ -1,4 +1,4 @@
-const pageTitle = "Admissions";
+const pageTitle = "Programmes Offered";
 const pagePath = "/admissions";
 const bannerPath = "/data/imgs/";
 const query = require("../utils/db");
@@ -8,24 +8,28 @@ const params = mainParams(
   `${pageTitle}`,
   `${pagePath}`,
   [
-    ["UG Admissions"],
-    ["PG Admissions"],
+    ["Graduate programmes"],
+    ["Post Graduate programmes"],
     ["Tution & Fees"],
-    ["FAQ"],
-    ["Rules and Regulations"],
     ["Scholarships", "STEM Scholarship", "Sakhawat Center"],
+    ["Rules and Regulations"],
+    ["FAQ"],
+    
+    
   ],
   [
     [`${pagePath}/ug-admissions`],
     [`${pagePath}/pg-admissions`],
     [`${pagePath}/tution-and-fees`],
-    [`${pagePath}/faq`],
-    [`${pagePath}/rules-and-regulations`],
     [
       `${pagePath}/scholarships`,
       `${pagePath}/scholarships/stem`,
       `${pagePath}/scholarships/sakhawat-centre`,
     ],
+    [`${pagePath}/rules-and-regulations`],
+    [`${pagePath}/faq`],
+    
+    
   ]
 );
 

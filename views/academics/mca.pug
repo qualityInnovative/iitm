@@ -1,5 +1,23 @@
 extends ../layouts/base.pug
 
+block styles
+    style.
+        .btn-marquee {
+            background-color: #e74c3c;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-marquee:hover {
+            background-color: #c0392b;
+        }
+        
 block content
     include ../layouts/banner.pug
 

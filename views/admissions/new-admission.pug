@@ -40,8 +40,15 @@ block content
                                 option(value="bba") BBA
                                 option(value="mca") MCA
                                 option(value="mba") MBA
-                        div 
-                            input.form-input.half(type="text" name="applicationNo" placeholder="Application Number. (CUET/CMAT/GMAT/CAT...)" autocomplete="off" required)
+                        div
+                            select.form-input.half(name="applicationNo" required)
+                                option(value="" disabled selected) Exam Appeared / Interested In
+                                option(value="uet") UET
+                                option(value="cmat") CMAT
+                                option(value="gmat") GMAT
+                                option(value="cat") CAT
+                                option(value="not_appeared") Not Appeared
+
                     .center 
                         div 
                             input.form-input.half(type="tel" name="phone" placeholder="Phone" autocomplete="off" required)
