@@ -8,7 +8,7 @@ const mainParams = require("../utils/params");
 const params = mainParams(
   `${pageTitle}`,
   `${pagePath}`,
-  [["Canteen"],["Virtual Campus Tour"] ["Sports Facilities"], ["Transportation Services"], ["Hostel"]],
+  [["Canteen"],["Virtual Campus Tour"], ["Sports Facilities"], ["Transportation Services"], ["Hostel"]],
   [
     [`${pagePath}/canteen`],
     [`${pagePath}/virtual-tour`],
