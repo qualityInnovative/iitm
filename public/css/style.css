@@ -2179,7 +2179,7 @@ nav ul li.active:hover {
 }
 .new-badge {
   display: inline-block;
-  color: #ff5722; /* Orange-red color */
+  color: #ff0d00; /* Orange-red color */
   font-weight: bold;
   animation: flash 1.5s infinite;
   margin-left: 4px;
