@@ -2184,6 +2184,7 @@ nav ul li.active:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 80vh;
 }
 
 .heading-banner__banner-text {
