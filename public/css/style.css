@@ -2183,7 +2183,7 @@ nav ul li.active:hover {
   text-align: center;
   color: white;
   width: 100%;
-  height: auto;
+  min-height: 80vh;
   overflow: hidden;
 }
 
