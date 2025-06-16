@@ -2179,11 +2179,11 @@ nav ul li.active:hover {
 }
 
 .heading-banner {
-  position: relative;
+  position: absolute;
   text-align: center;
   color: white;
-  height: var(--banner-height);
-  width: 100%;
+  top: 0;
+  left: 0;
   overflow: hidden;
 }
 
