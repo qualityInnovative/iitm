@@ -6,13 +6,15 @@
 }
 
 .heading-banner {
-    position: absolute;
+    position: relative;
     text-align: center;
     color: white;
-    // height: var(--banner-height);
-    top:0;
-    left:0;
+    height: var(--banner-height);
+    width: 100%;
     overflow: hidden;
+    display: flex;           /* Enables flexbox for child elements */
+    justify-content: center; /* Horizontally centers content */
+    align-items: center;    /* Vertically centers content */
 }
 
 .heading-banner__banner-text {
