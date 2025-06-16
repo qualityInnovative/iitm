@@ -2182,15 +2182,9 @@ nav ul li.active:hover {
   position: relative;
   text-align: center;
   color: white;
-  height: var(--banner-height); /* Optional: Keep for fallback */
+  height: var(--banner-height);
   width: 100%;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* Add these new lines */
-  aspect-ratio: 16/5; /* For 1920×600 banners (adjust as needed) */
-  height: auto; /* Let aspect-ratio control height */
 }
 
 .heading-banner__banner-text {
