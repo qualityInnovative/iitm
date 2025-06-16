@@ -13,7 +13,7 @@ const showNavLink = (node) => {
       .classList.remove("hide-nav-links");
   else if (node.textContent.toLowerCase() == "campus")
     document.querySelector("#campus-links").classList.remove("hide-nav-links");
-  else if (node.textContent.toLowerCase() == "admissions")
+  else if (node.textContent.toLowerCase() == "admissions (new)")
     document
       .querySelector("#admissions-links")
       .classList.remove("hide-nav-links");
