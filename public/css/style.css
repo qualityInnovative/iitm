@@ -2184,7 +2184,7 @@ nav ul li.active:hover {
   color: white;
   height: var(--banner-height);
   width: 100%;
-  object-fit: contain;
+  object-fit: fill;
 }
 
 .heading-banner__banner-text {
