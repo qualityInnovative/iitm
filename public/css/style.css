@@ -2187,7 +2187,7 @@ nav ul li.active:hover {
   align-items: center;
   min-height: 80vh; /* Fallback for older browsers */
   width: 100%; /* Ensure full width */
-  overflow: hidden; /* Contain child elements */
+  /* Contain child elements */
   /* Modern aspect-ratio control */
   aspect-ratio: 16/5; /* Standard banner ratio (1920x600) */
   height: auto; /* Let aspect-ratio control height */
