@@ -2179,13 +2179,21 @@ nav ul li.active:hover {
 }
 
 .heading-banner {
+  position: relative; /* Required for child absolute positioning */
   text-align: center;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh;
-  object-fit: cover;
+  min-height: 80vh; /* Fallback for older browsers */
+  width: 100%; /* Ensure full width */
+  overflow: hidden; /* Contain child elements */
+  /* Modern aspect-ratio control */
+  aspect-ratio: 16/5; /* Standard banner ratio (1920x600) */
+  height: auto; /* Let aspect-ratio control height */
+  /* Background/Image handling */
+  background-size: cover;
+  background-position: center;
 }
 
 .heading-banner__banner-text {
