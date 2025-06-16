@@ -2177,7 +2177,19 @@ nav ul li.active:hover {
   --text-bg-opacity: 0.5;
   --banner-border-width: 5px;
 }
+.new-badge {
+  display: inline-block;
+  color: #ff5722; /* Orange-red color */
+  font-weight: bold;
+  animation: flash 1.5s infinite;
+  margin-left: 4px;
+}
 
+@keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
 .heading-banner {
   position: relative; /* Required for child absolute positioning */
   text-align: center;

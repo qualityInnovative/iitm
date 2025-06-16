@@ -112,7 +112,8 @@ html(lang='en')
             a(href="/academics") Academics
             
           li(class=(path.includes('/admissions')  ? 'active' : ''))
-            a(href="/admissions") Admissions (new)
+            a(href="/admissions") Admissions
+              span.new-badge (new)
           
           li(class=(path.includes('/placements')  ? 'active' : ''))
             a(href="/placements") Placements
