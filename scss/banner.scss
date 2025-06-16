@@ -6,12 +6,10 @@
 }
 
 .heading-banner {
-    position: relative;
-    text-align: center;
-    color: white;
-    height: var(--banner-height);
     width: 100%;
-    overflow: hidden;
+  height: auto;
+  display: block;
+  object-fit: cover;
 }
 
 .heading-banner__banner-text {
