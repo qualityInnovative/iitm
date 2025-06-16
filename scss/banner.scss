@@ -9,12 +9,16 @@
     position: relative;
     text-align: center;
     color: white;
-    height: var(--banner-height);
+    height: var(--banner-height); /* Optional: Keep for fallback */
     width: 100%;
     overflow: hidden;
-    display: flex;           /* Enables flexbox for child elements */
-    justify-content: center; /* Horizontally centers content */
-    align-items: center;    /* Vertically centers content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Add these new lines */
+    aspect-ratio: 16/5; /* For 1920×600 banners (adjust as needed) */
+    height: auto; /* Let aspect-ratio control height */
 }
 
 .heading-banner__banner-text {
