@@ -3,7 +3,7 @@ const navLinks = document.querySelectorAll(".nav-links");
 
 // Removes the hide-nav-links class from nav-links div to make it visisble
 const showNavLink = (node) => {
-  console.log(node);
+  console.log(node.textContent);
   if (node.textContent.toLowerCase() == "home")
     document.querySelector("#home-links")?.classList.remove("hide-nav-links");
   else if (node.textContent.toLowerCase() == "about")
