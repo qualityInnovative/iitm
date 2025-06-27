@@ -58,7 +58,7 @@ exports.getEvents = (req, res, next) => {
   Promise.all([
     query("SELECT * FROM events ORDER BY start DESC LIMIT 0, 5"),
     query(
-      "SELECT * FROM (SELECT * FROM events ORDER BY start DESC limit 0, 3) AS subquery ORDER BY start ASC"
+      "SELECT * FROM (SELECT * FROM events ORDER BY start DESC LIMIT 0, 3) AS subquery ORDER BY start DESC"
     ),
     query("SELECT username FROM users WHERE uid = ?", [req.session.user]),
   ])
