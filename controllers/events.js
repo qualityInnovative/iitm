@@ -76,13 +76,13 @@ exports.getEvents = (req, res, next) => {
             top3,
             isEventsAdmin:
               user[0]?.username == "admin@cms" ||
-              user[0]?.username == "hod@cs" ||
-              user[0]?.username == "hod@ms" ||
-              user[0]?.username == "coordinator@cs" ||
-              user[0]?.username == "coordinator@ms" ||
-              user[0]?.username == "po@iitm" ||
-              user[0]?.username == "pro@iitm" ||
-              user[0]?.username == "director@iitm"
+                user[0]?.username == "hod@cs" ||
+                user[0]?.username == "hod@ms" ||
+                user[0]?.username == "coordinator@cs" ||
+                user[0]?.username == "coordinator@ms" ||
+                user[0]?.username == "po@iitm" ||
+                user[0]?.username == "pro@iitm" ||
+                user[0]?.username == "director@iitm"
                 ? req.session.isLoggedIn
                 : false,
             isAuthenticated: req.session.isLoggedIn,
@@ -149,7 +149,7 @@ exports.getEventsByDate = (req, res, next) => {
             top3,
             isEventsAdmin:
               user[0]?.username == "admin@events" ||
-              user[0]?.username == "admin@cms"
+                user[0]?.username == "admin@cms"
                 ? req.session.isLoggedIn
                 : false,
             isAuthenticated: req.session.isLoggedIn,
@@ -177,10 +177,12 @@ exports.getEventById = (req, res, next) => {
     query("SELECT username FROM users WHERE uid = ?", [req.session.user]),
   ])
     .then(([event, top3, user]) => {
+      if (!event || event.length === 0) {
+        return res.status(404).send("Event not found");
+      }
+
       sanitizeAndFormateDate(event);
       sanitizeAndFormateDate(top3);
-
-      // Render the view
       res.render(
         "events/events",
         Object.assign(
@@ -198,7 +200,7 @@ exports.getEventById = (req, res, next) => {
             top3,
             isEventsAdmin:
               user[0]?.username == "admin@events" ||
-              user[0]?.username == "admin@cms"
+                user[0]?.username == "admin@cms"
                 ? req.session.isLoggedIn
                 : false,
             isAuthenticated: req.session.isLoggedIn,
@@ -206,6 +208,7 @@ exports.getEventById = (req, res, next) => {
         )
       );
     })
+
     .catch((err) => {
       console.log(err);
       res.status(500).send("Internal Server Error");
@@ -247,7 +250,7 @@ exports.getEventsOfCurrentMonth = (req, res, next) => {
             top3,
             isEventsAdmin:
               user[0]?.username == "admin@events" ||
-              user[0]?.username == "admin@cms"
+                user[0]?.username == "admin@cms"
                 ? req.session.isLoggedIn
                 : false,
             isAuthenticated: req.session.isLoggedIn,
@@ -304,7 +307,7 @@ exports.getEventsOfNextMonth = (req, res, next) => {
             top3,
             isEventsAdmin:
               user[0]?.username == "admin@events" ||
-              user[0]?.username == "admin@cms"
+                user[0]?.username == "admin@cms"
                 ? req.session.isLoggedIn
                 : false,
             isAuthenticated: req.session.isLoggedIn,
@@ -370,7 +373,7 @@ exports.getEventsByMonth = (req, res, next) => {
             top3,
             isEventsAdmin:
               user[0]?.username == "admin@events" ||
-              user[0]?.username == "admin@cms"
+                user[0]?.username == "admin@cms"
                 ? req.session.isLoggedIn
                 : false,
             isAuthenticated: req.session.isLoggedIn,
