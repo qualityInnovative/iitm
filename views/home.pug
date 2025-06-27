@@ -15,16 +15,21 @@ block styles
     meta(name="description", content="Founded in 2006, IITM offers transformative education backed by Iqbal Memorial Trust. NAAC-accredited, AICTE-approved, and affiliated with the University of Kashmir. Join us for a career-ready journey in a vibrant, hands-on learning environment.")
     meta(property="og:image" content="/data/collegeImgs/college-1.png")
 
-       
-    
-    
+
 block content
-    section.marquee-bar
-            .marquee-container
-                ul.marquee-content
-                    each link in marqueeLinks
-                        li.marquee-item
-                            a(href=link.url title=link.title)= link.text
+  section.marquee-bar
+    .marquee-container
+      ul.marquee-content
+        each link in marqueeLinks
+          li.marquee-item
+            a(href=link.url, title=link.title)
+              - var parts = link.text.split('(New)');
+              | #{parts[0]}
+              if parts.length > 1
+                span.flash (new)
+              if parts[1]
+                | #{parts[1]}
+
     
            
     if banners && banners.length

@@ -10,45 +10,13 @@ block styles
         meta(property="og:image" content=event[0].path ? event[0].path : "/data/imgs/image_not_available.jpg")
 
 block content
-    include ../layouts/banner.pug
+    //- include ../layouts/banner.pug
 
     main.events-page
         //- Main Page
         .main 
             //- Top carousel
-            .latest-events.event-slider
-                //- Left prev button
-                .event-slider__buttons 
-                    button.event-slider__buttons--prev
-                        ion-icon(name="arrow-back-circle")
-
-                //- Top 3 events
-                .event-slider__slides
-                    - for(let i = 0; i < top3.length; i++) {
-                        .latest-events__event.event-slider__slides--slide
-                            a(href=`/events/id/${top3[i].eid}`)
-                                - console.log("Path:", top3[i].path)
-                                if top3[i].path
-                                    img(src=top3[i].path)
-                                else
-                                    img(src="/data/imgs/image_not_available.jpg")
-                            .latest-events__event--details
-                                a(href=`/events/id/${top3[i].eid}`)
-                                    h2 #{top3[i].event}
-                                .date 
-                                    - let date = top3[i].start
-                                    a(href=`/events/date/${new Date(date).getFullYear()}-${new Date(date).getMonth() + 1}-${new Date(date).getDate()}`) 
-                                        ion-icon(name="calendar")
-                                        | #{top3[i].start} - #{top3[i].end}
-                                div
-                                    | #{top3[i].description.split(" ").slice(0, 25).join(" ").replace(/<[^>]*>/g, '')}...
-                                    
-                    - }
-
-                //- Right next button
-                .event-slider__buttons 
-                    button.event-slider__buttons--next
-                        ion-icon(name="arrow-forward-circle")
+            
 
             //- If events are sent with render function then show events container else don't
             if events
@@ -167,6 +135,39 @@ block content
                 if isEventsAdmin 
                     button.btn-open-modal.btn-event-open-modal(data-link=`/cms/delete-event/${event[0].eid}`) delete
 
+            .latest-events.event-slider
+                //- Left prev button
+                .event-slider__buttons 
+                    button.event-slider__buttons--prev
+                        ion-icon(name="arrow-back-circle")
+
+                //- Top 3 events
+                .event-slider__slides
+                    - for(let i = 0; i < top3.length; i++) {
+                        .latest-events__event.event-slider__slides--slide
+                            a(href=`/events/id/${top3[i].eid}`)
+                                - console.log("Path:", top3[i].path)
+                                if top3[i].path
+                                    img(src=top3[i].path)
+                                else
+                                    img(src="/data/imgs/image_not_available.jpg")
+                            .latest-events__event--details
+                                a(href=`/events/id/${top3[i].eid}`)
+                                    h2 #{top3[i].event}
+                                .date 
+                                    - let date = top3[i].start
+                                    a(href=`/events/date/${new Date(date).getFullYear()}-${new Date(date).getMonth() + 1}-${new Date(date).getDate()}`) 
+                                        ion-icon(name="calendar")
+                                        | #{top3[i].start} - #{top3[i].end}
+                                div
+                                    | #{top3[i].description.split(" ").slice(0, 25).join(" ").replace(/<[^>]*>/g, '')}...
+                                    
+                    - }
+
+                //- Right next button
+                .event-slider__buttons 
+                    button.event-slider__buttons--next
+                        ion-icon(name="arrow-forward-circle")
 
         //- Sidebar Widgets
         .widgets
