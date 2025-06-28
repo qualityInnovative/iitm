@@ -4410,14 +4410,14 @@ footer .credits a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   background: #3498db;
   color: white;
   border-radius: 50%;
   font-weight: 700;
-  font-size: 1.6rem;
-  margin-right: 20px;
+  font-size: 0.8rem;
+  margin-right: 10px;
   flex-shrink: 0;
   box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
 }
@@ -4425,7 +4425,7 @@ footer .credits a {
 .section-title {
   color: #2c3e50;
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 600;
   position: relative;
   padding-bottom: 10px;
@@ -4443,8 +4443,8 @@ footer .credits a {
 }
 
 .section-content {
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: 0.9rem;
+  line-height: 1.4;
   color: #444;
   margin-bottom: 10px;
   padding-left: 15px;
@@ -4472,8 +4472,8 @@ footer .credits a {
 
 .programs-container h3 {
   color: #2c3e50;
-  margin-bottom: 10px;
-  font-size: 1rem;
+  margin-bottom: 5px;
+  font-size: 0.8rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -4500,7 +4500,7 @@ footer .credits a {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
   position: relative;
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   transition: all 0.3s ease;
 }
 
@@ -4528,7 +4528,7 @@ footer .credits a {
 }
 
 .cta-container {
-  margin-top: 30px;
+  margin-top: 10px;
   text-align: center;
 }
 
@@ -4638,7 +4638,7 @@ footer .credits a {
   .section-content {
     padding-left: 0;
     border-left: none;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
   }
   .programs-list {
     grid-template-columns: 1fr;
