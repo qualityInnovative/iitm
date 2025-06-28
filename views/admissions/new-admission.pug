@@ -4,13 +4,11 @@ block content
     main
         div.admission-container2(style="display: flex; gap: 2rem;")
             section.admission-instructions-section(style="flex: 1;")
+                if admissionData.title
+                    h2.subheading(style="text-align: center;")= admissionData.title    
                 if admissionData
-                    .instructions-header.text-center
+                    .instructions-header
                         h1.primary_heading2= admissionData.heading || 'Admissions Open'
-                            if admissionData.subheading
-                                h2.subheading= admissionData.subheading
-                          
-
                     each section, index in admissionData.sections
                         .instruction-card
                             .section-header
@@ -100,63 +98,67 @@ block content
         if programdetails && programdetails.length
             .container-lg
                 .program-details-section.margin-top-lg
-                    h2.primary_heading.margin-bottom-md Program Details
+                    h2.primary_heading2 Program Details
                     .table-responsive
                         table.program-table
                             thead
                                 tr
+                                    th S.no
                                     th Program
                                     th Eligibility
-                                    th Test
-                                    th Domain
+                                    th Test Domain
+                                   
                             tbody
                                 each item in programdetails
                                     tr
-                                        td= item.programme
+                                        td= item.priority
+                                        td 
+                                            .tdprogram-name= item.programme
+                                            .tdprogram-domain= item.domain
                                         td= item.eligibility
                                         td= item.test
-                                        td= item.domain
+                                        
         else
             .container-lg
                 .program-details-section.margin-top-lg
-                    h2.primary_heading.margin-bottom-md Program Details
+                    h2.primary_heading2 Program Details
                     .alert.alert-info
                         | No program details available at the moment.
-        .container-lg
-            h1.primary_heading.margin-top-sm.margin-bottom-sm Choose Your Path to an Extraordinary Future
-            .cards.margin-bottom-md
-                .card.card-1
-                    .card__icon
-                        ion-icon(name="school")
-                    h2.card__title Achieve Your Dreams with our Merit Scholarships!
-                    p.card__apply
-                        a.card__link(href='/admissions/scholarships' target="_blank")
-                            | Explore
-                            ion-icon(name="arrow-forward-outline")
-                .card.card-1
-                    .card__icon
-                        ion-icon(name="business")
-                    h2.card__title Acquire Practical Skills and Prepare for Career Success through Real-World Technical Trainings!
-                    p.card__apply
-                        a.card__link(href='/academics/workshops-and-bootcamps' target="_blank")
-                            | Explore
-                            ion-icon(name="arrow-forward-outline")
-                .card.card-1
-                    .card__icon
-                        ion-icon(name="happy")
-                    h2.card__title Experience exceptional guidance from accomplished teachers, propelling your academic success.
-                    p.card__apply
-                        a.card__link(href='/academics/faculty' target="_blank")
-                            | Explore
-                            ion-icon(name="arrow-forward-outline")
-                .card.card-1
-                    .card__icon
-                        ion-icon(name="card")
-                    h2.card__title Experience Quality Education at Affordable Tuition and Fees, Empowering Your Journey!
-                    p.card__apply
-                        a.card__link(href='/admissions/tution-and-fees' target="_blank")
-                            | Explore
-                            ion-icon(name="arrow-forward-outline")
+        //- .container-lg
+        //-     h1.primary_heading.margin-top-sm.margin-bottom-sm Choose Your Path to an Extraordinary Future
+        //-     .cards.margin-bottom-md
+        //-         .card.card-1
+        //-             .card__icon
+        //-                 ion-icon(name="school")
+        //-             h2.card__title Achieve Your Dreams with our Merit Scholarships!
+        //-             p.card__apply
+        //-                 a.card__link(href='/admissions/scholarships' target="_blank")
+        //-                     | Explore
+        //-                     ion-icon(name="arrow-forward-outline")
+        //-         .card.card-1
+        //-             .card__icon
+        //-                 ion-icon(name="business")
+        //-             h2.card__title Acquire Practical Skills and Prepare for Career Success through Real-World Technical Trainings!
+        //-             p.card__apply
+        //-                 a.card__link(href='/academics/workshops-and-bootcamps' target="_blank")
+        //-                     | Explore
+        //-                     ion-icon(name="arrow-forward-outline")
+        //-         .card.card-1
+        //-             .card__icon
+        //-                 ion-icon(name="happy")
+        //-             h2.card__title Experience exceptional guidance from accomplished teachers, propelling your academic success.
+        //-             p.card__apply
+        //-                 a.card__link(href='/academics/faculty' target="_blank")
+        //-                     | Explore
+        //-                     ion-icon(name="arrow-forward-outline")
+        //-         .card.card-1
+        //-             .card__icon
+        //-                 ion-icon(name="card")
+        //-             h2.card__title Experience Quality Education at Affordable Tuition and Fees, Empowering Your Journey!
+        //-             p.card__apply
+        //-                 a.card__link(href='/admissions/tution-and-fees' target="_blank")
+        //-                     | Explore
+        //-                     ion-icon(name="arrow-forward-outline")
 
 
             
