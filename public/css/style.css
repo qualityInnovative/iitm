@@ -4435,7 +4435,7 @@ footer .credits a {
 .section-title {
   color: #2c3e50;
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
   position: relative;
   padding-bottom: 10px;
@@ -4453,7 +4453,7 @@ footer .credits a {
 }
 
 .section-content {
-  font-size: 0.9rem;
+  font-size: 1rem;
   line-height: 1.4;
   color: #444;
   margin-bottom: 10px;
@@ -4483,7 +4483,7 @@ footer .credits a {
 .programs-container h3 {
   color: #2c3e50;
   margin-bottom: 5px;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -4553,7 +4553,7 @@ footer .credits a {
   font-weight: 600;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   position: relative;
   overflow: hidden;
 }
