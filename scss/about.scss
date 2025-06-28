@@ -254,8 +254,11 @@
 .instructions-header {
   position: relative;
   text-align: center;
-  margin-bottom: 50px;
-  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+ 
 }
 
 .instructions-header:after {
@@ -269,7 +272,13 @@
   background: #2c3e50;
   border-radius: 2px;
 }
-
+.primary_heading2{
+  font-size: 1.6rem;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+}
 .primary_heading {
   font-size: 1.2rem;
   color: #2c3e50;

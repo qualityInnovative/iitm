@@ -6,10 +6,10 @@ block content
             section.admission-instructions-section(style="flex: 1;")
                 if admissionData
                     .instructions-header.text-center
-                        h1.primary_heading= admissionData.heading || 'Admissions Open'
+                        h1.primary_heading2= admissionData.heading || 'Admissions Open'
                             if admissionData.subheading
                                 h2.subheading= admissionData.subheading
-                            .academic-year Academic Session 2025–26
+                          
 
                     each section, index in admissionData.sections
                         .instruction-card
