@@ -17,14 +17,28 @@ block content
                                     h2.section-title= section.title
                             .section-content
                                 p= section.content
-                                
-                                if section.programs && section.programs.length
-                                    .programs-container
-                                        h3 Offered Programs:
-                                        ul.programs-list
-                                            each program in section.programs
-                                                li= program
-                                
+                                if index==0
+                                    if programdetails && programdetails.length
+                                        .table-responsive
+                                            table.program-table
+                                                thead
+                                                    tr
+                                                        th S.no
+                                                        th Program
+                                                        th Eligibility   
+                                                tbody
+                                                    each item in programdetails
+                                                        tr
+                                                            td= item.priority
+                                                            td 
+                                                                .tdprogram-name= item.programme
+                                                                .tdprogram-domain= item.domain
+                                                            td= item.eligibility
+                                                            
+                                    else
+                                        .alert.alert-info
+                                            | No program details available at the moment.
+                                    
                                 if section.link && section.link.text
                                     .cta-container
                                         a.cta-button(href=section.link.url target="_blank")
@@ -95,35 +109,35 @@ block content
                         button(type="submit") SUBMIT
 
 
-        if programdetails && programdetails.length
-            .container-lg
-                .program-details-section.margin-top-lg
-                    h2.primary_heading2 Program Details
-                    .table-responsive
-                        table.program-table
-                            thead
-                                tr
-                                    th S.no
-                                    th Program
-                                    th Eligibility
-                                    th Test Domain
+        //- if programdetails && programdetails.length
+        //-     .container-lg
+        //-         .program-details-section.margin-top-lg
+        //-             h2.primary_heading2 Program Details
+        //-             .table-responsive
+        //-                 table.program-table
+        //-                     thead
+        //-                         tr
+        //-                             th S.no
+        //-                             th Program
+        //-                             th Eligibility
+        //-                             th Test Domain
                                    
-                            tbody
-                                each item in programdetails
-                                    tr
-                                        td= item.priority
-                                        td 
-                                            .tdprogram-name= item.programme
-                                            .tdprogram-domain= item.domain
-                                        td= item.eligibility
-                                        td= item.test
+        //-                     tbody
+        //-                         each item in programdetails
+        //-                             tr
+        //-                                 td= item.priority
+        //-                                 td 
+        //-                                     .tdprogram-name= item.programme
+        //-                                     .tdprogram-domain= item.domain
+        //-                                 td= item.eligibility
+        //-                                 td= item.test
                                         
-        else
-            .container-lg
-                .program-details-section.margin-top-lg
-                    h2.primary_heading2 Program Details
-                    .alert.alert-info
-                        | No program details available at the moment.
+        //- else
+        //-     .container-lg
+        //-         .program-details-section.margin-top-lg
+        //-             h2.primary_heading2 Program Details
+        //-             .alert.alert-info
+        //-                 | No program details available at the moment.
         //- .container-lg
         //-     h1.primary_heading.margin-top-sm.margin-bottom-sm Choose Your Path to an Extraordinary Future
         //-     .cards.margin-bottom-md
@@ -159,6 +173,11 @@ block content
         //-                 a.card__link(href='/admissions/tution-and-fees' target="_blank")
         //-                     | Explore
         //-                     ion-icon(name="arrow-forward-outline")
+
+
+
+
+        
         .contact-section.container-lg
             .contact-info
                 h2.primary_heading2 Contact Information
