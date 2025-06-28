@@ -1,0 +1,28 @@
+extends ../layouts/cms-base.pug
+
+block content
+  .container
+    h1.text-center.my-4= data.heading
+    
+    each section, index in data.sections
+      .card.mb-4
+        .card-body
+          h4.card-title
+            if section.title
+              | #{index + 1}) #{section.title}
+            else
+              | #{index + 1})
+          
+          p.card-text= section.content
+          
+          if section.programs && section.programs.length
+            ul.list-group.mt-3
+              each program in section.programs
+                li.list-group-item= program
+          
+          if section.link && section.link.text
+            a.btn.btn-primary.mt-3(href=section.link.url target="_blank")
+              = section.link.text
+    
+    .text-center.mt-5
+      small.text-muted Last updated: #{new Date(data.last_updated).toLocaleDateString()}

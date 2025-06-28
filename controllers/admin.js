@@ -65,6 +65,201 @@ exports.getCourses = async (req, res) => {
   }
 };
 
+
+
+exports.getadminssioninstructions = async (req, res) => {
+  try {
+    const [instructions] = await query(
+      "SELECT * FROM admission_instructions LIMIT 1"
+    );
+
+    let sections = [];
+    
+    if (instructions) {
+      // Check if sections is already a JavaScript object
+      if (typeof instructions.sections === 'object') {
+        sections = instructions.sections;
+      }
+      // Check if it's a JSON string
+      else if (typeof instructions.sections === 'string') {
+        try {
+          sections = JSON.parse(instructions.sections);
+        } catch (e) {
+          console.error("Error parsing sections:", e);
+          sections = [];
+        }
+      }
+    }
+
+    res.render("admin/addadmissioninstructions", {
+      instructions: instructions || null,
+      sections,
+      successMessage: req.session.successMessage,
+      errorMessage: req.session.errorMessage
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.postadminssioninstructions = async (req, res) => {
+  try {
+    const { title, heading } = req.body;
+    
+    // Manually extract sections
+    const sections = [];
+    let i = 0;
+    
+    while (req.body[`sections[${i}].title`] !== undefined) {
+      sections.push({
+        title: req.body[`sections[${i}].title`] || '',
+        content: req.body[`sections[${i}].content`] || '',
+        programs: req.body[`sections[${i}].programs`] 
+          ? req.body[`sections[${i}].programs`].split('\n').filter(p => p.trim())
+          : [],
+        link: {
+          text: req.body[`sections[${i}].linkText`] || '',
+          url: req.body[`sections[${i}].linkUrl`] || ''
+        }
+      });
+      i++;
+    }
+    
+    const sectionsJson = JSON.stringify(sections);
+    
+    // Database operation
+    const [existing] = await query(
+      "SELECT id FROM admission_instructions LIMIT 1"
+    );
+    
+    if (existing) {
+      await query(
+        "UPDATE admission_instructions SET title = ?, heading = ?, sections = ? WHERE id = ?",
+        [title, heading, sectionsJson, existing.id]
+      );
+    } else {
+      await query(
+        "INSERT INTO admission_instructions (title, heading, sections) VALUES (?, ?, ?)",
+        [title, heading, sectionsJson]
+      );
+    }
+    
+    req.session.successMessage = "Instructions saved successfully!";
+    res.redirect("/cms/admissions-iitm/add-adminsioninstructions");
+  } catch (err) {
+    console.error(err);
+    req.session.errorMessage = "Failed to save instructions";
+    res.redirect("/cms/admissions-iitm/add-adminsioninstructions");
+  }
+};
+
+exports.showAdmissionInstructions = async (req, res) => {
+  try {
+    const [data] = await query(
+      "SELECT * FROM admission_instructions LIMIT 1"
+    );
+    
+    if (!data) {
+      return res.render("admissions", {
+        data: {
+          title: "Admission Instructions",
+          heading: "Admissions Information",
+          sections: [],
+          last_updated: new Date()
+        },
+        pageTitle: "Admissions",
+        pageName: "Admissions",
+        isAuthenticated: req.session.isLoggedIn
+      });
+    }
+    
+    // Parse JSON sections
+    data.sections = JSON.parse(data.sections);
+    
+    res.render("admissions", {
+      data,
+      pageTitle: data.title,
+      pageName: "Admissions",
+      isAuthenticated: req.session.isLoggedIn
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.getallprogramdetails = async (req, res) => {
+  try {
+    const programdetails = await query("SELECT * FROM programdetails ORDER BY priority ASC");
+    res.render("admin/programdetails", {
+      programdetails,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.addProgramDetail = async (req, res) => {
+  const { program, eligibility, test, domain, priority } = req.body;
+  try {
+    await query(
+      "INSERT INTO programdetails (programme, eligibility, test, domain, priority) VALUES (?, ?, ?, ?, ?)",
+      [program, eligibility, test, domain, priority]
+    );
+    res.redirect("/cms/admissions-iitm/programdetails");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.deleteProgramDetail = async (req, res) => {
+  try {
+    await query("DELETE FROM programdetails WHERE id = ?", [req.params.id]);
+    res.redirect("/cms/admissions-iitm/programdetails");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.updatePriority = async (req, res) => {
+  const { priority } = req.body;
+  try {
+    await query("UPDATE programdetails SET priority = ? WHERE id = ?", [priority, req.params.id]);
+    res.redirect("/cms/admissions-iitm/programdetails");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.updateprogram = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { program, priority, eligibility, test, domain } = req.body;
+
+    const result = await query(
+      `UPDATE programdetails 
+       SET programme = ?, priority = ?, eligibility = ?, test = ?, domain = ? 
+       WHERE id = ?`,
+      [program, priority, eligibility, test, domain, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send('Program not found');
+    }
+
+    res.redirect('/cms/admissions-iitm/programdetails');
+  } catch (err) {
+    console.error('Error updating program:', err);
+    res.status(500).send('Server Error');
+  }
+};
+
+
 exports.getCourseForm = async (req, res) => {
   try {
     const id = req.params.id;

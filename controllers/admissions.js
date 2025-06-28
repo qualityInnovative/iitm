@@ -204,19 +204,50 @@ exports.getSakhawatCentre = (req, res, next) => {
 // NOTE: Scholarships to be added
 
 // New Admission
-exports.getNewAdmission = (req, res, next) => {
-  const submitted = req.query.submitted || false;
-  const error = req.query.error || false;
-  res.render(
-    "admissions/new-admission",
-    Object.assign(
-      params(
-        `Admission - New Admission`,
-        `/`,
-        "/data/imgs/new-admission-banner.jpg",
-        '"Take the First Step, Submit Your Admission Inquiry Now!"'
-      ),
-      { submitted, error, isAuthenticated: req.session.isLoggedIn }
-    )
-  );
-};
+exports.getNewAdmission = async (req, res, next) => {
+  try {
+    const programdetails = await query("SELECT * FROM programdetails ORDER BY priority ASC");
+    const [admissionData] = await query("SELECT * FROM admission_instructions LIMIT 1");
+    const submitted = req.query.submitted || false;
+    const error = req.query.error || false;
+
+    // Process admission data for the view
+    let sections = [];
+    if (admissionData) {
+      if (typeof admissionData.sections === 'object') {
+        sections = admissionData.sections;
+      } else if (typeof admissionData.sections === 'string') {
+        try {
+          sections = JSON.parse(admissionData.sections);
+        } catch (e) {
+          console.error("Error parsing sections:", e);
+          sections = [];
+        }
+      }
+    }
+
+    res.render("admissions/new-admission", 
+      Object.assign(
+        params(
+          `Admission - ${admissionData?.title || 'New Admission'}`,
+          `/admissions`,
+          "/data/imgs/new-admission-banner.jpg",
+          admissionData?.heading || '"Take the First Step, Submit Your Admission Inquiry Now!"'
+        ),
+        { 
+          submitted, 
+          error, 
+          isAuthenticated: req.session.isLoggedIn,
+          programdetails,
+          admissionData: admissionData ? {
+            ...admissionData,
+            sections
+          } : null
+        }
+      )
+    );
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+};;

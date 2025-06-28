@@ -4,9 +4,27 @@ block styles
 
 block content 
     main.cont-sm 
+        .cms-admin-btns.margin-top-sm
+            a(href="/cms/admissions-iitm/add-adminsioninstructions").cms-admin-btns-btn
+                ion-icon(name="person-add" size="large")
+                h3 Admission Instructions
+                span Add Admission Instructions
+      
+            a(href="/cms/admissions-iitm/programdetails").cms-admin-btns-btn
+                ion-icon(name="person-add" size="large")
+                h3 Programme Details
+                span Add Programme Details
+
+       
+            a(href="/cms/admissions-iitm/add-adminsioninstructions").cms-admin-btns-btn
+                ion-icon(name="person-add" size="large")
+                h3 Affidavit form for Anti-Ragging
+                span Add Anti-Ragging instruction
+
+       
+        
         form.form-1.margin-top-sm(action="/cms/admissions-iitm" method="get")
             h3 Filter Admissions
-
             select.form-input(name="type" required="")
                 - var select0 = false 
                 - var select1 = false
@@ -23,7 +41,6 @@ block content
                 div 
                     input.form-input.half(type="text" name="year" placeholder="Year" autocomplete="off" value=year)
             button(type="submit") Filter
-
         .line-above-heading
         h3.heading-with-top-border.uppercase
             if type == "0"

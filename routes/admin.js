@@ -130,6 +130,19 @@ router.post(
   adminController.admitStudent
 );
 
+router.get("/cms/admissions-iitm/programdetails", adminController.getallprogramdetails);
+router.post("/cms/admissions-iitm/programdetails/add", adminController.addProgramDetail);
+router.post("/cms/admissions-iitm/programdetails/delete/:id", adminController.deleteProgramDetail);
+router.post("/cms/admissions-iitm/programdetails/update-priority/:id", adminController.updatePriority);
+router.post("/cms/admissions-iitm/programdetails/updateprogram/:id", adminController.updateprogram);
+
+
+
+router.get("/cms/admissions-iitm/add-adminsioninstructions", adminController.getadminssioninstructions);
+router.post("/cms/admissions-iitm/add-adminsioninstructions", adminController.postadminssioninstructions);
+
+
+
 // HODs
 router.get("/cms/cs-hod", adminController.getHODCS);
 router.get("/cms/ms-hod", adminController.getHODMS);

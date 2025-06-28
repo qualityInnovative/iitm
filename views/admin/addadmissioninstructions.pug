@@ -1,0 +1,453 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  style.
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #28a745;
+      --danger: #dc3545;
+      --border: #dee2e6;
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    .admission-manager {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+      padding: 30px 0;
+      min-height: 100vh;
+    }
+    
+    .admission-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      padding: 30px;
+    }
+    
+    .admission-header {
+      text-align: center;
+      padding: 20px 0 30px;
+      position: relative;
+    }
+    
+    .admission-header h1 {
+      color: var(--primary);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .admission-header h1:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+    
+    .alert {
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    .alert-success {
+      background-color: rgba(40, 167, 69, 0.1);
+      border: 1px solid rgba(40, 167, 69, 0.3);
+      color: var(--success);
+    }
+    
+    .alert-danger {
+      background-color: rgba(220, 53, 69, 0.1);
+      border: 1px solid rgba(220, 53, 69, 0.3);
+      color: var(--danger);
+    }
+    
+    .alert i {
+      margin-right: 10px;
+      font-size: 1.3rem;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: var(--transition);
+      background-color: #fff;
+      color: var(--dark);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+    
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      margin: 40px 0 20px;
+      color: var(--primary);
+    }
+    
+    .section-title h3 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    
+    .section-title:before {
+      content: '';
+      height: 30px;
+      width: 4px;
+      background: var(--secondary);
+      margin-right: 12px;
+      border-radius: 2px;
+    }
+    
+    .section-card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      margin-bottom: 25px;
+      transition: var(--transition);
+      border-left: 4px solid var(--secondary);
+    }
+    
+    .section-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .section-card .card-body {
+      padding: 25px;
+    }
+    
+    .section-card .card-header {
+      background-color: rgba(52, 152, 219, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 15px 25px;
+      font-weight: 600;
+      color: var(--primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .btn-remove {
+      background-color: rgba(231, 76, 60, 0.1);
+      color: var(--danger);
+      border: none;
+      border-radius: 6px;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+    }
+    
+    .btn-remove i {
+      margin-right: 5px;
+    }
+    
+    .btn-remove:hover {
+      background-color: rgba(231, 76, 60, 0.2);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .btn-add {
+      background-color: rgba(52, 152, 219, 0.1);
+      color: var(--secondary);
+    }
+    
+    .btn-add:hover {
+      background-color: rgba(52, 152, 219, 0.2);
+    }
+    
+    .btn-save {
+      background-color: var(--secondary);
+      color: white;
+      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    }
+    
+    .btn-save:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 768px) {
+      .admission-container {
+        padding: 20px;
+        border-radius: 0;
+      }
+      
+      .admission-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .section-card .card-body {
+        padding: 20px 15px;
+      }
+      
+      .btn {
+        width: 100%;
+        padding: 15px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+    
+    .programs-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .hint {
+      font-size: 0.85rem;
+      color: #6c757d;
+      font-weight: normal;
+    }
+
+block content
+  .admission-manager
+    .admission-container
+      .admission-header
+        h1 Manage IITM Admission Instructions
+        p Create and edit admission information for prospective students
+        
+      if successMessage
+        .alert.alert-success
+          i.fas.fa-check-circle
+          | #{successMessage}
+      if errorMessage
+        .alert.alert-danger
+          i.fas.fa-exclamation-circle
+          | #{errorMessage}
+      
+      form(method="POST" action="/cms/admissions-iitm/add-adminsioninstructions")
+        .form-group
+          label Title:
+          input.form-control(
+            type="text"
+            name="title"
+            value=instructions ? instructions.title : 'Admission Instructions'
+            placeholder="Enter admission title"
+          )
+        
+        .form-group
+          label Heading:
+          input.form-control(
+            type="text"
+            name="heading"
+            required
+            value=instructions ? instructions.heading : 'Admissions Open for Academic Session 2025–26'
+            placeholder="Enter main heading"
+          )
+        
+        .section-title
+          h3 Sections
+        
+        #sections
+          // Use the pre-parsed sections array
+          each section, index in sections.length ? sections : [{}]
+            .card.section-card
+              .card-header
+                span Section #{index + 1}
+                button.btn-remove(type="button" onclick="this.closest('.card').remove()")
+                  i.fas.fa-trash-alt
+                  | Remove
+              .card-body
+                .form-group
+                  label Section Title:
+                  input.form-control(
+                    type="text"
+                    name=`sections[${index}].title`
+                    value=section.title || ''
+                    placeholder="Enter section title"
+                  )
+                
+                .form-group
+                  label Content:
+                  textarea.form-control(
+                    name=`sections[${index}].content`
+                    rows="4"
+                    placeholder="Enter section content"
+                  )= section.content || ''
+                
+                .form-group
+                  .programs-label
+                    label Programs (one per line):
+                    span.hint (Separate with line breaks)
+                  textarea.form-control(
+                    name=`sections[${index}].programs`
+                    rows="3"
+                    placeholder="BCA Hons.&#10;BBA Hons."
+                  )= section.programs ? section.programs.join('\n') : ''
+                
+                .form-group
+                  label Link Text:
+                  input.form-control(
+                    type="text"
+                    name=`sections[${index}].linkText`
+                    value=section.link ? section.link.text : ''
+                    placeholder="Enter link text"
+                  )
+                
+                .form-group
+                  label Link URL:
+                  input.form-control(
+                    type="text"
+                    name=`sections[${index}].linkUrl`
+                    value=section.link ? section.link.url : ''
+                    placeholder="https://example.com"
+                  )
+        
+        .action-buttons
+          button.btn.btn-add(type="button" onclick="addSection()") 
+            i.fas.fa-plus
+            | Add New Section
+          button.btn.btn-save(type="submit")
+            i.fas.fa-save
+            | Save Instructions
+
+  script.
+    function addSection() {
+      const sectionsDiv = document.getElementById('sections');
+      const sectionCount = sectionsDiv.children.length;
+      
+      const newSection = document.createElement('div');
+      newSection.className = 'card section-card';
+      newSection.innerHTML = `
+        <div class="card-header">
+          <span>Section ${sectionCount + 1}</span>
+          <button type="button" class="btn-remove" onclick="this.closest('.card').remove()">
+            <i class="fas fa-trash-alt"></i> Remove
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label>Section Title:</label>
+            <input type="text" class="form-control" name="sections[${sectionCount}].title" placeholder="Enter section title">
+          </div>
+          <div class="form-group">
+            <label>Content:</label>
+            <textarea class="form-control" name="sections[${sectionCount}].content" rows="4" placeholder="Enter section content"></textarea>
+          </div>
+          <div class="form-group">
+            <div class="programs-label">
+              <label>Programs (one per line):</label>
+              <span class="hint">(Separate with line breaks)</span>
+            </div>
+            <textarea class="form-control" name="sections[${sectionCount}].programs" rows="3" placeholder="BCA Hons.&#10;BBA Hons."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Link Text:</label>
+            <input type="text" class="form-control" name="sections[${sectionCount}].linkText" placeholder="Enter link text">
+          </div>
+          <div class="form-group">
+            <label>Link URL:</label>
+            <input type="text" class="form-control" name="sections[${sectionCount}].linkUrl" placeholder="https://example.com">
+          </div>
+        </div>
+      `;
+      
+      sectionsDiv.appendChild(newSection);
+      
+      // Scroll to the new section
+      newSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Add animation to new sections
+    document.addEventListener('DOMContentLoaded', function() {
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1 && node.classList.contains('card')) {
+              node.style.opacity = 0;
+              node.style.transform = 'translateY(20px)';
+              setTimeout(() => {
+                node.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                node.style.opacity = 1;
+                node.style.transform = 'translateY(0)';
+              }, 10);
+            }
+          });
+        });
+      });
+      
+      observer.observe(document.getElementById('sections'), {
+        childList: true
+      });
+    });
