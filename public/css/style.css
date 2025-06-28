@@ -4302,6 +4302,41 @@ footer .credits a {
   min-width: 300px;
 }
 
+.contact-section {
+  padding: 1rem;
+  margin-bottom: 30px;
+}
+.contact-section .contact-info {
+  max-width: 800px;
+  text-align: start;
+}
+.contact-section .contact-details {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  display: inline-block;
+  text-align: left;
+}
+.contact-section .contact-item {
+  margin: 0.75rem 0;
+  font-size: 1.1rem;
+}
+.contact-section .contact-item strong {
+  display: inline-block;
+  min-width: 120px;
+  color: #333;
+}
+.contact-section .contact-item a {
+  color: #0066cc;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.contact-section .contact-item a:hover {
+  color: #004499;
+  text-decoration: underline;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .admission-container2 {
