@@ -4274,6 +4274,20 @@ footer .credits a {
   width: 350px;
 }
 
+@keyframes flash {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.flash {
+  animation: flash 1s infinite;
+  font-weight: bold; /* Optional styling */
+  color: #ff0000; /* Optional: red color for emphasis */
+}
+
 .admission-container2 {
   display: flex;
   gap: 2rem;
@@ -4652,7 +4666,7 @@ footer .credits a {
   }
 }
 .program-details-section {
-  background: #fff;
+  background: #efefef;
   border-radius: 8px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -4669,17 +4683,17 @@ footer .credits a {
 .program-table td {
   padding: 1rem;
   text-align: left;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #efefef;
 }
 
 .program-table th {
-  background-color: #f8f9fa;
+  background-color: #efefef;
   font-weight: 600;
   color: #343a40;
 }
 
 .program-table tbody tr:hover {
-  background-color: #f9f9fb;
+  background-color: #efefef;
 }
 
 .table-responsive {
@@ -4689,7 +4703,7 @@ footer .credits a {
 .alert {
   padding: 1rem;
   border-radius: 6px;
-  background-color: #e1f0fa;
+  background-color: #efefef;
   border: 1px solid #b8daff;
   color: #004085;
 }
