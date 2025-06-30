@@ -38,13 +38,24 @@ block content
                                     else
                                         .alert.alert-info
                                             | No program details available at the moment.
-                                    
-                                if section.link && section.link.text
-                                    .cta-container
-                                        a.cta-button(href=section.link.url target="_blank")
-                                            = section.link.text
-                                            i.fas.fa-external-link-alt
-
+                                
+                                //- Updated for multiple links
+                                - 
+                                  // Normalize links to array
+                                  let links = [];
+                                  if (section.links && Array.isArray(section.links)) {
+                                    links = section.links;
+                                  } else if (section.link) {
+                                    links = [section.link];
+                                  }
+                                
+                                if links.length
+                                  .cta-container
+                                    each link in links
+                                      if link.text && link.url
+                                        a.cta-button(href=link.url target="_blank")
+                                          = link.text
+                                          i.fas.fa-external-link-alt
                     
                 else
                     .instructions-header.text-center
@@ -174,10 +185,6 @@ block content
         //-                     | Explore
         //-                     ion-icon(name="arrow-forward-outline")
 
-
-
-
-        
         .contact-section.container-lg
             .contact-info
                 h2.primary_heading2 Contact Information
@@ -188,7 +195,3 @@ block content
                     p.contact-item
                         strong Email: 
                         a(href="mailto:contact@iitm.edu.in") contact@iitm.edu.in
-
-
-
-            

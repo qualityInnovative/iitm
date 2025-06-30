@@ -280,6 +280,61 @@ block styles
       font-weight: normal;
     }
 
+    /* New styles for multiple links */
+    .links-container {
+      margin-bottom: 15px;
+    }
+    
+    .link-group {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: #f8f9fa;
+      position: relative;
+    }
+    
+    .btn-remove-link {
+      background-color: rgba(231, 76, 60, 0.1);
+      color: var(--danger);
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      transition: var(--transition);
+      cursor: pointer;
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+    }
+    
+    .btn-remove-link:hover {
+      background-color: rgba(231, 76, 60, 0.2);
+    }
+    
+    .btn-add-link {
+      background-color: rgba(52, 152, 219, 0.1);
+      color: var(--secondary);
+      border: none;
+      border-radius: 6px;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom:10px
+    }
+    
+    .btn-add-link i {
+      margin-right: 5px;
+    }
+    
+    .btn-add-link:hover {
+      background-color: rgba(52, 152, 219, 0.2);
+    }
+
 block content
   .admission-manager
     .admission-container
@@ -321,10 +376,10 @@ block content
         
         #sections
           // Use the pre-parsed sections array
-          each section, index in sections.length ? sections : [{}]
+          each section, sectionIndex in sections.length ? sections : [{}]
             .card.section-card
               .card-header
-                span Section #{index + 1}
+                span Section #{sectionIndex + 1}
                 button.btn-remove(type="button" onclick="this.closest('.card').remove()")
                   i.fas.fa-trash-alt
                   | Remove
@@ -333,7 +388,7 @@ block content
                   label Section Title:
                   input.form-control(
                     type="text"
-                    name=`sections[${index}].title`
+                    name=`sections[${sectionIndex}].title`
                     value=section.title || ''
                     placeholder="Enter section title"
                   )
@@ -341,7 +396,7 @@ block content
                 .form-group
                   label Content:
                   textarea.form-control(
-                    name=`sections[${index}].content`
+                    name=`sections[${sectionIndex}].content`
                     rows="4"
                     placeholder="Enter section content"
                   )= section.content || ''
@@ -351,28 +406,56 @@ block content
                     label Programs (one per line):
                     span.hint (Separate with line breaks)
                   textarea.form-control(
-                    name=`sections[${index}].programs`
+                    name=`sections[${sectionIndex}].programs`
                     rows="3"
                     placeholder="BCA Hons.&#10;BBA Hons."
                   )= section.programs ? section.programs.join('\n') : ''
                 
+                // Updated for multiple links
                 .form-group
-                  label Link Text:
-                  input.form-control(
-                    type="text"
-                    name=`sections[${index}].linkText`
-                    value=section.link ? section.link.text : ''
-                    placeholder="Enter link text"
+                  label Links:
+                  .links-container(id=`links-container-${sectionIndex}`)
+                    // Normalize links to array
+                    - 
+                      let links = [];
+                      if (section.links && Array.isArray(section.links)) {
+                        links = section.links;
+                      } else if (section.link) {
+                        links = [section.link];
+                      }
+                      // Handle empty case
+                      links = links.length ? links : [{text: '', url: ''}];
+                    
+                    each link, linkIndex in links
+                      .link-group
+                        .form-group
+                          label Link Text:
+                          input.form-control(
+                            type="text"
+                            name=`sections[${sectionIndex}].links[${linkIndex}].text`
+                            value=link.text || ''
+                            placeholder="Enter link text"
+                          )
+                        .form-group
+                          label Link URL:
+                          input.form-control(
+                            type="text"
+                            name=`sections[${sectionIndex}].links[${linkIndex}].url`
+                            value=link.url || ''
+                            placeholder="https://example.com"
+                          )
+                        button.btn-remove-link(
+                          type="button"
+                          onclick="this.closest('.link-group').remove()"
+                        )
+                          i.fas.fa-trash
+                          | Remove
+                  button.btn-add-link(
+                    type="button"
+                    onclick=`addLink(${sectionIndex})`
                   )
-                
-                .form-group
-                  label Link URL:
-                  input.form-control(
-                    type="text"
-                    name=`sections[${index}].linkUrl`
-                    value=section.link ? section.link.url : ''
-                    placeholder="https://example.com"
-                  )
+                    i.fas.fa-plus
+                    | Add Link
         
         .action-buttons
           button.btn.btn-add(type="button" onclick="addSection()") 
@@ -413,12 +496,25 @@ block content
             <textarea class="form-control" name="sections[${sectionCount}].programs" rows="3" placeholder="BCA Hons.&#10;BBA Hons."></textarea>
           </div>
           <div class="form-group">
-            <label>Link Text:</label>
-            <input type="text" class="form-control" name="sections[${sectionCount}].linkText" placeholder="Enter link text">
-          </div>
-          <div class="form-group">
-            <label>Link URL:</label>
-            <input type="text" class="form-control" name="sections[${sectionCount}].linkUrl" placeholder="https://example.com">
+            <label>Links:</label>
+            <div class="links-container" id="links-container-${sectionCount}">
+              <div class="link-group">
+                <div class="form-group">
+                  <label>Link Text:</label>
+                  <input type="text" class="form-control" name="sections[${sectionCount}].links[0].text" placeholder="Enter link text">
+                </div>
+                <div class="form-group">
+                  <label>Link URL:</label>
+                  <input type="text" class="form-control" name="sections[${sectionCount}].links[0].url" placeholder="https://example.com">
+                </div>
+                <button type="button" class="btn-remove-link" onclick="this.closest('.link-group').remove()">
+                  <i class="fas fa-trash"></i> Remove
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add-link" onclick="addLink(${sectionCount})">
+              <i class="fas fa-plus"></i> Add Link
+            </button>
           </div>
         </div>
       `;
@@ -427,6 +523,35 @@ block content
       
       // Scroll to the new section
       newSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function addLink(sectionIndex) {
+      const linksContainer = document.getElementById(`links-container-${sectionIndex}`);
+      if (!linksContainer) return;
+      
+      // Count existing links in this container
+      const linkCount = linksContainer.querySelectorAll('.link-group').length;
+      
+      const linkGroup = document.createElement('div');
+      linkGroup.className = 'link-group';
+      linkGroup.innerHTML = `
+        <div class="form-group">
+          <label>Link Text:</label>
+          <input type="text" class="form-control" name="sections[${sectionIndex}].links[${linkCount}].text" placeholder="Enter link text">
+        </div>
+        <div class="form-group">
+          <label>Link URL:</label>
+          <input type="text" class="form-control" name="sections[${sectionIndex}].links[${linkCount}].url" placeholder="https://example.com">
+        </div>
+        <button type="button" class="btn-remove-link" onclick="this.closest('.link-group').remove()">
+          <i class="fas fa-trash"></i> Remove
+        </button>
+      `;
+      
+      linksContainer.appendChild(linkGroup);
+      
+      // Scroll to the new link group
+      linkGroup.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     // Add animation to new sections
