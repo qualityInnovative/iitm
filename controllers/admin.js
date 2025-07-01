@@ -66,42 +66,6 @@ exports.getCourses = async (req, res) => {
 };
 
 
-
-// exports.getadminssioninstructions = async (req, res) => {
-//   try {
-//     const [instructions] = await query(
-//       "SELECT * FROM admission_instructions LIMIT 1"
-//     );
-
-//     let sections = [];
-    
-//     if (instructions) {
-//       // Check if sections is already a JavaScript object
-//       if (typeof instructions.sections === 'object') {
-//         sections = instructions.sections;
-//       }
-//       // Check if it's a JSON string
-//       else if (typeof instructions.sections === 'string') {
-//         try {
-//           sections = JSON.parse(instructions.sections);
-//         } catch (e) {
-//           console.error("Error parsing sections:", e);
-//           sections = [];
-//         }
-//       }
-//     }
-
-//     res.render("admin/addadmissioninstructions", {
-//       instructions: instructions || null,
-//       sections,
-//       successMessage: req.session.successMessage,
-//       errorMessage: req.session.errorMessage
-//     });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).send("Server Error");
-//   }
-// };
 exports.getadminssioninstructions = async (req, res) => {
   try {
     const [instructions] = await query(
@@ -109,7 +73,7 @@ exports.getadminssioninstructions = async (req, res) => {
     );
 
     let sections = [];
-    
+
     if (instructions) {
       if (typeof instructions.sections === 'object') {
         sections = instructions.sections;
@@ -145,66 +109,16 @@ exports.getadminssioninstructions = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
-// exports.postadminssioninstructions = async (req, res) => {
-//   try {
-//     const { title, heading } = req.body;
-    
-//     // Manually extract sections
-//     const sections = [];
-//     let i = 0;
-    
-//     while (req.body[`sections[${i}].title`] !== undefined) {
-//       sections.push({
-//         title: req.body[`sections[${i}].title`] || '',
-//         content: req.body[`sections[${i}].content`] || '',
-//         programs: req.body[`sections[${i}].programs`] 
-//           ? req.body[`sections[${i}].programs`].split('\n').filter(p => p.trim())
-//           : [],
-//         link: {
-//           text: req.body[`sections[${i}].linkText`] || '',
-//           url: req.body[`sections[${i}].linkUrl`] || ''
-//         }
-//       });
-//       i++;
-//     }
-    
-//     const sectionsJson = JSON.stringify(sections);
-    
-//     // Database operation
-//     const [existing] = await query(
-//       "SELECT id FROM admission_instructions LIMIT 1"
-//     );
-    
-//     if (existing) {
-//       await query(
-//         "UPDATE admission_instructions SET title = ?, heading = ?, sections = ? WHERE id = ?",
-//         [title, heading, sectionsJson, existing.id]
-//       );
-//     } else {
-//       await query(
-//         "INSERT INTO admission_instructions (title, heading, sections) VALUES (?, ?, ?)",
-//         [title, heading, sectionsJson]
-//       );
-//     }
-    
-//     req.session.successMessage = "Instructions saved successfully!";
-//     res.redirect("/cms/admissions-iitm/add-adminsioninstructions");
-//   } catch (err) {
-//     console.error(err);
-//     req.session.errorMessage = "Failed to save instructions";
-//     res.redirect("/cms/admissions-iitm/add-adminsioninstructions");
-//   }
-// };
 exports.postadminssioninstructions = async (req, res) => {
   try {
     const { title, heading } = req.body;
     const sections = [];
     let i = 0;
-    
+
     while (req.body[`sections[${i}].title`] !== undefined) {
       const sectionLinks = [];
       let linkIndex = 0;
-      
+
       // Process multiple links
       while (req.body[`sections[${i}].links[${linkIndex}].text`] !== undefined) {
         sectionLinks.push({
@@ -217,21 +131,21 @@ exports.postadminssioninstructions = async (req, res) => {
       sections.push({
         title: req.body[`sections[${i}].title`] || '',
         content: req.body[`sections[${i}].content`] || '',
-        programs: req.body[`sections[${i}].programs`] 
+        programs: req.body[`sections[${i}].programs`]
           ? req.body[`sections[${i}].programs`].split('\n').filter(p => p.trim())
           : [],
         links: sectionLinks
       });
       i++;
     }
-    
+
     const sectionsJson = JSON.stringify(sections);
-    
+
     // Database operation remains the same
     const [existing] = await query(
       "SELECT id FROM admission_instructions LIMIT 1"
     );
-    
+
     if (existing) {
       await query(
         "UPDATE admission_instructions SET title = ?, heading = ?, sections = ? WHERE id = ?",
@@ -243,7 +157,7 @@ exports.postadminssioninstructions = async (req, res) => {
         [title, heading, sectionsJson]
       );
     }
-    
+
     req.session.successMessage = "Instructions saved successfully!";
     res.redirect("/cms/admissions-iitm/add-adminsioninstructions");
   } catch (err) {
@@ -252,12 +166,134 @@ exports.postadminssioninstructions = async (req, res) => {
     res.redirect("/cms/admissions-iitm/add-adminsioninstructions");
   }
 };
+
+
+
+
+exports.getAffidavitData = async (req, res) => {
+  try {
+    const [affidavit] = await query(
+      "SELECT * FROM affidavit_data ORDER BY last_updated DESC LIMIT 1"
+    );
+
+    let sections = [];
+
+    if (affidavit) {
+      // Parse JSON instructions if needed
+      if (typeof affidavit.instructions === 'string') {
+        try {
+          sections = JSON.parse(affidavit.instructions).sections || [];
+        } catch (e) {
+          console.error("Error parsing affidavit instructions:", e);
+          sections = [];
+        }
+      } else if (affidavit.instructions && affidavit.instructions.sections) {
+        sections = affidavit.instructions.sections;
+      }
+    }
+
+    res.render("admin/affidavit", {
+      affidavit: affidavit || null,
+      sections,
+      successMessage: req.session.successMessage,
+      errorMessage: req.session.errorMessage
+    });
+  } catch (err) {
+    console.error("Error fetching affidavit data:", err);
+    res.status(500)
+      .render("error", {
+        message: "Failed to load affidavit data",
+        error: err
+      });
+  }
+};
+
+exports.postAffidavitData = async (req, res) => {
+  try {
+    const { title, form_link } = req.body;
+    const sections = [];
+    let i = 0;
+
+    // Process sections
+    while (req.body[`sections[${i}].title`] !== undefined) {
+      const section = {
+        title: req.body[`sections[${i}].title`] || '',
+      };
+
+      // Process items - get as string and split by newline
+      if (req.body[`sections[${i}].items`] !== undefined) {
+        const itemsString = req.body[`sections[${i}].items`];
+        if (itemsString && itemsString.trim() !== '') {
+          section.items = itemsString.split('\n')
+            .map(item => item.trim())
+            .filter(item => item.length > 0);
+        }
+      }
+
+      // Process subsections
+      const subsections = [];
+      let k = 0;
+      while (req.body[`sections[${i}].subsections[${k}].title`] !== undefined) {
+        const subsection = {
+          title: req.body[`sections[${i}].subsections[${k}].title`] || '',
+        };
+
+        // Process subsection items
+        if (req.body[`sections[${i}].subsections[${k}].items`] !== undefined) {
+          const subItemsString = req.body[`sections[${i}].subsections[${k}].items`];
+          if (subItemsString && subItemsString.trim() !== '') {
+            subsection.items = subItemsString.split('\n')
+              .map(item => item.trim())
+              .filter(item => item.length > 0);
+          }
+        }
+
+        subsections.push(subsection);
+        k++;
+      }
+      if (subsections.length > 0) section.subsections = subsections;
+
+      sections.push(section);
+      i++;
+    }
+
+    const instructions = JSON.stringify({ sections });
+
+    // Check if we have existing data
+    const [existing] = await query(
+      "SELECT id FROM affidavit_data ORDER BY last_updated DESC LIMIT 1"
+    );
+
+    if (existing) {
+      // Update existing record
+      await query(
+        "UPDATE affidavit_data SET title = ?, instructions = ?, form_link = ?, last_updated = NOW() WHERE id = ?",
+        [title, instructions, form_link, existing.id]
+      );
+    } else {
+      // Create new record
+      await query(
+        "INSERT INTO affidavit_data (title, instructions, form_link) VALUES (?, ?, ?)",
+        [title, instructions, form_link]
+      );
+    }
+
+    req.session.successMessage = "Affidavit data saved successfully!";
+    res.redirect("/cms/admissions-iitm/affidavit");
+  } catch (err) {
+    console.error("Error saving affidavit data:", err);
+    req.session.errorMessage = "Failed to save affidavit data: " + err.message;
+    res.redirect("/cms/admissions-iitm/affidavit");
+  }
+};
+
+
 exports.showAdmissionInstructions = async (req, res) => {
   try {
     const [data] = await query(
       "SELECT * FROM admission_instructions LIMIT 1"
     );
-    
+
     if (!data) {
       return res.render("admissions", {
         data: {
@@ -271,10 +307,10 @@ exports.showAdmissionInstructions = async (req, res) => {
         isAuthenticated: req.session.isLoggedIn
       });
     }
-    
+
     // Parse JSON sections
     data.sections = JSON.parse(data.sections);
-    
+
     res.render("admissions", {
       data,
       pageTitle: data.title,

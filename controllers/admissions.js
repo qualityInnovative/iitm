@@ -204,6 +204,75 @@ exports.getSakhawatCentre = (req, res, next) => {
 // NOTE: Scholarships to be added
 
 // New Admission
+// exports.getNewAdmission = async (req, res, next) => {
+//   try {
+//     const programdetails = await query("SELECT * FROM programdetails ORDER BY priority ASC");
+//     const [admissionData] = await query("SELECT * FROM admission_instructions LIMIT 1");
+//     const submitted = req.query.submitted || false;
+//     const error = req.query.error || false;
+
+//     // Process admission data for the view
+//     let sections = [];
+//     if (admissionData) {
+//       if (typeof admissionData.sections === 'object') {
+//         sections = admissionData.sections;
+//       } else if (typeof admissionData.sections === 'string') {
+//         try {
+//           sections = JSON.parse(admissionData.sections);
+//         } catch (e) {
+//           console.error("Error parsing sections:", e);
+//           sections = [];
+//         }
+//       }
+//     }
+//     let affidavitInfo = null;
+//     const [affidavitData] = await query("SELECT * FROM affidavit_data ORDER BY last_updated DESC LIMIT 1");
+//     if (affidavitData) {
+//       try {
+//         const instructions = JSON.parse(affidavitData.instructions);
+//         affidavitInfo = {
+//           title: affidavitData.title,
+//           form_link: affidavitData.form_link,
+//           sections: instructions.sections || []
+//         };
+//       } catch (e) {
+//         console.error("Error parsing affidavit instructions:", e);
+//         affidavitInfo = {
+//           title: affidavitData.title,
+//           form_link: affidavitData.form_link,
+//           sections: []
+//         };
+//       }
+//     }
+
+//     res.render("admissions/new-admission", 
+//       Object.assign(
+//         params(
+//           `Admission - ${admissionData?.title || 'New Admission'}`,
+//           `/admissions`,
+//           "/data/imgs/new-admission-banner.jpg",
+//           admissionData?.heading || '"Take the First Step, Submit Your Admission Inquiry Now!"'
+//         ),
+//         { 
+//           submitted, 
+//           error, 
+//           isAuthenticated: req.session.isLoggedIn,
+//           programdetails,
+//           admissionData: admissionData ? {
+//             ...admissionData,
+//             sections
+//           } : null,
+//           affidavitInfo
+//         }
+//       )
+//     );
+//   } catch (err) {
+//     console.error(err);
+//     next(err);
+//   }
+// };;
+
+
 exports.getNewAdmission = async (req, res, next) => {
   try {
     const programdetails = await query("SELECT * FROM programdetails ORDER BY priority ASC");
@@ -226,6 +295,46 @@ exports.getNewAdmission = async (req, res, next) => {
       }
     }
 
+    // Fetch affidavit data
+    let affidavitInfo = null;
+    const [affidavitData] = await query("SELECT * FROM affidavit_data ORDER BY last_updated DESC LIMIT 1");
+    if (affidavitData) {
+      // Directly use instructions if it's already an object
+      if (typeof affidavitData.instructions === 'object' && affidavitData.instructions !== null) {
+        affidavitInfo = {
+          title: affidavitData.title,
+          form_link: affidavitData.form_link,
+          sections: affidavitData.instructions.sections || []
+        };
+      } 
+      // Parse if it's a string
+      else if (typeof affidavitData.instructions === 'string') {
+        try {
+          const parsedInstructions = JSON.parse(affidavitData.instructions);
+          affidavitInfo = {
+            title: affidavitData.title,
+            form_link: affidavitData.form_link,
+            sections: parsedInstructions.sections || []
+          };
+        } catch (e) {
+          console.error("Error parsing affidavit instructions:", e);
+          affidavitInfo = {
+            title: affidavitData.title,
+            form_link: affidavitData.form_link,
+            sections: []
+          };
+        }
+      } 
+      // Handle other cases
+      else {
+        affidavitInfo = {
+          title: affidavitData.title,
+          form_link: affidavitData.form_link,
+          sections: []
+        };
+      }
+    }
+
     res.render("admissions/new-admission", 
       Object.assign(
         params(
@@ -242,7 +351,8 @@ exports.getNewAdmission = async (req, res, next) => {
           admissionData: admissionData ? {
             ...admissionData,
             sections
-          } : null
+          } : null,
+          affidavitInfo  // Pass affidavit data to the view
         }
       )
     );
@@ -250,4 +360,4 @@ exports.getNewAdmission = async (req, res, next) => {
     console.error(err);
     next(err);
   }
-};;
+};

@@ -1,0 +1,673 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  style.
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #28a745;
+      --danger: #dc3545;
+      --border: #dee2e6;
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    .affidavit-manager {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+      padding: 30px 0;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .affidavit-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      padding: 30px;
+    }
+    
+    .affidavit-header {
+      text-align: center;
+      padding: 20px 0 30px;
+      position: relative;
+    }
+    
+    .affidavit-header h1 {
+      color: var(--primary);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .affidavit-header h1:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 4px;
+      background: var(--secondary);
+      border-radius: 2px;
+    }
+    
+    .affidavit-header p {
+      color: #555;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    
+    .alert {
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    .alert-success {
+      background-color: rgba(40, 167, 69, 0.1);
+      border: 1px solid rgba(40, 167, 69, 0.3);
+      color: var(--success);
+    }
+    
+    .alert-danger {
+      background-color: rgba(220, 53, 69, 0.1);
+      border: 1px solid rgba(220, 53, 69, 0.3);
+      color: var(--danger);
+    }
+    
+    .alert i {
+      margin-right: 10px;
+      font-size: 1.3rem;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: var(--transition);
+      background-color: #fff;
+      color: var(--dark);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+    
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      margin: 40px 0 20px;
+      color: var(--primary);
+    }
+    
+    .section-title h3 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+    
+    .section-title:before {
+      content: '';
+      height: 30px;
+      width: 4px;
+      background: var(--secondary);
+      margin-right: 12px;
+      border-radius: 2px;
+    }
+    
+    .section-card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      margin-bottom: 25px;
+      transition: var(--transition);
+      border-left: 4px solid var(--secondary);
+    }
+    
+    .section-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .section-card .card-body {
+      padding: 25px;
+    }
+    
+    .section-card .card-header {
+      background-color: rgba(52, 152, 219, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 15px 25px;
+      font-weight: 600;
+      color: var(--primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .btn-remove {
+      background-color: rgba(231, 76, 60, 0.1);
+      color: var(--danger);
+      border: none;
+      border-radius: 6px;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: var(--transition);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+    }
+    
+    .btn-remove i {
+      margin-right: 5px;
+    }
+    
+    .btn-remove:hover {
+      background-color: rgba(231, 76, 60, 0.2);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .btn-add {
+      background-color: rgba(52, 152, 219, 0.1);
+      color: var(--secondary);
+    }
+    
+    .btn-add:hover {
+      background-color: rgba(52, 152, 219, 0.2);
+    }
+    
+    .btn-save {
+      background-color: var(--secondary);
+      color: white;
+      box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    }
+    
+    .btn-save:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+    }
+    
+    .subsection {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 1px solid #e9ecef;
+    }
+    
+    .subsection-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #dee2e6;
+    }
+    
+    .subsection-title {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+    
+    .item-list {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+    
+    .item-list li {
+      margin-bottom: 8px;
+      padding-left: 5px;
+      position: relative;
+    }
+    
+    .item-list li:before {
+      content: '•';
+      position: absolute;
+      left: -15px;
+      color: var(--secondary);
+    }
+    
+    .form-link-container {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .form-link-container .form-control {
+      flex: 1;
+    }
+    
+    .form-link-container .btn {
+      padding: 12px 15px;
+    }
+    
+    .preview-container {
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 25px;
+      margin-top: 20px;
+      background-color: #f8f9fa;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 768px) {
+      .affidavit-container {
+        padding: 20px;
+        border-radius: 0;
+      }
+      
+      .affidavit-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .section-card .card-body {
+        padding: 20px 15px;
+      }
+      
+      .btn {
+        width: 100%;
+        padding: 15px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .key-value {
+        flex-direction: column;
+      }
+      
+      .key {
+        margin-bottom: 5px;
+      }
+      
+      .value {
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px solid #e9ecef;
+        padding-top: 5px;
+      }
+    }
+
+block content
+  .affidavit-manager
+    .affidavit-container
+      .affidavit-header
+        h1 Anti-Ragging Affidavit Manager
+        p Manage affidavit instructions and form link for anti-ragging compliance
+        
+      if successMessage
+        .alert.alert-success
+          i.fas.fa-check-circle
+          | #{successMessage}
+      if errorMessage
+        .alert.alert-danger
+          i.fas.fa-exclamation-circle
+          | #{errorMessage}
+      
+      form#affidavitForm(method="POST" action="/cms/admissions-iitm/affidavit")
+        .form-group
+          label(for="title") Title:
+          input.form-control(
+            type="text"
+            name="title"
+            id="title"
+            value=affidavit ? affidavit.title : 'Affidavit Registration Form for Anti-Ragging Instructions'
+            placeholder="Enter affidavit title"
+            required
+          )
+        
+        .form-group
+          label Form Link:
+          .form-link-container
+            input.form-control(
+              type="url"
+              name="form_link"
+              id="formLink"
+              value=affidavit ? affidavit.form_link : 'https://example.com/affidavit-form'
+              placeholder="https://example.com/affidavit-form"
+              required
+            )
+            button.btn.btn-save(type="button" id="testLinkBtn")
+              i.fas.fa-external-link-alt
+              | Test Link
+        
+        .section-title
+          h3 Instructions Preview
+          
+        #instructionsPreview.preview-container
+          if affidavit
+            h2(style="margin-top:0; color: var(--primary);")= affidavit.title
+            each section in sections
+              .section-card
+                .card-header
+                  span= section.title
+                .card-body
+                  if section.items
+                    ul.item-list
+                      each item in section.items
+                        li= item
+                  if section.subsections
+                    each subsection in section.subsections
+                      .subsection
+                        if subsection.title
+                          .subsection-title= subsection.title
+                        if subsection.items
+                          ul.item-list
+                            each item in subsection.items
+                              li= item
+            .form-group
+              label Form Link:
+              a.form-control(
+                href=affidavit.form_link 
+                target="_blank"
+                style="display:block; padding:12px 15px; color:var(--secondary); text-decoration:none;"
+              )
+                i.fas.fa-external-link-alt
+                | #{affidavit.form_link}
+          else
+            p No affidavit data found. Create a new one below.
+        
+        .section-title
+          h3 Edit Instructions
+        
+        #sections
+          each section, sectionIndex in sections.length ? sections : [{}]
+            .card.section-card
+              .card-header
+                span Section #{sectionIndex + 1}
+                button.btn-remove(type="button" onclick=`removeSection(${sectionIndex})`)
+                  i.fas.fa-trash-alt
+                  | Remove
+              .card-body
+                .form-group
+                  label Section Title:
+                  input.form-control(
+                    type="text"
+                    name=`sections[${sectionIndex}].title`
+                    value=section.title || ''
+                    placeholder="Enter section title"
+                    required
+                  )
+                
+                .form-group
+                  label Instructions (one per line):
+                  textarea.form-control(
+                    name=`sections[${sectionIndex}].items`
+                    placeholder="Add instruction items"
+                    rows="3"
+                  )= section.items ? section.items.join('\n') : ''
+                
+                .form-group
+                  label Subsections:
+                  div(id=`subsections-${sectionIndex}`)
+                    if section.subsections
+                      each subsection, subIndex in section.subsections
+                        .subsection
+                          .form-group
+                            label Subsection Title:
+                            input.form-control(
+                              type="text"
+                              name=`sections[${sectionIndex}].subsections[${subIndex}].title`
+                              value=subsection.title || ''
+                              placeholder="Title (e.g., 'College Details')"
+                            )
+                          .form-group
+                            label Items (one per line):
+                            textarea.form-control(
+                              name=`sections[${sectionIndex}].subsections[${subIndex}].items`
+                              placeholder="Item list (optional)"
+                              rows="2"
+                            )= subsection.items ? subsection.items.join('\n') : ''
+                          button.btn-remove(
+                            type="button"
+                            onclick=`removeSubsection(${sectionIndex}, ${subIndex})`
+                            style="margin-top:10px;"
+                          )
+                            i.fas.fa-trash
+                            | Remove Subsection
+                  button.btn-add(
+                    type="button"
+                    onclick=`addSubsection(${sectionIndex})`
+                    style="margin-top:10px;"
+                  )
+                    i.fas.fa-plus
+                    | Add Subsection
+        
+        .action-buttons
+          button.btn.btn-add(type="button" onclick="addSection()")
+            i.fas.fa-plus
+            | Add New Section
+          button.btn.btn-save(type="submit")
+            i.fas.fa-save
+            | Save Affidavit Data
+
+  script.
+    // Section management functions
+    function addSection() {
+      const sectionsDiv = document.getElementById('sections');
+      const sectionCount = sectionsDiv.children.length;
+      
+      const newSection = document.createElement('div');
+      newSection.className = 'card section-card';
+      newSection.innerHTML = `
+        <div class="card-header">
+          <span>Section ${sectionCount + 1}</span>
+          <button type="button" class="btn-remove" onclick="removeSectionByElement(this)">
+            <i class="fas fa-trash-alt"></i> Remove
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label>Section Title:</label>
+            <input type="text" class="form-control" 
+                   name="sections[${sectionCount}].title" 
+                   placeholder="Enter section title" required>
+          </div>
+          <div class="form-group">
+            <label>Instructions (one per line):</label>
+            <textarea class="form-control" 
+                      name="sections[${sectionCount}].items" 
+                      rows="3" placeholder="Add instruction items"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Subsections:</label>
+            <div id="subsections-${sectionCount}">
+              <div class="subsection">
+                <div class="form-group">
+                  <label>Subsection Title:</label>
+                  <input type="text" class="form-control" 
+                         name="sections[${sectionCount}].subsections[0].title" 
+                         placeholder="Title (e.g., 'College Details')">
+                </div>
+                <div class="form-group">
+                  <label>Items (one per line):</label>
+                  <textarea class="form-control" 
+                            name="sections[${sectionCount}].subsections[0].items" 
+                            rows="2" placeholder="Item list (optional)"></textarea>
+                </div>
+                <button type="button" class="btn-remove" 
+                        onclick="removeSubsectionByElement(this)" style="margin-top: 10px;">
+                  <i class="fas fa-trash"></i> Remove Subsection
+                </button>
+              </div>
+            </div>
+            <button type="button" class="btn-add" 
+                    onclick="addSubsection(${sectionCount})" style="margin-top: 10px;">
+              <i class="fas fa-plus"></i> Add Subsection
+            </button>
+          </div>
+        </div>
+      `;
+      
+      sectionsDiv.appendChild(newSection);
+      newSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function addSubsection(sectionIndex) {
+      const subsectionsDiv = document.getElementById(`subsections-${sectionIndex}`);
+      if (!subsectionsDiv) return;
+      
+      const subsectionCount = subsectionsDiv.querySelectorAll('.subsection').length;
+      
+      const newSubsection = document.createElement('div');
+      newSubsection.className = 'subsection';
+      newSubsection.innerHTML = `
+        <div class="form-group">
+          <label>Subsection Title:</label>
+          <input type="text" class="form-control" 
+                 name="sections[${sectionIndex}].subsections[${subsectionCount}].title" 
+                 placeholder="Title (e.g., 'College Details')">
+        </div>
+        <div class="form-group">
+          <label>Items (one per line):</label>
+          <textarea class="form-control" 
+                    name="sections[${sectionIndex}].subsections[${subsectionCount}].items" 
+                    rows="2" placeholder="Item list (optional)"></textarea>
+        </div>
+        <button type="button" class="btn-remove" 
+                onclick="removeSubsectionByElement(this)" style="margin-top: 10px;">
+          <i class="fas fa-trash"></i> Remove Subsection
+        </button>
+      `;
+      
+      subsectionsDiv.appendChild(newSubsection);
+      newSubsection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function removeSection(sectionIndex) {
+      if (confirm('Are you sure you want to remove this section?')) {
+        const section = document.querySelector(`#sections > .card:nth-child(${sectionIndex + 1})`);
+        if (section) section.remove();
+      }
+    }
+    
+    function removeSectionByElement(button) {
+      if (confirm('Are you sure you want to remove this section?')) {
+        button.closest('.section-card').remove();
+      }
+    }
+
+    function removeSubsection(sectionIndex, subIndex) {
+      if (confirm('Are you sure you want to remove this subsection?')) {
+        const section = document.querySelector(`#sections > .card:nth-child(${sectionIndex + 1})`);
+        if (section) {
+          const subsections = section.querySelectorAll('.subsection');
+          if (subsections[subIndex]) {
+            subsections[subIndex].remove();
+          }
+        }
+      }
+    }
+    
+    function removeSubsectionByElement(button) {
+      if (confirm('Are you sure you want to remove this subsection?')) {
+        button.closest('.subsection').remove();
+      }
+    }
+
+    // Test link functionality
+    document.getElementById('testLinkBtn').addEventListener('click', function() {
+      const link = document.getElementById('formLink').value;
+      if (link) {
+        window.open(link, '_blank');
+      } else {
+        alert('Please enter a valid form link');
+      }
+    });
+
+    // Form submission animation
+    document.getElementById('affidavitForm').addEventListener('submit', function(e) {
+      const saveBtn = document.querySelector('.btn-save');
+      saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      saveBtn.disabled = true;
+    });
+
+    // Add animation to new sections
+    document.addEventListener('DOMContentLoaded', function() {
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1 && node.classList.contains('card')) {
+              node.style.opacity = 0;
+              node.style.transform = 'translateY(20px)';
+              setTimeout(() => {
+                node.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                node.style.opacity = 1;
+                node.style.transform = 'translateY(0)';
+              }, 10);
+            }
+          });
+        });
+      });
+      
+      observer.observe(document.getElementById('sections'), {
+        childList: true
+      }); 
+    });

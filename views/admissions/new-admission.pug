@@ -1,5 +1,170 @@
 extends ../layouts/base.pug
+block styles
+    style.
+        .affidavit-section {
+            margin-top: 20px;
+            padding: 10px 0;
+        }
 
+        .affidavit-header {
+            text-align: center;
+            margin: 10px;
+        }
+
+        .affidavit-header h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .affidavit-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display:flex;
+
+        }
+
+        .form-link-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            margin-right:10px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            height:200px;
+        }
+
+        .form-link-box label {
+            font-size: 1rem;
+            color: #495057;
+            margin-bottom: 8px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-primary i {
+            margin-right: 6px;
+            font-size: 0.9rem;
+        }
+
+        .instructions-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            font-size: 0.95rem;
+        }
+
+        .instructions-box h3 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 5px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .section {
+            margin-bottom: 0px;
+            padding-bottom: 0px;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section h4 {
+            color: #2c3e50;
+            font-size: 1.0rem;
+            margin-top: 0;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .section ul {
+            padding-left: 20px;
+            margin: 6px 0;
+        }
+
+        .section li {
+            margin-bottom: 5px;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .section li:before {
+            content: '•';
+            position: absolute;
+            left: -15px;
+            color: #3498db;
+            font-size: 1.0rem;
+        }
+
+        .subsection {
+            margin-top: 2px;
+            margin-left: 10px;
+            padding-left: 10px;
+            border-left: 1px solid #eaeaea;
+        }
+
+        .subsection h5 {
+            color: #2c3e50;
+            font-size: 1.0rem;
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .subsection ul {
+            padding-left: 15px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .affidavit-header h2 {
+                font-size: 1.6rem;
+            }
+            
+            .form-link-box,
+            .instructions-box {
+                padding: 12px;
+            }
+            
+            .instructions-box h3 {
+                font-size: 1.2rem;
+            }
+            
+            .section h4 {
+                font-size: 1.1rem;
+            }
+            
+            .subsection {
+                margin-left: 5px;
+                padding-left: 8px;
+            }
+        }
 block content
     main
         div.admission-container2(style="display: flex; gap: 2rem;")
@@ -120,70 +285,44 @@ block content
                         button(type="submit") SUBMIT
 
 
-        //- if programdetails && programdetails.length
-        //-     .container-lg
-        //-         .program-details-section.margin-top-lg
-        //-             h2.primary_heading2 Program Details
-        //-             .table-responsive
-        //-                 table.program-table
-        //-                     thead
-        //-                         tr
-        //-                             th S.no
-        //-                             th Program
-        //-                             th Eligibility
-        //-                             th Test Domain
-                                   
-        //-                     tbody
-        //-                         each item in programdetails
-        //-                             tr
-        //-                                 td= item.priority
-        //-                                 td 
-        //-                                     .tdprogram-name= item.programme
-        //-                                     .tdprogram-domain= item.domain
-        //-                                 td= item.eligibility
-        //-                                 td= item.test
-                                        
-        //- else
-        //-     .container-lg
-        //-         .program-details-section.margin-top-lg
-        //-             h2.primary_heading2 Program Details
-        //-             .alert.alert-info
-        //-                 | No program details available at the moment.
-        //- .container-lg
-        //-     h1.primary_heading.margin-top-sm.margin-bottom-sm Choose Your Path to an Extraordinary Future
-        //-     .cards.margin-bottom-md
-        //-         .card.card-1
-        //-             .card__icon
-        //-                 ion-icon(name="school")
-        //-             h2.card__title Achieve Your Dreams with our Merit Scholarships!
-        //-             p.card__apply
-        //-                 a.card__link(href='/admissions/scholarships' target="_blank")
-        //-                     | Explore
-        //-                     ion-icon(name="arrow-forward-outline")
-        //-         .card.card-1
-        //-             .card__icon
-        //-                 ion-icon(name="business")
-        //-             h2.card__title Acquire Practical Skills and Prepare for Career Success through Real-World Technical Trainings!
-        //-             p.card__apply
-        //-                 a.card__link(href='/academics/workshops-and-bootcamps' target="_blank")
-        //-                     | Explore
-        //-                     ion-icon(name="arrow-forward-outline")
-        //-         .card.card-1
-        //-             .card__icon
-        //-                 ion-icon(name="happy")
-        //-             h2.card__title Experience exceptional guidance from accomplished teachers, propelling your academic success.
-        //-             p.card__apply
-        //-                 a.card__link(href='/academics/faculty' target="_blank")
-        //-                     | Explore
-        //-                     ion-icon(name="arrow-forward-outline")
-        //-         .card.card-1
-        //-             .card__icon
-        //-                 ion-icon(name="card")
-        //-             h2.card__title Experience Quality Education at Affordable Tuition and Fees, Empowering Your Journey!
-        //-             p.card__apply
-        //-                 a.card__link(href='/admissions/tution-and-fees' target="_blank")
-        //-                     | Explore
-        //-                     ion-icon(name="arrow-forward-outline")
+        if affidavitInfo
+    .affidavit-section
+        .affidavit-header
+            h2= affidavitInfo.title
+            
+        .affidavit-content
+            .form-link-box
+                .form-group
+                    label Affidavit Registration Form Link:
+                    a.btn-primary(
+                        href=affidavitInfo.form_link 
+                        target="_blank"
+                    )
+                        i.fas.fa-external-link-alt
+                        | Open Affidavit Form
+
+            if affidavitInfo.sections && affidavitInfo.sections.length > 0
+                .instructions-box
+                    h3 Instructions:
+                    each section in affidavitInfo.sections
+                        .section
+                            if section.title
+                                h4= section.title
+                            
+                            if section.items && section.items.length > 0
+                                ul
+                                    each item in section.items
+                                        li= item
+                            
+                            if section.subsections && section.subsections.length > 0
+                                each subsection in section.subsections
+                                    .subsection
+                                        if subsection.title
+                                            h5= subsection.title
+                                        if subsection.items && subsection.items.length > 0
+                                            ul
+                                                each item in subsection.items
+                                                    li= item
 
         .contact-section.container-lg
             .contact-info
