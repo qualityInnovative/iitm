@@ -4,27 +4,18 @@ block styles
         .affidavit-section {
             margin-top: 20px;
             padding: 10px 0;
-            text-align:"center"
-            
             
         }
 
         .affidavit-header {
-           
+            text-align: center;
             margin: 10px;
-            margin-bottom:20px;
-            display:"flex";
-            justify-content:"center";
-            align-items:"center"
-            
         }
 
         .affidavit-header h2 {
             color: #2c3e50;
             font-size: 1.8rem;
-            margin-bottom: 20px;
-            text-align:"center"
-           
+            margin-bottom: 5px;
         }
 
         .affidavit-content {
@@ -296,43 +287,43 @@ block content
 
 
         if affidavitInfo
-        .affidavit-section
-            .affidavit-header
-                h2= affidavitInfo.title
-                
-            .affidavit-content
-                .form-link-box
-                    .form-group
-                        label Affidavit Registration Form Link:
-                        a.btn-primary(
-                            href=affidavitInfo.form_link 
-                            target="_blank"
-                        )
-                            i.fas.fa-external-link-alt
-                            | Open Affidavit Form
+    .affidavit-section
+        .affidavit-header
+            h2= affidavitInfo.title
+            
+        .affidavit-content
+            .form-link-box
+                .form-group
+                    label Affidavit Registration Form Link:
+                    a.btn-primary(
+                        href=affidavitInfo.form_link 
+                        target="_blank"
+                    )
+                        i.fas.fa-external-link-alt
+                        | Open Affidavit Form
 
-                if affidavitInfo.sections && affidavitInfo.sections.length > 0
-                    .instructions-box
-                        h3 Instructions:
-                        each section in affidavitInfo.sections
-                            .section
-                                if section.title
-                                    h4= section.title
-                                
-                                if section.items && section.items.length > 0
-                                    ul
-                                        each item in section.items
-                                            li= item
-                                
-                                if section.subsections && section.subsections.length > 0
-                                    each subsection in section.subsections
-                                        .subsection
-                                            if subsection.title
-                                                h5= subsection.title
-                                            if subsection.items && subsection.items.length > 0
-                                                ul
-                                                    each item in subsection.items
-                                                        li= item
+            if affidavitInfo.sections && affidavitInfo.sections.length > 0
+                .instructions-box
+                    h3 Instructions:
+                    each section in affidavitInfo.sections
+                        .section
+                            if section.title
+                                h4= section.title
+                            
+                            if section.items && section.items.length > 0
+                                ul
+                                    each item in section.items
+                                        li= item
+                            
+                            if section.subsections && section.subsections.length > 0
+                                each subsection in section.subsections
+                                    .subsection
+                                        if subsection.title
+                                            h5= subsection.title
+                                        if subsection.items && subsection.items.length > 0
+                                            ul
+                                                each item in subsection.items
+                                                    li= item
 
         .contact-section.container-lg
             .contact-info
