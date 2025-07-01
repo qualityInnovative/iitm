@@ -141,6 +141,10 @@ router.post("/cms/admissions-iitm/programdetails/updateprogram/:id", adminContro
 router.get("/cms/admissions-iitm/add-adminsioninstructions", adminController.getadminssioninstructions);
 router.post("/cms/admissions-iitm/add-adminsioninstructions", adminController.postadminssioninstructions);
 
+
+router.get("/cms/admissions-iitm/adminsioninstructions", adminController.getnewadminssioninstructions);
+router.post("/cms/admissions-iitm/adminsioninstructions", adminController.postnewadminssioninstructions);
+
 router.get("/cms/admissions-iitm/affidavit",adminController.getAffidavitData)
 router.post("/cms/admissions-iitm/affidavit",adminController.postAffidavitData)
 

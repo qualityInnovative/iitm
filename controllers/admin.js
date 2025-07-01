@@ -159,7 +159,7 @@ exports.postadminssioninstructions = async (req, res) => {
     }
 
     req.session.successMessage = "Instructions saved successfully!";
-    res.redirect("/cms/admissions-iitm/add-adminsioninstructions");
+    res.redirect("/cms/admissions-iitm/adminsioninstructions");
   } catch (err) {
     console.error(err);
     req.session.errorMessage = "Failed to save instructions";
@@ -167,9 +167,29 @@ exports.postadminssioninstructions = async (req, res) => {
   }
 };
 
+// new admisiion //// /////
+exports.getnewadminssioninstructions = async (req, res) => {
+  try {
+
+  }
 
 
 
+  catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+exports.postnewadminssioninstructions = async (req, res) => {
+  try {
+
+  } catch (err) {
+    console.error(err);
+
+  }
+};
+/// //// /////
 exports.getAffidavitData = async (req, res) => {
   try {
     const [affidavit] = await query(
