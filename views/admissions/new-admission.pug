@@ -3,11 +3,10 @@ block styles
     style.
         /* Main Container */
         .admission-info-section {
-            max-width: 1000px;
-            margin: 2rem auto;
             padding: 2rem;
-            background-color:#f9f9f9;
+           
             margin-bottom:30px;
+            max-width:1000px;
         
             border-radius: 8px;
            
@@ -16,7 +15,7 @@ block styles
         /* Header Section */
         .admission-header {
         margin-bottom: 2rem;
-        text-align: center;
+        text-align: left;
         }
 
         .admission-header h2 {
@@ -114,9 +113,9 @@ block styles
         }
         }
         .contact-section{
-            margin: 10px auto;
+            margin: 10px;
             padding: 10px;
-            background-color: #f9f9f9;
+            
             max-width: 1000px;
             border-radius: 10px;
             
@@ -124,17 +123,19 @@ block styles
         }
        
         .affidavit-section {
-            margin: 20px auto;
+            margin: 20px;
             padding: 20px 0;
-            background-color: #f9f9f9;
-            max-width: 1000px;
+           
+            
             border-radius: 10px;
+             width:1000px
             
         }
         
         .affidavit-header {
-            text-align: center;
+            text-align: left;
             margin: 10px;
+            margin-bottom:20px;
         }
 
         .affidavit-header h2 {
@@ -144,9 +145,11 @@ block styles
         }
 
         .affidavit-content {
-            max-width: 1000px;
+           
             margin: 0 auto;
             display:flex;
+            margin-right:20px;
+           
 
         }
 
@@ -197,6 +200,7 @@ block styles
             background: #f8f9fa;
             border-radius: 8px;
             padding: 15px;
+            margin-right:10px;
             
             font-size: 0.95rem;
             text-align:left
@@ -421,12 +425,6 @@ block content
                     p= newAdmissionInfo.heading
         
         .admission-content-wrapper
-            if newAdmissionInfo.form_url
-                .admission-pdf-box
-                    a.admission-pdf-link(href=newAdmissionInfo.form_url target="_blank")
-                        i.fas.fa-file-pdf
-                        | Download Admission Form PDF
-                
             if newAdmissionInfo.instructions && newAdmissionInfo.instructions.length > 0
                 .admission-instructions
                     h3 Instructions:
@@ -434,6 +432,13 @@ block content
                         .admission-instruction-item
                         p= instruction
 
+            if newAdmissionInfo.form_url
+                .admission-pdf-box
+                    a.admission-pdf-link(href=newAdmissionInfo.form_url target="_blank")
+                        i.fas.fa-file-pdf
+                        | Download Admission Form PDF
+                
+            
 
     if affidavitInfo
     .affidavit-section
@@ -441,16 +446,7 @@ block content
             h2= affidavitInfo.title
             
             .affidavit-content
-                .form-link-box
-                    .form-group
-                        label Affidavit Registration Form Link:
-                        a.btn-primary(
-                            href=affidavitInfo.form_link 
-                            target="_blank"
-                        )
-                            i.fas.fa-external-link-alt
-                            | Open Affidavit Form
-
+                
                 if affidavitInfo.sections && affidavitInfo.sections.length > 0
                     .instructions-box
                         h3 Instructions:
@@ -473,6 +469,17 @@ block content
                                                 ul
                                                     each item in subsection.items
                                                         li= item
+
+                .form-link-box
+                    .form-group
+                        label Affidavit Registration Form Link:
+                        a.btn-primary(
+                            href=affidavitInfo.form_link 
+                            target="_blank"
+                        )
+                            i.fas.fa-external-link-alt
+                            | Open Affidavit Form
+
 
     .contact-section
         .contact-info
