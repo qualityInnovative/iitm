@@ -40,11 +40,19 @@ block styles
 
         /* PDF Download Box */
         .admission-pdf-box {
-            flex: 1;
-            padding: 1.5rem;
-            background-color: #ffffff;
+            
+            padding: 0.5rem;
+            
             border-radius: 6px;
-            text-align: center;
+            
+        }
+        .admission-pdf-box2{
+            
+            background-color: #f8f9fa;
+            padding:20px;
+            border-radius:10px;
+            width
+
         }
 
         .admission-pdf-link {
@@ -159,11 +167,10 @@ block styles
             background: #f8f9fa;
             border-radius: 8px;
             padding: 15px;
-            margin-bottom: 15px;
-            margin-right:10px;
+            margin-left:20px;
             text-align: center;
-           
             height:200px;
+            margin-top: 20px;
         }
 
         .form-link-box label {
@@ -443,7 +450,7 @@ block content
 
             if newAdmissionInfo.form_url
 
-                .admission-pdf-box
+                .admission-pdf-box2
                     p.do Download IITM Admission Form
                     a.admission-pdf-link(href=newAdmissionInfo.form_url target="_blank")
                         i.fas.fa-file-pdf
