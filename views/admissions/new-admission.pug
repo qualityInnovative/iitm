@@ -40,12 +40,11 @@ block styles
 
         /* PDF Download Box */
         .admission-pdf-box {
-        flex: 1;
-        padding: 1.5rem;
-       
-        border-radius: 6px;
-       
-        text-align: center;
+            flex: 1;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 6px;
+            text-align: center;
         }
 
         .admission-pdf-link {
@@ -63,7 +62,7 @@ block styles
         }
 
         .admission-pdf-link i {
-        font-size: 1.5rem;
+            font-size: 1.5rem;
         }
 
         .admission-pdf-link:hover {
@@ -98,9 +97,9 @@ block styles
         }
 
         .admission-instruction-item p {
-        color: #555;
-        line-height: 1.6;
-        margin: 0;
+            color: #555;
+            line-height: 1.6;
+            margin: 0;
         }
 
         /* Responsive Layout */
@@ -254,6 +253,11 @@ block styles
             left: -15px;
             color: #3498db;
             font-size: 1.0rem;
+        }
+        .do{
+            margin-bottom:20px;
+            font-size:1rem;
+            font-weight:600;
         }
 
         .subsection {
@@ -428,7 +432,9 @@ block content
                     p= newAdmissionInfo.heading
         
         .admission-content-wrapper
+           
             if newAdmissionInfo.instructions && newAdmissionInfo.instructions.length > 0
+            
                 .admission-pdf-box
                     h3 Instructions:
                     each instruction in newAdmissionInfo.instructions
@@ -436,13 +442,13 @@ block content
                             p= instruction
 
             if newAdmissionInfo.form_url
+
                 .admission-pdf-box
+                    p.do Download IITM Admission Form
                     a.admission-pdf-link(href=newAdmissionInfo.form_url target="_blank")
                         i.fas.fa-file-pdf
-                        | Download Admission Form PDF
+                        | Admission Form PDF
                 
-            
-
     if affidavitInfo
     .affidavit-section
         .affidavit-header
