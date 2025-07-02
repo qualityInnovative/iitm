@@ -6,6 +6,7 @@ block styles
             max-width: 1000px;
             margin: 2rem auto;
             padding: 2rem;
+            background-color:"";
         
             border-radius: 8px;
            
@@ -72,12 +73,13 @@ block styles
 
         /* Instructions Section */
         .admission-instructions {
-        flex: 2;
-        padding: 1.5rem;
-        background-color: #fff;
-        border-radius: 6px;
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-        }
+            flex: 2;
+            padding: 1.5rem;
+            background-color: #fff;
+            border-radius: 6px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+           
+            }
 
         .admission-instructions h3 {
         color: #2c3e50;
@@ -184,6 +186,7 @@ block styles
             padding: 15px;
             border: 1px solid #e9ecef;
             font-size: 0.95rem;
+            text-align:left
         }
 
         .instructions-box h3 {
@@ -401,8 +404,8 @@ block content
     .admission-info-section
         .admission-header
             h2= newAdmissionInfo.title
-            if newAdmissionInfo.heading
-                p= newAdmissionInfo.heading
+                if newAdmissionInfo.heading
+                    p= newAdmissionInfo.heading
         
         .admission-content-wrapper
             if newAdmissionInfo.form_url
