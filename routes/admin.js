@@ -5,6 +5,7 @@ const bannerController = require("../controllers/bannersController");
 const bannerUpload = bannerController.uploadBannerImage;
 const upload = adminController.uploadVisionary;
 const router = express.Router();
+const { uploadAdmission } = require('./../controllers/upload')
 
 // CMS ADMIN ROUTE
 router.get("/cms/admin-cms", adminController.getAdminDash);
@@ -142,8 +143,8 @@ router.get("/cms/admissions-iitm/add-adminsioninstructions", adminController.get
 router.post("/cms/admissions-iitm/add-adminsioninstructions", adminController.postadminssioninstructions);
 
 
-router.get("/cms/admissions-iitm/adminsioninstructions", adminController.getnewadminssioninstructions);
-router.post("/cms/admissions-iitm/adminsioninstructions", adminController.postnewadminssioninstructions);
+router.get("/cms/admissions-iitm/adminsioninstructions",adminController.getnewadmissioninstructions);
+router.post("/cms/admissions-iitm/adminsioninstructions", uploadAdmission.single('formFile'), adminController.postnewadmissioninstructions);
 
 router.get("/cms/admissions-iitm/affidavit",adminController.getAffidavitData)
 router.post("/cms/admissions-iitm/affidavit",adminController.postAffidavitData)

@@ -277,6 +277,7 @@ exports.getNewAdmission = async (req, res, next) => {
   try {
     const programdetails = await query("SELECT * FROM programdetails ORDER BY priority ASC");
     const [admissionData] = await query("SELECT * FROM admission_instructions LIMIT 1");
+    const [newAdmissionData] = await query("SELECT * FROM new_admission_instructions LIMIT 1");
     const submitted = req.query.submitted || false;
     const error = req.query.error || false;
 
@@ -292,6 +293,34 @@ exports.getNewAdmission = async (req, res, next) => {
           console.error("Error parsing sections:", e);
           sections = [];
         }
+      }
+    }
+
+    // Process new admission instructions
+    let newAdmissionInfo = null;
+    if (newAdmissionData) {
+      try {
+        newAdmissionInfo = {
+          title: newAdmissionData.title || 'Admission Instructions',
+          heading: newAdmissionData.heading || 'Admissions Open',
+          form_url: newAdmissionData.form_url || '',
+          instructions: typeof newAdmissionData.instructions === 'string' 
+            ? JSON.parse(newAdmissionData.instructions) 
+            : newAdmissionData.instructions || []
+        };
+        
+        // Ensure instructions is always an array
+        if (!Array.isArray(newAdmissionInfo.instructions)) {
+          newAdmissionInfo.instructions = [newAdmissionInfo.instructions];
+        }
+      } catch (e) {
+        console.error("Error processing new admission data:", e);
+        newAdmissionInfo = {
+          title: 'Admission Instructions',
+          heading: 'Admissions Open',
+          form_url: '',
+          instructions: []
+        };
       }
     }
 
@@ -335,6 +364,7 @@ exports.getNewAdmission = async (req, res, next) => {
       }
     }
 
+
     res.render("admissions/new-admission", 
       Object.assign(
         params(
@@ -352,7 +382,8 @@ exports.getNewAdmission = async (req, res, next) => {
             ...admissionData,
             sections
           } : null,
-          affidavitInfo  // Pass affidavit data to the view
+          newAdmissionInfo,  // Pass new admission data to the view
+          affidavitInfo      // Pass affidavit data to the view
         }
       )
     );

@@ -20,7 +20,6 @@ const visionariesStorage = multer.diskStorage({
 
 exports.uploadVisionary = multer({ storage: visionariesStorage });
 
-
 // Admin dashboard controller
 exports.getAdminDash = (req, res, next) => {
   query("SELECT username FROM users WHERE uid = ?", [req.session.user])
@@ -168,25 +167,116 @@ exports.postadminssioninstructions = async (req, res) => {
 };
 
 // new admisiion //// /////
-exports.getnewadminssioninstructions = async (req, res) => {
+
+exports.getnewadmissioninstructions = async (req, res) => {
   try {
+    const [instructions] = await query(
+      "SELECT * FROM new_admission_instructions LIMIT 1"
+    );
 
-  }
+    let instructionList = [];
+    let formUrl = '';
+    let title = 'Admission Instructions';
+    let heading = 'Admissions Open';
 
+    if (instructions) {
+      formUrl = instructions.form_url || '';
+      title = instructions.title || title;
+      heading = instructions.heading || heading;
+      
+      // Handle instructions parsing
+      if (instructions.instructions) {
+        try {
+          // Parse if it's JSON string
+          instructionList = typeof instructions.instructions === 'string' 
+            ? JSON.parse(instructions.instructions) 
+            : instructions.instructions;
+          
+          // Ensure it's always an array
+          if (!Array.isArray(instructionList)) {
+            instructionList = [instructionList];
+          }
+        } catch (e) {
+          console.error('Error parsing instructions:', e);
+          instructionList = [instructions.instructions];
+        }
+      }
+    }
 
+    console.log('Final instructionList:', instructionList); // Debug log
 
-  catch (err) {
+    res.render("admin/newaddadmissioninstructions", {
+      instructions: {  // Pass as an object to match your template
+        title,
+        heading,
+        form_url: formUrl,
+        instructions: instructionList
+      },
+      successMessage: req.session.successMessage,
+      errorMessage: req.session.errorMessage
+    });
+    
+    delete req.session.successMessage;
+    delete req.session.errorMessage;
+  } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
   }
 };
 
-exports.postnewadminssioninstructions = async (req, res) => {
+exports.postnewadmissioninstructions = async (req, res) => {
+  console.log("post req.body",req.body.instructionText)
   try {
+    const { title, heading } = req.body;
+    let instructionText = req.body.instructionText || [];
+    
+    
+    // Ensure instructionText is always an array
+    if (!Array.isArray(instructionText)) {
+      instructionText = [instructionText].filter(Boolean);
+    }
 
+    const formFile = req.file;
+    const [current] = await query(
+      "SELECT id, form_url FROM new_admission_instructions LIMIT 1"
+    );
+
+    // Handle file upload
+    let formUrl = current?.form_url || '';
+    if (formFile) {
+      if (current?.form_url) {
+        const filePath = path.join(__dirname, '../public', current.form_url);
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
+      formUrl = '/uploads/' + formFile.filename;
+    }
+
+    // Process instructions
+    const instructions = instructionText
+      .filter(text => text && text.trim())
+      .map(text => text.trim());
+
+    // Database operation
+    if (current?.id) {
+      await query(
+        "UPDATE new_admission_instructions SET title = ?, heading = ?, form_url = ?, instructions = ? WHERE id = ?",
+        [title, heading, formUrl, JSON.stringify(instructions), current.id]
+      );
+    } else {
+      await query(
+        "INSERT INTO new_admission_instructions (title, heading, form_url, instructions) VALUES (?, ?, ?, ?)",
+        [title, heading, formUrl, JSON.stringify(instructions)]
+      );
+    }
+
+    req.session.successMessage = "Admission instructions saved successfully!";
+    res.redirect("/cms/admissions-iitm/adminsioninstructions");
   } catch (err) {
     console.error(err);
-
+    req.session.errorMessage = "Failed to save admission instructions";
+    res.redirect("/cms/admissions-iitm/adminsioninstructions");
   }
 };
 /// //// /////
