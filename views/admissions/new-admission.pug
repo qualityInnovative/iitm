@@ -33,9 +33,9 @@ block styles
 
         /* Content Wrapper for side-by-side sections */
         .admission-content-wrapper {
-        display: flex;
-        gap: 2rem;
-        align-items: flex-start;
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
         }
 
         /* PDF Download Box */
@@ -91,9 +91,10 @@ block styles
         }
 
         .admission-instruction-item {
-        margin-bottom: 1rem;
-        padding-left: 1rem;
-        border-left: 3px solid #3498db;
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+            border-left: 3px solid #3498db;
+            text-align:left;
         }
 
         .admission-instruction-item p {
@@ -432,7 +433,7 @@ block content
                     h3 Instructions:
                     each instruction in newAdmissionInfo.instructions
                         .admission-instruction-item
-                        p= instruction
+                            p= instruction
 
             if newAdmissionInfo.form_url
                 .admission-pdf-box
