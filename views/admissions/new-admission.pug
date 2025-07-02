@@ -351,7 +351,7 @@ block content
                                   .cta-container
                                     each link in links
                                       if link.text && link.url
-                                        a.cta-button(href=link.url target="_blank")
+                                        a.cta-button(href=link.url)
                                           = link.text
                                           i.fas.fa-external-link-alt
                     
@@ -420,7 +420,7 @@ block content
 
 
     if newAdmissionInfo
-    .admission-info-section
+    .admission-info-section#admission-form-section
         .admission-header
             h2= newAdmissionInfo.title
                 if newAdmissionInfo.heading
@@ -428,7 +428,7 @@ block content
         
         .admission-content-wrapper
             if newAdmissionInfo.instructions && newAdmissionInfo.instructions.length > 0
-                .admission-instructions
+                .admission-pdf-box
                     h3 Instructions:
                     each instruction in newAdmissionInfo.instructions
                         .admission-instruction-item
