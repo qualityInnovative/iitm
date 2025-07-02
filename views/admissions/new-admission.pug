@@ -1,8 +1,6 @@
 extends ../layouts/base.pug
-
 block styles
     style.
-        /* Unified Info Section Styles */
         .info-section {
             background-color: #f1f1f1;
             margin: 20px;
@@ -64,8 +62,7 @@ block styles
             border-radius: 4px;
             transition: all 0.3s ease;
         }
-
-        .info-action-link2 {
+         .info-action-link2 {
             display: inline-flex;
             align-items: center;
             gap: 0.8rem;
@@ -82,11 +79,6 @@ block styles
         .info-action-link i {
             font-size: 1.5rem;
         }
-        .info-action-link2:hover {
-            background-color:rgb(85, 41, 242);
-            color: white;
-            text-decoration: none;
-        }
 
         .info-action-link:hover {
             background-color: #e74c3c;
@@ -98,7 +90,7 @@ block styles
         .info-instructions {
             flex: 2;
             padding: 1.5rem;
-            background-color: #f1f1f1;
+            background-color: #fff;
             border-radius: 6px;
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
         }
@@ -195,147 +187,323 @@ block styles
                 font-size: 1.6rem;
             }
         }
-
-        /* Contact Section */
-        .contact-section {
-            margin: 10px;
-            padding: 10px;
-            max-width: 1000px;
-            border-radius: 10px;
-        }
-
-        .contact-info h2 {
-            color: #2c3e50;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .contact-details {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .contact-item {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Admission Form Styles */
-        .admission-container2 {
-            display: flex;
-            gap: 2rem;
-            margin: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .admission-container2 {
-                flex-direction: column;
-            }
-        }
-
-        .admission-instructions-section {
-            flex: 1;
-        }
-
-        .adminssionwrapper {
-            flex: 1;
-        }
-
-        .form-1 {
-            background: #fff;
+        /* Main Container */
+        .admission-info-section {
+           
+            background-color:#f1f1f1;
+            margin-bottom:30px;
+            max-width:1000px;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+            margin:20px;
+           
+            }
+
+        /* Header Section */
+        .admission-header {
+        margin-bottom: 2rem;
+        text-align: left;
         }
 
-        .form-1 h3 {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
+        .admission-header h2 {
+        color: #2c3e50;
+        margin-bottom: 0.8rem;
+        font-size: 2rem;
+        }
+
+        .admission-header p {
+        color: #555;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        }
+
+        /* Content Wrapper for side-by-side sections */
+        .admission-content-wrapper {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        /* PDF Download Box */
+        .admission-pdf-box {
+            
+            padding: 1.5rem;
+            
+            border-radius: 6px;
+            
+        }
+        .admission-pdf-box2{
+            
+            background-color: #ffffff;
+            padding:20px;
+
+        }
+
+        .admission-pdf-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #e74c3c;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #e74c3c;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .admission-pdf-link i {
             font-size: 1.5rem;
         }
-
-        .form-input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
+         .info-action-link2:hover {
+            background-color:rgb(85, 41, 242);
+            color: white;
+            text-decoration: none;
         }
 
-        .form-input.half {
-            width: calc(50% - 10px);
-        }
-
-        .center {
-            display: flex;
-            gap: 20px;
-        }
-
-        button[type="submit"] {
+        .admission-pdf-link:hover {
             background-color: #e74c3c;
             color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        /* Instructions Section */
+        .admission-instructions {
+            flex: 2;
+            padding: 1.5rem;
+            background-color: #fff;
+            border-radius: 6px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+           
+            }
+
+        .admission-instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 1.2rem;
+            font-size: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .admission-instruction-item {
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+          
+            text-align:left;
+        }
+
+        .admission-instruction-item p {
+            color: #555;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+        .admission-content-wrapper {
+            flex-direction: column;
+        }
+        
+        .admission-pdf-box {
             width: 100%;
+            margin-bottom: 1.5rem;
         }
-
-        button[type="submit"]:hover {
-            background-color: #c0392b;
         }
+        .contact-section{
+            margin: 10px;
+            padding: 10px;
+            
+            max-width: 1000px;
+            border-radius: 10px;
+            
 
-        /* Success/Error Messages */
-        .success-note, .error-note {
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
-
-        .success-note {
-            background-color: #e8f5e9;
+       
+        .affidavit-section {
+            margin: 20px;
+            padding: 20px;
+            background-color:#f1f1f1;
+           
+            
+            border-radius: 10px;
+             width:1000px
+            
         }
-
-        .error-note {
-            background-color: #ffebee;
-        }
-
-        /* Table Styles */
-        .program-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        .program-table th, .program-table td {
-            padding: 12px;
+        
+        .affidavit-header {
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            margin: 10px;
+            margin-bottom:20px;
         }
 
-        .program-table th {
-            background-color: #f8f9fa;
+        .affidavit-header h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .affidavit-content {
+           
+            margin: 0 auto;
+            display:flex;
+            margin-right:20px;
+           
+
+        }
+
+        .form-link-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            margin-right:10px;
+            text-align: center;
+           
+            height:200px;
+        }
+
+        .form-link-box label {
+            font-size: 1rem;
+            color: #495057;
+            margin-bottom: 8px;
+            display: block;
             font-weight: 600;
         }
 
-        .tdprogram-name {
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
             font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            border: none;
+            cursor: pointer;
         }
 
-        .tdprogram-domain {
-            color: #666;
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-primary i {
+            margin-right: 6px;
             font-size: 0.9rem;
         }
 
+        .instructions-box {
+           
+            border-radius: 8px;
+            padding: 15px;
+            margin-right:10px;
+            
+            font-size: 0.95rem;
+            text-align:left
+        }
+
+        .instructions-box h3 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 5px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .section {
+            margin-bottom: 0px;
+            padding-bottom: 0px;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section h4 {
+            color: #2c3e50;
+            font-size: 1.0rem;
+            margin-top: 0;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .section ul {
+            padding-left: 20px;
+            margin: 6px 0;
+        }
+
+        .section li {
+            margin-bottom: 5px;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .section li:before {
+            content: '•';
+            position: absolute;
+            left: -15px;
+            color: #3498db;
+            font-size: 1.0rem;
+        }
+        .do{
+            margin-bottom:20px;
+            font-size:1rem;
+            font-weight:600;
+        }
+
+        .subsection {
+            margin-top: 2px;
+            margin-left: 10px;
+            padding-left: 10px;
+            border-left: 1px solid #eaeaea;
+        }
+
+        .subsection h5 {
+            color: #2c3e50;
+            font-size: 1.0rem;
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .subsection ul {
+            padding-left: 15px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .affidavit-header h2 {
+                font-size: 1.6rem;
+            }
+            
+            .form-link-box,
+            .instructions-box {
+                padding: 12px;
+            }
+            
+            .instructions-box h3 {
+                font-size: 1.2rem;
+            }
+            
+            .section h4 {
+                font-size: 1.1rem;
+            }
+            
+            .subsection {
+                margin-left: 5px;
+                padding-left: 8px;
+            }
+        }
 block content
     main
-        div.admission-container2
-            section.admission-instructions-section
+        div.admission-container2(style="display: flex; gap: 2rem;")
+            section.admission-instructions-section(style="flex: 1;")
                 if admissionData.title
                     h2.subheading(style="text-align: center;")= admissionData.title    
                 if admissionData
@@ -386,24 +554,24 @@ block content
                         .section-content
                             p Admission details will be available soon. Please check back later.
 
-            div.adminssionwrapper
+            div.div.adminssionwrapper(style="flex: 1;")
                 div.adminssionwrapperform
                     if submitted
-                        .success-note
+                        .success-note.margin-top-xs.margin-bottom-lg
                             .svg
                                 svg(fill="green" xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
                                     path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z')
                             .text Thank you for your admission inquiry! We deeply appreciate your interest in joining our college. Our dedicated team is eagerly reviewing your inquiry and will reach out to you promptly. Your enthusiasm is valued, and we look forward to welcoming you to our vibrant community soon!
 
                     if error
-                        .error-note
+                        .error-note.margin-top-xs.margin-bottom-xs
                             .svg
                                 svg(xmlns='http://www.w3.org/2000/svg' height="1.5rem" viewBox='0 0 512 512')
                                     path(d='M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z')
                             .text Oops! Something unexpected happened. Try again!
 
                     if !submitted
-                        form.form-1(action="/post-new-admission" method="post") 
+                        form.form-1.margin-top-xs(action="/post-new-admission" method="post") 
                             h3 Admission Inquiry
                             .center 
                                 div 
@@ -439,6 +607,7 @@ block content
                             textarea.form-input(name="remark" rows="6" placeholder="Remark (if any)")
                             button(type="submit") SUBMIT
 
+    //- Unified Info Cards Section
     if newAdmissionInfo
         .info-section#admission-form-section
             .info-header
