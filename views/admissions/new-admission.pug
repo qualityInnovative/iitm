@@ -1,6 +1,13 @@
 extends ../layouts/base.pug
 block styles
     style.
+        @keyframes flash {
+                    0%, 100% { background-color: transparent; }
+                    50% { background-color:rgb(255, 82, 82); box-shadow: 0 0 10px rgba(255, 25, 0, 0.5); }
+                }
+        .flash-button {
+                    animation: flash 1s ease-in-out infinite;
+        }
         .info-section {
             background-color: #f1f1f1;
             margin: 20px;
@@ -499,6 +506,9 @@ block styles
                 margin-left: 5px;
                 padding-left: 8px;
             }
+            
+
+           
         }
 block content
     main
@@ -539,14 +549,19 @@ block content
                                         .alert.alert-info
                                             | No program details available at the moment.
                                 
+                              
                                 if section.links && section.links.length
                                     .cta-container
                                         each link in section.links
                                             if link.text && link.url
-                                                a.cta-button(href=link.url)
+                                                a.cta-button.tracked-link(
+                                                    href=link.url
+                                                    data-link-text=link.text
+                                                    data-link-url=link.url
+                                                )
                                                     = link.text
                                                     i.fas.fa-external-link-alt
-                    
+                                                    
                 else
                     .instructions-header.text-center
                         h1.primary_heading Admissions Information
@@ -679,3 +694,60 @@ block content
                 p.contact-item
                     strong Email: 
                     a(href="mailto:contact@iitm.edu.in") contact@iitm.edu.in
+
+
+
+block scripts
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to flash the admission form button
+            function flashAdmissionButton() {
+                const button = document.querySelector('.info-action-link');
+                if (button) {
+                    button.classList.add('flash-button');
+                    
+                    // Stop flashing after 5 seconds
+                    setTimeout(() => {
+                        button.classList.remove('flash-button');
+                    }, 5000);
+                    
+                    // Scroll to the admission form section
+                    const section = document.getElementById('admission-form-section');
+                    if (section) {
+                        section.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            }
+
+            // Check if URL has the hash on initial load
+            if (window.location.hash === '#admission-form-section') {
+                flashAdmissionButton();
+            }
+
+            // Track link clicks
+            document.querySelectorAll('.tracked-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const text = this.dataset.linkText;
+                    const url = this.dataset.linkUrl;
+                    
+                    if(url === "#admission-form-section") {
+                        console.log('Admission form link clicked:', { text, url });
+                        flashAdmissionButton();
+                        
+                        // Update URL without reloading
+                        history.pushState(null, null, '#admission-form-section');
+                    } else {
+                        console.log('External link clicked:', { text, url });
+                        window.location.href = url;
+                    }
+                });
+            });
+
+            // Also handle hash changes if user manually changes URL
+            window.addEventListener('hashchange', function() {
+                if (window.location.hash === '#admission-form-section') {
+                    flashAdmissionButton();
+                }
+            });
+        });
