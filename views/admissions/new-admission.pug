@@ -102,6 +102,13 @@ block styles
             border-radius: 6px;
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
         }
+         .info-instructions li:before {
+            content: '•';
+            position: absolute;
+            left: -15px;
+            color: #3498db;
+            font-size: 1.0rem;
+        }
 
         .info-instructions h3 {
             color: #2c3e50;
@@ -153,7 +160,7 @@ block styles
             line-height: 1.4;
         }
 
-        .section li:before {
+        .section ul li:before {
             content: '•';
             position: absolute;
             left: -15px;
@@ -452,13 +459,7 @@ block styles
             line-height: 1.4;
         }
 
-        .section li:before {
-            content: '•';
-            position: absolute;
-            left: -15px;
-            color: #3498db;
-            font-size: 1.0rem;
-        }
+       
         .do{
             margin-bottom:20px;
             font-size:1rem;
@@ -656,9 +657,9 @@ block content
                     .info-instructions
                         h3 Instructions:
                         each section in affidavitInfo.sections
-                            .section
+                            ul.section
                                 if section.title
-                                    h4= section.title
+                                    li= section.title
                                 
                                 if section.items && section.items.length > 0
                                     ul
