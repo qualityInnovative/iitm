@@ -636,8 +636,8 @@ block content
                     .info-instructions
                         h3 Instructions:
                         each instruction in newAdmissionInfo.instructions
-                            .info-instruction-item
-                                p= instruction
+                            ul.info-instruction-item
+                                li= instruction
 
                 if newAdmissionInfo.form_url
                     .info-action-box
