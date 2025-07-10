@@ -1,0 +1,23 @@
+extends ../layouts/base.pug
+
+block styles 
+
+block content
+
+    main.page-layout 
+        include ../layouts/menu.pug
+        .main
+            .line-above-heading 
+            h2.heading-with-top-border= document.document_title
+
+            iframe.pdf-viewer.hidden(src=`/uploads/aqar/${document.file_path}`)
+
+            .pdf.margin-top-sm.hidden
+                .pdf__heading= document.original_file_name
+                .pdf__container
+                .pdf__download
+                    a(href=`/uploads/aqar/${document.file_path}` target="blank")
+                        button Download
+
+    script.
+        pdfJs([`/uploads/aqar/${document.file_path}`]);

@@ -154,6 +154,7 @@ exports.getCriteria1 = (req, res, next) => {
     )
   );
 };
+
 exports.getFAATR = (req, res, next) => {
   res.render(
     `aqar-22-23/feedback-analysis-and-action-taken-report`,
@@ -168,6 +169,7 @@ exports.getFAATR = (req, res, next) => {
     )
   );
 };
+
 exports.getStakeholdersFeedback = (req, res, next) => {
   res.render(
     `aqar-22-23/stakeholders-feedback`,
@@ -199,6 +201,7 @@ exports.getCriteria2 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria2__student_satisfaction_survey = (req, res, next) => {
   res.render(
     `aqar-22-23/student-satisfaction-survey`,
@@ -230,6 +233,7 @@ exports.getCriteria3 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria3__3_2 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria3_3_2`,
@@ -244,6 +248,7 @@ exports.getCriteria3__3_2 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria3__3_2_2 = (req, res) => {
   res.render(
     `aqar-22-23/criteria3_3_2_2`,
@@ -258,6 +263,7 @@ exports.getCriteria3__3_2_2 = (req, res) => {
     )
   );
 };
+
 //? ///////////////////////////////////////////////////////
 //? CRITERIA 4
 exports.getCriteria4 = (req, res, next) => {
@@ -274,6 +280,7 @@ exports.getCriteria4 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_doc1 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_doc1`,
@@ -288,6 +295,7 @@ exports.getCriteria4_doc1 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_doc2 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_doc2`,
@@ -302,6 +310,7 @@ exports.getCriteria4_doc2 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room3 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room3`,
@@ -316,6 +325,7 @@ exports.getCriteria4_room3 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room4 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room4`,
@@ -330,6 +340,7 @@ exports.getCriteria4_room4 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room5 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room5`,
@@ -344,6 +355,7 @@ exports.getCriteria4_room5 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room9 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room9`,
@@ -358,6 +370,7 @@ exports.getCriteria4_room9 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room10 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room10`,
@@ -372,6 +385,7 @@ exports.getCriteria4_room10 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room13 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room13`,
@@ -386,6 +400,7 @@ exports.getCriteria4_room13 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room14 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room14`,
@@ -400,6 +415,7 @@ exports.getCriteria4_room14 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room15 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room15`,
@@ -414,6 +430,7 @@ exports.getCriteria4_room15 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room35 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room35`,
@@ -428,6 +445,7 @@ exports.getCriteria4_room35 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room36 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room36`,
@@ -442,6 +460,7 @@ exports.getCriteria4_room36 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room37 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room37`,
@@ -456,6 +475,7 @@ exports.getCriteria4_room37 = (req, res, next) => {
     )
   );
 };
+
 exports.getCriteria4_room46 = (req, res, next) => {
   res.render(
     `aqar-22-23/criteria4_room46`,

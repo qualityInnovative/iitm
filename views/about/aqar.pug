@@ -1,0 +1,22 @@
+extends ../layouts/base.pug
+
+block styles 
+    meta(name="og:title", content="IITM - About")
+    meta(name="og:description", content="Iqbal Institute of Technology and Management (IITM) is a prestigious educational institution dedicated to providing a transformative learning experience to our students. As an NAAC accredited institution, approved by AICTE, recognized by the J and K government, and affiliated to the University of Kashmir, we are committed to upholding the highest standards of education and excellence.")
+    meta(name="description", content="Iqbal Institute of Technology and Management (IITM) is a prestigious educational institution dedicated to providing a transformative learning experience to our students. As an NAAC accredited institution, approved by AICTE, recognized by the J and K government, and affiliated to the University of Kashmir, we are committed to upholding the highest standards of education and excellence.")
+
+block content
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+        .main
+            div.margin-top-sm.margin-bottom-lg
+                h1.margin-bottom-sm AQAR Reports
+
+                .square-cards
+                    each year in aqarYears
+                        .square-cards__item
+                            a(href=`/aqar/${year.id}`)
+                                img(src="/data/imgs/criteria.png", alt=`AQAR ${year.year_label}`)
+                                div
+                                    h2= `AQAR ${year.year_label}`
+                                    p= year.description

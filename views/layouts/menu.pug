@@ -1,0 +1,160 @@
+//- Sidebar Menu Component (Responsive)
+//- Inputs:
+//-   sidebarHeading: string
+//-   pageRoutes: array of arrays of strings (URLs)
+//-   pageLinks: array of arrays of strings (link labels)
+//-   path: current active route (string)
+
+style.
+  .back-button {
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 10px;
+    padding: 0;
+    text-align: left;
+    display: inline-block;
+  }
+
+  .back-button:hover {
+    text-decoration: underline;
+  }
+
+  .pagemenu-lg__heading,
+  .pagemenu-sm {
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .pagemenu-lg__heading h3,
+  .pagemenu-sm .collapsible {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .pagemenu-lg__links ul,
+  .pagemenu-sm__links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pagemenu-lg__links li,
+  .pagemenu-sm__links li {
+    margin: 8px 0;
+  }
+
+  .pagemenu-lg__links--nested,
+  .pagemenu-sm__links--nested {
+    margin-left: 15px;
+  }
+
+  .link-underline-animate-left {
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s;
+  }
+
+  .link-underline-animate-left:hover {
+    color: #007bff;
+  }
+
+  .actv {
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+//- Desktop Sidebar
+.pagemenu-lg
+  .pagemenu-lg__heading
+    button.back-button(type="button", onclick="history.back()") ← Back
+    h3
+      span #{sidebarHeading}
+  .pagemenu-lg__links
+    ul
+      - for (var i = 0; i < pageRoutes.length; i++)
+        - var isActiveGroup = pageRoutes[i].includes(path)
+        - var isGroupExpanded = pageRoutes[i].some(route => path.startsWith(route))
+        li
+          a.link-underline-animate-left(
+            href=pageRoutes[i][0],
+            class=(isActiveGroup ? 'actv' : '')
+          ) #{pageLinks[i][0]}
+          if pageRoutes[i].length > 1
+            ul.pagemenu-lg__links--nested(class=(isGroupExpanded ? '' : 'hidden'))
+              - for (var j = 1; j < pageRoutes[i].length; j++)
+                li
+                  a.link-underline-animate-left(
+                    href=pageRoutes[i][j],
+                    class=(path === pageRoutes[i][j] ? 'actv' : '')
+                  ) #{pageLinks[i][j]}
+
+//- Mobile Sidebar
+.pagemenu-sm.hidden
+  button.back-button(type="button", onclick="history.back()") ← Back
+  button.collapsible #{sidebarHeading}
+  .content
+    .pagemenu-sm__links
+      ul
+        - for (var i = 0; i < pageRoutes.length; i++)
+          - var isActiveGroup = pageRoutes[i].includes(path)
+          - var isGroupExpanded = pageRoutes[i].some(route => path.startsWith(route))
+          li
+            a.link-underline-animate-left(
+              href=pageRoutes[i][0],
+              class=(isActiveGroup ? 'actv' : '')
+            ) #{pageLinks[i][0]}
+            if pageRoutes[i].length > 1
+              ul.pagemenu-lg__links--nested(class=(isGroupExpanded ? '' : 'hidden'))
+                - for (var j = 1; j < pageRoutes[i].length; j++)
+                  li
+                    a.link-underline-animate-left(
+                      href=pageRoutes[i][j],
+                      class=(path === pageRoutes[i][j] ? 'actv' : '')
+                    ) #{pageLinks[i][j]}
+
+//- JavaScript to Handle Collapsible and Responsive Behavior
+script.
+  document.addEventListener('DOMContentLoaded', () => {
+    const collapsible = document.querySelector(".collapsible");
+    const content = document.querySelector(".content");
+
+    if (collapsible) {
+      collapsible.addEventListener("click", function () {
+        this.classList.toggle("active");
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+          content.style.paddingTop = "0";
+          content.style.paddingBottom = "0";
+        } else {
+          content.style.maxHeight = "100%";
+          content.style.paddingTop = "25px";
+          content.style.paddingBottom = "25px";
+        }
+      });
+    }
+
+    const handleResponsiveSidebar = () => {
+      const pageMenuLg = document.querySelector(".pagemenu-lg");
+      const pageMenuSm = document.querySelector(".pagemenu-sm");
+      const width = window.innerWidth;
+
+      if (width <= 968) {
+        pageMenuLg.classList.add("hidden");
+        pageMenuSm.classList.remove("hidden");
+      } else {
+        pageMenuSm.classList.add("hidden");
+        pageMenuLg.classList.remove("hidden");
+      }
+    };
+
+    handleResponsiveSidebar();
+    window.addEventListener("resize", handleResponsiveSidebar);
+  });

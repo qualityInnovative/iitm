@@ -1,0 +1,26 @@
+extends ../layouts/base.pug
+
+block styles
+    meta(name="og:title", content="IITM - AQAR Criteria Details")
+    meta(name="og:description", content="Explore detailed AQAR criteria for academic and institutional assessment at Iqbal Institute of Technology and Management (IITM). Our structured and transparent approach ensures quality and excellence.")
+    meta(name="description", content="Explore detailed AQAR criteria for academic and institutional assessment at Iqbal Institute of Technology and Management (IITM).")
+
+block content
+    main.page-layout
+        include ../layouts/menu.pug
+        .main
+            div.margin-top-sm.margin-bottom-lg
+                h1.margin-bottom-sm AQAR Criteria Details
+
+                if criteriaList && criteriaList.length
+                    .square-cards
+                        each item in criteriaList
+                            .square-cards__item
+                                a(href=`/aqar/${item.year_id}/criteria/${item.id}`)
+                                    img(src="/data/imgs/criteria.png", alt=item.title)
+                                    div
+                                        h2= item.criteria_label
+                                        h3= item.title
+                                        p= item.description
+                else
+                    p.text-center.text-muted No criteria found for this year.

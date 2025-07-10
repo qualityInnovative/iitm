@@ -1,0 +1,539 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  style.
+    :root {
+      --primary: #3a57e8;
+      --primary-dark: #2c46c7;
+      --primary-light: #c7d2fe;
+      --secondary: #6c757d;
+      --success: #10b981;
+      --success-dark: #059669;
+      --warning: #f59e0b;
+      --warning-dark: #d97706;
+      --danger: #ef4444;
+      --light-bg: #f8fafc;
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      --border-color: #e2e8f0;
+    }
+    
+    .container.mt-5 {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    /* Modern Card Design */
+    .aqar-form {
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .aqar-form:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), #8b5cf6);
+    }
+    
+    /* Form Header */
+    .form-header {
+      margin-bottom: 32px;
+      position: relative;
+      padding-bottom: 20px;
+    }
+    
+    .form-header h2 {
+      font-weight: 700;
+      color: #1e293b;
+      font-size: 28px;
+      margin: 0;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .form-header h2:after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 4px;
+    }
+    
+    /* Form Group Styling */
+    .form-group {
+      margin-bottom: 24px;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #334155;
+      font-size: 15px;
+    }
+    
+    .form-group .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background-color: #f8fafc;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      color: #334155;
+    }
+    
+    .form-group .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(58, 87, 232, 0.15);
+      background-color: white;
+      outline: none;
+    }
+    
+    .form-group .form-control:hover {
+      background-color: #f1f5f9;
+    }
+    
+    textarea.form-control {
+      min-height: 140px;
+      resize: vertical;
+    }
+    
+    /* Button Styling */
+   .form-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+      }
+    
+    .btn {
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(58, 87, 232, 0.2);
+    }
+    
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+    
+    .btn-secondary:hover {
+      background: #e2e8f0;
+      transform: translateY(-2px);
+    }
+    
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background: var(--success-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(16, 185, 129, 0.2);
+    }
+    
+    .btn-warning {
+      background: var(--warning);
+      color: white;
+    }
+    
+    .btn-warning:hover {
+      background: var(--warning-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(245, 158, 11, 0.2);
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(220, 38, 38, 0.2);
+    }
+    
+    /* Action Section */
+    .action-section {
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 32px;
+      margin-top: 40px;
+    }
+    
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 24px;
+      position: relative;
+      padding-bottom: 16px;
+    }
+    
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 4px;
+      background: var(--warning);
+      border-radius: 4px;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    
+    .action-buttons .btn {
+      padding: 14px 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .action-buttons ion-icon {
+      font-size: 22px;
+    }
+    
+    /* Criteria Table */
+    .criteria-table-container {
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+    
+    .criteria-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+    
+    .criteria-table th {
+      background: #f8fafc;
+      color: #64748b;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      padding: 1rem 1.5rem;
+      text-align: left;
+    }
+    
+    .criteria-table td {
+      padding: 1rem 1.5rem;
+      vertical-align: top;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .criteria-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+    
+    .criteria-label {
+      font-weight: 600;
+      color: var(--primary);
+      min-width: 80px;
+    }
+    
+    .criteria-title {
+      font-weight: 500;
+      color: #1e293b;
+    }
+    
+    .criteria-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      background: white;
+      color: var(--primary);
+      border: 1px solid var(--border-color);
+      text-decoration: none;
+    }
+    
+    .action-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.05);
+    }
+    
+    .action-btn.edit {
+      color: var(--warning);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+    
+    .action-btn.edit:hover {
+      background: var(--warning);
+      color: white;
+    }
+    
+    .action-btn.delete {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+    
+    .action-btn.delete:hover {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .empty-criteria {
+      padding: 3rem 2rem;
+      text-align: center;
+      background: #f8fafc;
+      border-radius: 12px;
+    }
+    
+    .empty-criteria-icon {
+      font-size: 3rem;
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+    }
+    
+    /* Criteria Form Modal */
+    .modal-content {
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    
+    .modal-header {
+      background: var(--primary);
+      color: white;
+      border-bottom: none;
+      padding: 20px 24px;
+    }
+    
+    .modal-title {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .modal-body {
+      padding: 24px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .aqar-form, .action-section {
+        padding: 28px;
+      }
+      
+      .form-actions, .action-buttons {
+        flex-direction: column;
+      }
+      
+      .form-actions .btn, .action-buttons .btn {
+        width: 100%;
+      }
+      
+      .form-header h2 {
+        font-size: 24px;
+      }
+      
+      .criteria-table-container {
+        overflow-x: auto;
+      }
+      
+      .criteria-table {
+        min-width: 700px;
+      }
+      
+      .criteria-actions {
+        flex-wrap: wrap;
+      }
+    }
+
+block content
+  .container.mt-5
+    a.btn.mt-5(href="javascript:history.back()")
+        ion-icon(name="arrow-back-outline")
+        | Back
+    .aqar-form
+      .form-header
+        h2 #{year ? 'Update AQAR Year' : 'Add New AQAR Year'}
+
+      form(method="POST", action=year ? `/cms/admin-aqar/update-year/${year.id}` : "/cms/admin-aqar/add-year")
+        .form-group
+          label(for="year_label") Year Label
+          input.form-control(
+            type="text",
+            name="year_label",
+            required,
+            placeholder="e.g. 2023-24",
+            value=year ? year.year_label : ''
+          )
+          .form-note Format: YYYY-YY (e.g. 2023-24)
+
+        .form-group
+          label(for="title") Title
+          input.form-control(
+            type="text",
+            name="title",
+            placeholder="Enter title for this AQAR year",
+            value=year ? year.title : ''
+          )
+
+        .form-group
+          label(for="description") Description
+          textarea.form-control(
+            name="description", 
+            rows="5",
+            placeholder="Enter a description for this AQAR year"
+          ) #{year ? year.description : ''}
+
+        .form-actions
+          button.btn.btn-success(type="submit")
+            ion-icon(name="save-outline")
+            | #{year ? 'Update Year' : 'Save New Year'}
+          a.btn(href="/cms/admin-aqar")
+            ion-icon(name="close-outline")
+            | Cancel
+
+    if year
+      .action-section
+        .section-title Manage AQAR Details
+        .action-buttons
+          a.btn.btn-primary(href=`/cms/admin-aqar/${year.id}/criteria/add`)
+            ion-icon(name="add-circle-outline")
+            | Add AQAR Criteria
+          
+        
+        //- Criteria Table Section
+        .mt-5
+          h5.section-title AQAR Criteria
+          
+          if criteriaList && criteriaList.length > 0
+            .criteria-table-container
+              table.criteria-table
+                thead
+                  tr
+                    th Criteria
+                    th Title
+                    th Description
+                    th Actions
+                tbody
+                  each criteria in criteriaList
+                    tr
+                      td.criteria-label #{criteria.criteria_label}
+                      td.criteria-title #{criteria.title}
+                      td #{criteria.description || '-'}
+                      td.criteria-actions
+                        a.action-btn.edit(href=`/cms/admin-aqar/${year.id}/criteria/${criteria.id}/edit`)
+                          ion-icon(name="create")
+                        a.action-btn.delete(
+                          href=`/cms/admin-aqar/${year.id}/criteria/${criteria.id}/delete`, 
+                          onclick="return confirm('Are you sure you want to delete this criteria?')"
+                        )
+                          ion-icon(name="trash")
+          else
+            .empty-criteria
+              ion-icon.empty-criteria-icon(name="document-outline")
+              h5.text-muted.mb-3 No criteria added yet
+              p.mb-4 Get started by adding your first criteria
+              a.btn.btn-primary(href=`/cms/admin-aqar/${year.id}/criteria/add`)
+                ion-icon(name="add")
+                | Add Criteria
+
+  //- Criteria Form Modal
+  if showCriteriaModal
+    .modal.fade#criteriaModal(tabindex="-1", aria-labelledby="criteriaModalLabel", aria-hidden="true")
+      .modal-dialog.modal-dialog-centered
+        .modal-content
+          .modal-header
+            h5.modal-title#criteriaModalLabel
+              ion-icon(name="#{criteria ? 'create-outline' : 'add-outline'}")
+              | #{criteria ? 'Edit Criteria' : 'Add New Criteria'}
+            button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
+          .modal-body
+            form(method="POST", action=criteria ? `/cms/admin-aqar/${year.id}/criteria/${criteria.id}/update` : `/cms/admin-aqar/${year.id}/criteria/add`)
+              .form-group
+                label.form-label(for="criteria_label") Criteria Label
+                input.form-control(
+                  type="text",
+                  name="criteria_label",
+                  required,
+                  placeholder="e.g. 1.1, 2.3.1",
+                  value=criteria ? criteria.criteria_label : ''
+                )
+                .form-note Use standard NAAC criteria numbering
+              
+              .form-group
+                label.form-label(for="title") Title
+                input.form-control(
+                  type="text",
+                  name="title",
+                  required,
+                  placeholder="Enter criteria title",
+                  value=criteria ? criteria.title : ''
+                )
+              
+              .form-group
+                label.form-label(for="description") Description
+                textarea.form-control(
+                  name="description",
+                  placeholder="Enter detailed description",
+                  rows="4"
+                ) #{criteria ? criteria.description : ''}
+              
+              .d-flex.justify-content-end.gap-3.mt-4
+                button.btn.btn-secondary(type="button", data-bs-dismiss="modal") Cancel
+                button.btn.btn-primary(type="submit")
+                  ion-icon(name="checkmark-outline")
+                  | #{criteria ? 'Update' : 'Save'}
+
+block scripts
+  if showCriteriaModal
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        var criteriaModal = new bootstrap.Modal(document.getElementById('criteriaModal'), {});
+        criteriaModal.show();
+      });
+      

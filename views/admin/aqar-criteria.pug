@@ -1,0 +1,233 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  style.
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #c7d2fe;
+      --secondary: #64748b;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --light: #f8fafc;
+      --dark: #0f172a;
+      --border: #e2e8f0;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .criteria-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .criteria-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .criteria-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .criteria-title ion-icon {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .year-badge {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .btn-criteria {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: var(--card-shadow);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-criteria:hover {
+      background: #4338ca;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(79, 70, 229, 0.25);
+    }
+
+    .criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .criteria-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .criteria-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      border-color: var(--primary-light);
+    }
+
+    .criteria-header-card {
+      background: var(--primary-light);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .criteria-label {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .criteria-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      background: white;
+      color: var(--primary);
+      border: 1px solid var(--border);
+      text-decoration: none;
+    }
+
+    .action-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    .criteria-body {
+      padding: 1.5rem;
+    }
+
+    .criteria-title-card {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--dark);
+    }
+
+    .criteria-description {
+      color: var(--secondary);
+      line-height: 1.6;
+    }
+
+    .empty-state {
+      padding: 3rem 2rem;
+      text-align: center;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      grid-column: 1 / -1;
+    }
+
+    .empty-state-icon {
+      font-size: 3.5rem;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
+    }
+
+    .empty-state-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state-text {
+      color: var(--secondary);
+      margin-bottom: 1.5rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .criteria-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .criteria-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+block content
+  .criteria-container
+    .criteria-header
+      .criteria-title
+        ion-icon(name="list-outline")
+        span AQAR Criteria for 
+        span.year-badge #{year.year_label}
+      a.btn-criteria(href=`/cms/admin-aqar/${year.id}/criteria/add`)
+        ion-icon(name="add-outline")
+        | Add New Criteria
+
+    if criteriaList && criteriaList.length > 0
+      .criteria-grid
+        each criteria in criteriaList
+          .criteria-card
+            .criteria-header-card
+              .criteria-label #{criteria.criteria_label}
+              .criteria-actions
+                a.action-btn(href=`/cms/admin-aqar/${year.id}/criteria/${criteria.id}/edit`)
+                  ion-icon(name="create-outline")
+                a.action-btn(
+                  href=`/cms/admin-aqar/${year.id}/criteria/${criteria.id}/delete`, 
+                  onclick="return confirm('Are you sure you want to delete this criteria?')"
+                )
+                  ion-icon(name="trash-outline")
+            .criteria-body
+              h3.criteria-title-card #{criteria.title}
+              p.criteria-description #{criteria.description || 'No description provided'}
+
+    else
+      .empty-state
+        ion-icon.empty-state-icon(name="document-outline")
+        h5.empty-state-title No Criteria Added Yet
+        p.empty-state-text Start by adding criteria to organize your AQAR report
+        a.btn-criteria(href=`/cms/admin-aqar/${year.id}/criteria/add`)
+          ion-icon(name="add-outline")
+          | Add First Criteria

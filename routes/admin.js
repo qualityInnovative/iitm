@@ -4,11 +4,16 @@ const adminController = require("../controllers/admin");
 const bannerController = require("../controllers/bannersController");
 const bannerUpload = bannerController.uploadBannerImage;
 const upload = adminController.uploadVisionary;
+
+const uploadAQARDocument =adminController.uploaddocument
+
 const router = express.Router();
+
 const { uploadAdmission } = require('./../controllers/upload')
 
 // CMS ADMIN ROUTE
 router.get("/cms/admin-cms", adminController.getAdminDash);
+
 
 
 
@@ -18,6 +23,57 @@ router.post("/cms/upload-homeButton", adminController.postHomeButton);
 router.post("/cms/upload-homeHeading", adminController.postHomeHeading);
 router.post("/cms/upload-gallery", adminController.postGallery);
 router.post("/cms/upload-homeCarousel", adminController.postHomeCarousel);
+
+// AQAR Dashboard
+router.get("/cms/admin-aqar", adminController.getAqarDash);
+router.get("/cms/admin-aqar/add-year", adminController.getAddAqarYearForm);
+router.post("/cms/admin-aqar/add-year", adminController.postAddAqarYear);
+
+router.get("/cms/admin-aqar/edit-year/:id", adminController.getEditAqarYearForm);
+router.post("/cms/admin-aqar/update-year/:id", adminController.postUpdateAqarYear);
+
+router.get('/cms/admin-aqar/:year_id/criteria', adminController.getAqarCriteria);
+router.get('/cms/admin-aqar/:year_id/criteria/add', adminController.getAddCriteriaForm);
+router.get('/cms/admin-aqar/:year_id/criteria/:criteria_id/edit', adminController.getEditCriteriaForm);
+router.post('/cms/admin-aqar/:year_id/criteria/save', adminController.saveCriteria);
+router.post('/cms/admin-aqar/:year_id/criteria/:criteria_id/save', adminController.saveCriteria);
+router.get('/cms/admin-aqar/:year_id/criteria/:criteria_id/delete', adminController.deleteCriteria);
+
+
+// 
+// Document management routes
+
+
+router.post(
+  '/cms/admin-aqar/:year_id/criteria/:criteria_id/documents/add', 
+  adminController.addAQARDocument
+);
+
+router.get(
+  '/cms/admin-aqar/:year_id/criteria/:criteria_id/documents/:document_id/edit', 
+  adminController.getEditDocumentForm
+);
+router.post(
+  '/cms/admin-aqar/:year_id/criteria/:criteria_id/documents/:document_id/update',
+  uploadAQARDocument.single("document"),
+  adminController.updateAQARDocument
+);
+
+// router.post(
+//   '/cms/admin-aqar/:year_id/criteria/:criteria_id/documents/:document_id/update', 
+//   adminController.updateAQARDocument
+// );
+
+router.get(
+  '/cms/admin-aqar/:year_id/criteria/:criteria_id/documents/:document_id/delete', 
+  adminController.deleteAQARDocument
+);
+
+router.get(
+  '/cms/download/aqar-document/:document_id', 
+  adminController.downloadAQARDocument
+);
+
 
 // manage marquee links
 router.get("/cms/admin-marquee", adminController.getMarqueeLinksDash);

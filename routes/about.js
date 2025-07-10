@@ -8,6 +8,8 @@ const aboutController = require("../controllers/about");
 // Route to / at /about
 router.get("/", aboutController.getAbout);
 
+
+
 // Route to /founder at /about
 router.get("/founder", aboutController.getFounder);
 
@@ -51,6 +53,7 @@ router.get("/quality-assurance/code-of-conduct", aboutController.getCodeOfConduc
 router.get("/quality-assurance/divyangjan", aboutController.getDivyangjan);
 router.get("/quality-assurance/green-campus-policy", aboutController.getGreenCampusPolicy);
 router.get("/quality-assurance/gender-sensitization-plan", aboutController.getGenderSensitizationPlan);
+router.get("/quality-assurance/aqar",aboutController.getAQAR);
 
 // Route to /contact at /about
 router.get("/contact", aboutController.getContact);

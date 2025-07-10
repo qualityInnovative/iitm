@@ -20,12 +20,12 @@ const params = mainParams(
       "Quality Assurance",
       "About IQAC",
       "IQAC Composition",
-      "Minutes of Meeting 2022-23",
+      "AQAR",
+      "IQAC Minutes of Meeting",
       "Code of Conduct",
       "Divyangjan",
       "Green Campus Policy",
       "Gender Sensitization Plan",
-      "AQAR 2022-23",
     ],
     ["About IMT"],
     ["College Events"],
@@ -52,12 +52,12 @@ const params = mainParams(
       `${pagePath}/quality-assurance/`,
       `${pagePath}/quality-assurance/about`,
       `${pagePath}/quality-assurance/composition`,
+      `${pagePath}/quality-assurance/aqar`,
       `${pagePath}/quality-assurance/mom-22-23`,
       `${pagePath}/quality-assurance/code-of-conduct`,
       `${pagePath}/quality-assurance/divyangjan`,
       `${pagePath}/quality-assurance/green-campus-policy`,
       `${pagePath}/quality-assurance/gender-sensitization-plan`,
-      `/aqar-22-23`,
     ],
     [`${pagePath}/imt`],
     ["/events"],
@@ -69,6 +69,29 @@ const params = mainParams(
   ]
 );
 
+exports.getAQAR = async (req, res, next) => {
+  try {
+    const aqarYears = await query('SELECT * FROM aqar_years ORDER BY year_label DESC');
+    res.render(
+      "about/aqar",
+      Object.assign(
+        params(
+          "AQAR",
+          "/quality-assurance/aqar",
+          "/data/imgs/about-iqac.jpg",
+          ""
+        ),
+        {
+          isAuthenticated: req.session.isLoggedIn,
+          aqarYears, // ← pass data to pug view
+        }
+      )
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+};
 exports.getAbout = (req, res, next) => {
   res.render(
     "about/about",
@@ -83,6 +106,8 @@ exports.getAbout = (req, res, next) => {
     )
   );
 };
+
+
 
 exports.getFounder = (req, res, next) => {
   res.render(
@@ -264,6 +289,7 @@ exports.getAboutIQAC = (req, res, next) => {
     )
   );
 };
+
 exports.getComposition = (req, res, next) => {
   res.render(
     "about/iqac-composition",

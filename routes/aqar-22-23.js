@@ -68,6 +68,7 @@ router.get("/criteria7/7_1_8", aqar2223Controller.getCriteria7__7_1_8);
 router.get("/criteria7/7_1_9", aqar2223Controller.getCriteria7__7_1_9);
 router.get("/criteria7/7_1_10", aqar2223Controller.getCriteria7__7_1_10);
 router.get("/criteria7/7_1_11", aqar2223Controller.getCriteria7__7_1_11);
+
 router.get(
   "/criteria7/institutional-distinctiveness",
   aqar2223Controller.getCriteria7__institutional_distinctiveness

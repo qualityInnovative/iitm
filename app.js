@@ -53,10 +53,13 @@ const notificationRoutes = require("./routes/notifications");
 const eventRoutes = require("./routes/events");
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
-const authenticate = require("./controllers/authenticate"); //Authenticates loggedin user on client side
+const authenticate = require("./controllers/authenticate");
+const aqarRoutes = require("./routes/aqar");
+
 
 app.use(homeRoute);
 app.use("/about", aboutRoutes);
+app.use("/aqar", aqarRoutes); 
 app.use(formRoutes);
 app.use("/admissions", admissionRoutes);
 app.use("/academics", academicRoutes);
@@ -65,6 +68,7 @@ app.use("/placements", placementsRoutes);
 app.use("/community", communityRoutes);
 app.use("/community", newsRoutes);
 app.use("/aqar-22-23", aqar2223Routes);
+
 app.use(notificationRoutes);
 app.use(eventRoutes);
 app.use(authRoutes);
