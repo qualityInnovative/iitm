@@ -55,7 +55,7 @@ const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
 const authenticate = require("./controllers/authenticate");
 const aqarRoutes = require("./routes/aqar");
-
+const aqar23= require("./routes/aqar-2023-24")
 
 app.use(homeRoute);
 app.use("/about", aboutRoutes);
@@ -68,6 +68,7 @@ app.use("/placements", placementsRoutes);
 app.use("/community", communityRoutes);
 app.use("/community", newsRoutes);
 app.use("/aqar-22-23", aqar2223Routes);
+app.use("/aqar-2023-24",aqar23)
 
 app.use(notificationRoutes);
 app.use(eventRoutes);

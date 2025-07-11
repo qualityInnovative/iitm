@@ -320,3 +320,17 @@ block content
           a.btn-aqar(href="/cms/admin-aqar/add-year")
             ion-icon(name="add-outline")
             | Add Your First AQAR
+
+
+block scripts
+  script.
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.btn-close').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const alertBox = btn.closest('.alert');
+          if (alertBox) {
+            alertBox.remove();
+          }
+        });
+      });
+    });

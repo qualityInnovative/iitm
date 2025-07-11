@@ -1,23 +1,41 @@
 extends ../layouts/base.pug
 
-block styles 
+block styles
 
 block content
-
     main.page-layout 
         include ../layouts/menu.pug
         .main
             .line-above-heading 
             h2.heading-with-top-border= document.document_title
 
-            iframe.pdf-viewer.hidden(src=`/uploads/aqar/${document.file_path}`)
+            if document.file_type === 'application/pdf'
+                iframe.pdf-viewer(src=`/uploads/aqar/${document.file_path}`)
 
-            .pdf.margin-top-sm.hidden
-                .pdf__heading= document.original_file_name
-                .pdf__container
-                .pdf__download
-                    a(href=`/uploads/aqar/${document.file_path}` target="blank")
-                        button Download
+                .pdf.margin-top-sm
+                    .pdf__heading= document.original_file_name
+                    .pdf__container
+                    .pdf__download
+                        a(href=`/uploads/aqar/${document.file_path}` target="_blank")
+                            button Download
 
-    script.
-        pdfJs([`/uploads/aqar/${document.file_path}`]);
+            else if document.file_type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || document.file_type === 'application/msword'
+                .docx.margin-top-sm
+                    .docx__heading= document.original_file_name
+                    .docx__download
+                        a(href=`/uploads/aqar/${document.file_path}` target="_blank")
+                            button Download DOCX File
+                    p Note: Word files can't be viewed directly in browser. Please download to view.
+
+            else if document.file_type === 'image/png' || document.file_type === 'image/jpeg'
+                .image-viewer.margin-top-sm
+                    .image__heading= document.original_file_name
+                    img(src=`/uploads/aqar/${document.file_path}` alt="Document Image" style="max-width: 100%; height: auto; margin-top: 10px;")
+                    .image__download
+                        a(href=`/uploads/aqar/${document.file_path}` target="_blank")
+                            button Download Image
+
+block scripts
+    if document.file_type === 'application/pdf'
+        script.
+            pdfJs([`/uploads/aqar/${document.file_path}`]);

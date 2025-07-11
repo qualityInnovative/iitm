@@ -61,7 +61,7 @@ exports.getAQARdetails = async (req, res, next) => {
             criteriaList,
             pageRoutes,
             pageLinks,
-            sidebarHeading: `AQAR ${yearLabel.year_label}`
+            sidebarHeading: `AQAR ${yearLabel?.year_label}`
         });
 
     } catch (err) {
