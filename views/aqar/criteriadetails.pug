@@ -16,8 +16,6 @@ block content
 
             if documents && documents.length
                 each doc in documents
-                    h2=doc.document_title
-                    
                     a(href=`/aqar/document/${doc.id}` style="display: block; width: 100%; text-align: center; margin: 20px 0;")
                         button.tabs__tab(style="width:100%")= doc.document_title
             else
