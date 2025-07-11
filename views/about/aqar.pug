@@ -13,6 +13,7 @@ block content
                 h1.margin-bottom-sm AQAR Reports
 
                 .square-cards
+                    // Dynamic AQAR years
                     each year in aqarYears
                         .square-cards__item
                             a(href=`/aqar/${year.id}`)
@@ -20,3 +21,18 @@ block content
                                 div
                                     h2= `AQAR ${year.year_label}`
                                     p= year.description
+
+                    // Static AQAR reports (always shown)
+                    .square-cards__item
+                        a(href="/aqar-2023-24")
+                            img(src="/data/imgs/criteria.png", alt="AQAR 2023-24")
+                            div
+                                h2 AQAR 2023-24
+                                p View AQAR report for 2023-24
+
+                    .square-cards__item
+                        a(href="/aqar-22-23")
+                            img(src="/data/imgs/criteria.png", alt="AQAR 2022-23")
+                            div
+                                h2 AQAR 2022-23
+                                p View AQAR report for 2022-23
