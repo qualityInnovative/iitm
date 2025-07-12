@@ -76,5 +76,8 @@ router.get(
   "/attribute7/best-practices",
   aqar2223Controller.getCriteria7__best_practices
 );
+router.get("/minutes_of_meetings",aqar2223Controller.getMinutesOfMeetings)
+router.get("/calendar_of_activities",aqar2223Controller.getCalendarOfActivities)
+router.get("/annual_gender_sensitization_plan",aqar2223Controller.getAnnualGenderSensitizationPlan)
 
 module.exports = router;

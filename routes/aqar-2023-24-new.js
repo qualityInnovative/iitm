@@ -128,48 +128,6 @@ const params = mainParams(
     [`${pagePath}/calendar_of_activities`],
   ]
 );
-exports.getMinutesOfMeetings = (req, res, next) => {
-  res.render(
-    `aqar-2023-24/minutes_of_meetings`,
-    Object.assign(
-      params(
-        `/minutes_of_meetings`,
-        `${pagePath}/minutes_of_meetings`,
-        "/data/imgs/aqar.jpeg",
-        "Minutes of Meetings"
-      ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
-};
-exports.getAnnualGenderSensitizationPlan = (req, res, next) => {
-  res.render(
-    `aqar-2023-24/annual_gender_sensitization_plan`,
-    Object.assign(
-      params(
-        `AQAR 2023-24 - Annual Gender Sensitization Plan`,
-        `${pagePath}/annual_gender_sensitization_plan`,
-        "/data/imgs/aqar.jpeg",
-        "Annual Gender Sensitization Plan"
-      ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
-};
-exports.getCalendarOfActivities = (req, res, next) => {
-  res.render(
-    `aqar-2023-24/calendar_of_activities`,
-    Object.assign(
-      params(
-        `AQAR 2023-24 - Calendar of Activities`,
-        `${pagePath}/calendar_of_activities`,
-        "/data/imgs/aqar.jpeg",
-        "Calendar of Activities"
-      ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
-};
 
 exports.getAQAR2223 = (req, res, next) => {
   res.render(
