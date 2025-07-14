@@ -12,7 +12,7 @@ const params = mainParams(
       "Stakeholders Feedback",
     ],
     ["Criteria 2", "Student Satisfaction Survey"],
-    ["Criteria 3", "3.2", "3.2.2"],
+    ["Criteria 3", "3.2", "3.2.2" ,"3.4.1","3.5.1"],
     [
       "Criteria 4",
       "Document 1",
@@ -75,6 +75,8 @@ const params = mainParams(
       `${pagePath}/attribute3`,
       `${pagePath}/attribute3/3_2`,
       `${pagePath}/attribute3/3_2_2`,
+      `${pagePath}/attribute3/3_4_1`,
+      `${pagePath}/attribute3/3_5_1`
     ],
     [
       `${pagePath}/attribute4`,
@@ -306,6 +308,36 @@ exports.getCriteria3__3_2_2 = (req, res) => {
     )
   );
 };
+exports.getCriteria3__3_4_1 = (req, res) => {
+  res.render(
+    `aqar-2023-24/attribute3_3_4_1`,
+    Object.assign(
+      params(
+        `Criteria 3 - 3.4.1`,
+        `/attribute3/3_4_1`,
+        "/data/imgs/aqar.jpeg",
+        "Criteria 3 - 3.4.1"
+      ),
+      { isAuthenticated: req.session.isLoggedIn }
+    )
+  );
+};
+exports.getCriteria3__3_5_1 = (req, res) => {
+  res.render(
+    `aqar-2023-24/attribute3_3_5_1`,
+    Object.assign(
+      params(
+        `Criteria 3 - 3.5.1`,
+        `/attribute3/3_5_1`,
+        "/data/imgs/aqar.jpeg",
+        "Criteria 3 - 3.5.1"
+      ),
+      { isAuthenticated: req.session.isLoggedIn }
+    )
+  );
+};
+
+
 //? ///////////////////////////////////////////////////////
 //? CRITERIA 4
 exports.getCriteria4 = (req, res, next) => {

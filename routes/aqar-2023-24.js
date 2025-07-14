@@ -26,6 +26,8 @@ router.get("/attribute3", aqar2223Controller.getCriteria3);
 router.get("/attribute3/3_2", aqar2223Controller.getCriteria3__3_2);
 router.get("/attribute3/3_2_2", aqar2223Controller.getCriteria3__3_2_2);
 
+router.get("/attribute3/3_4_1", aqar2223Controller.getCriteria3__3_4_1);
+router.get("/attribute3/3_5_1", aqar2223Controller.getCriteria3__3_5_1);
 router.get("/attribute4", aqar2223Controller.getCriteria4);
 router.get("/attribute4/doc1", aqar2223Controller.getCriteria4_doc1);
 router.get("/attribute4/doc2", aqar2223Controller.getCriteria4_doc2);
