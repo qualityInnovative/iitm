@@ -22,6 +22,7 @@ const params = mainParams(
       "IQAC Composition",
       "AQAR",
       "IQAC Minutes of Meeting",
+      "Minutes of Meeting",
       "Code of Conduct",
       "Divyangjan",
       "Green Campus Policy",
@@ -54,6 +55,7 @@ const params = mainParams(
       `${pagePath}/quality-assurance/composition`,
       `${pagePath}/quality-assurance/aqar`,
       `${pagePath}/quality-assurance/mom-22-23`,
+      `${pagePath}/quality-assurance/mom`,
       `${pagePath}/quality-assurance/code-of-conduct`,
       `${pagePath}/quality-assurance/divyangjan`,
       `${pagePath}/quality-assurance/green-campus-policy`,
@@ -304,6 +306,7 @@ exports.getComposition = (req, res, next) => {
     )
   );
 };
+
 exports.getMOM2223 = (req, res, next) => {
   res.render(
     "about/mom-22-23",
@@ -318,6 +321,92 @@ exports.getMOM2223 = (req, res, next) => {
     )
   );
 };
+// getMOM
+exports.getMOM = async (req, res, next) => {
+  try {
+    // Fetch meeting minutes with custom ordering
+    const minutes = await query(`
+      SELECT id, title, file_path, original_filename, 
+             created_at, display_order
+      FROM meeting_minutes
+      ORDER BY 
+        display_order IS NULL,  -- Push NULLs to the end
+        display_order,          -- Ordered numbers (ascending)
+        created_at DESC         -- Newest first for same order
+    `);
+
+    res.render(
+      "about/mom",
+      Object.assign(
+        params(
+          `Minutes of Meeting`,
+          "/quality-assurance/mom",
+          "/data/imgs/iqac-composition.jpg",
+          ""
+        ),
+        { 
+          isAuthenticated: req.session.isLoggedIn,
+          minutes  // Pass the ordered minutes to the view
+        }
+      )
+    );
+  } catch (err) {
+    console.error("Error fetching meeting minutes:", err);
+    // Pass empty array on error to prevent template crash
+    res.render(
+      "about/mom",
+      Object.assign(
+        params(
+          `Minutes of Meeting`,
+          "/quality-assurance/mom",
+          "/data/imgs/iqac-composition.jpg",
+          ""
+        ),
+        { 
+          isAuthenticated: req.session.isLoggedIn,
+          minutes: [] 
+        }
+      )
+    );
+  }
+};;
+exports.getMoMDetail = async (req, res, next) => {
+  const { id } = req.params;
+  
+  try {
+    // Fetch specific meeting minute by ID
+    const [minute] = await query(`
+      SELECT id, title, file_path, original_filename, created_at
+      FROM meeting_minutes
+      WHERE id = ?
+    `, [id]);
+
+    if (!minute) {
+      // Handle not found
+      return res.redirect('/quality-assurance/mom');
+    }
+
+    res.render(
+      "about/mom-detail",
+      Object.assign(
+        params(
+          `${minute.title} | Minutes of Meeting`,
+          `/quality-assurance/mom/${id}`,
+          "/data/imgs/iqac-composition.jpg",
+          ""
+        ),
+        { 
+          isAuthenticated: req.session.isLoggedIn,
+          minute
+        }
+      )
+    );
+  } catch (err) {
+    console.error("Error fetching meeting minute:", err);
+    return res.redirect('/quality-assurance/mom');
+  }
+};
+
 exports.getCodeOfConduct = (req, res, next) => {
   res.render(
     "about/code-of-conduct",

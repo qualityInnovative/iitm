@@ -36,9 +36,219 @@ const aqarDocumentsStorage = multer.diskStorage({
   }
 });
 
-exports.uploaddocument=multer({storage:aqarDocumentsStorage});
+exports.uploaddocument = multer({ storage: aqarDocumentsStorage });
+const momStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = 'public/uploads/mom';
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const cleanName = file.originalname.replace(/[^a-z0-9\.]/gi, '_');
+    cb(null, uniqueSuffix + '-' + cleanName);
+  }
+});
 
-const uploadAQARDocument = multer({ 
+exports.uploadMoM = multer({ 
+  storage: momStorage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed'), false);
+    }
+  }
+}).single('pdf');
+
+exports.getMinutesofminutes = async (req, res) => {
+  try {
+    const minutes = await query(`
+      SELECT id, title, file_path, original_filename, created_at, display_order
+      FROM meeting_minutes 
+      ORDER BY display_order IS NULL, display_order, created_at DESC
+    `);
+    res.render("admin/mom-list", {
+      minutes,
+      successMessage: req.session.successMessage,
+      errorMessage: req.session.errorMessage
+    });
+    
+    delete req.session.successMessage;
+    delete req.session.errorMessage;
+  } catch (err) {
+    console.error("Error fetching meeting minutes:", err);
+    req.session.errorMessage = "Failed to load meeting minutes";
+    res.redirect("/cms/admin-home");
+  }
+};
+
+// Show form to create new meeting minute
+exports.getCreateMinuteForm = (req, res) => {
+  res.render("admin/mom-form", {
+    minute: null,
+    errorMessage: req.session.errorMessage
+  });
+  delete req.session.errorMessage;
+};
+
+
+exports.getEditMinuteForm = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [minute] = await query(
+      "SELECT id, title, display_order, file_path, original_filename FROM meeting_minutes WHERE id = ?",
+      [id]
+    );
+    
+    if (!minute) {
+      req.session.errorMessage = "Meeting minute not found";
+      return res.redirect("/cms/admin-mom");
+    }
+    
+    res.render("admin/mom-form", {
+      minute,
+      errorMessage: req.session.errorMessage
+    });
+    
+    delete req.session.errorMessage;
+  } catch (err) {
+    console.error("Error fetching meeting minute:", err);
+    req.session.errorMessage = "Failed to load meeting minute";
+    res.redirect("/cms/admin-mom");
+  }
+};
+// Save or update meeting minute - UPDATED WITH DISPLAY_ORDER HANDLING
+exports.saveMoM = async (req, res) => {
+  const { title, display_order } = req.body; // Added display_order
+  const file = req.file;
+  const minuteId = req.params.id;
+
+  // Convert display_order to number or null
+  const displayOrder = display_order === '' ? null : parseInt(display_order);
+
+  try {
+    // UPDATE EXISTING
+    if (minuteId) {
+      const [existingMinute] = await query(
+        "SELECT file_path, original_filename FROM meeting_minutes WHERE id = ?",
+        [minuteId]
+      );
+      
+      if (!existingMinute) {
+        req.session.errorMessage = "Meeting minute not found";
+        return res.redirect("/cms/admin-mom");
+      }
+
+      let filePath = existingMinute.file_path;
+      let originalFilename = existingMinute.original_filename;
+
+      if (file) {
+        // Delete old file
+        const oldFilePath = path.join('public', filePath);
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+        
+        // Update with new file
+        filePath = file.path.replace('public', '');
+        originalFilename = file.originalname;
+      }
+
+      // Update query with display_order
+      if (file) {
+        await query(
+          `UPDATE meeting_minutes 
+           SET title = ?, display_order = ?, file_path = ?, original_filename = ?
+           WHERE id = ?`,
+          [title, displayOrder, filePath, originalFilename, minuteId]
+        );
+      } else {
+        await query(
+          `UPDATE meeting_minutes 
+           SET title = ?, display_order = ?
+           WHERE id = ?`,
+          [title, displayOrder, minuteId]
+        );
+      }
+      
+      req.session.successMessage = "Meeting minute updated successfully";
+      return res.redirect("/cms/admin-mom");
+    }
+    // CREATE NEW
+    else {
+      if (!file) {
+        req.session.errorMessage = "Please upload a PDF file";
+        return res.redirect("/cms/admin-mom/create");
+      }
+
+      await query(
+        `INSERT INTO meeting_minutes 
+         (title, display_order, file_path, original_filename)
+         VALUES (?, ?, ?, ?)`,
+        [title, displayOrder, file.path.replace('public', ''), file.originalname]
+      );
+      
+      req.session.successMessage = "Meeting minute created successfully";
+      res.redirect("/cms/admin-mom");
+    }
+  } catch (err) {
+    console.error("Error saving meeting minute:", err);
+    
+    // Cleanup uploaded file if error occurred
+    if (file && fs.existsSync(file.path)) {
+      fs.unlinkSync(file.path);
+    }
+    
+    const redirectPath = minuteId 
+      ? `/cms/admin-mom/edit/${minuteId}`
+      : "/cms/admin-mom/create";
+    
+    req.session.errorMessage = minuteId 
+      ? "Failed to update meeting minute" 
+      : "Failed to create meeting minute";
+      
+    res.redirect(redirectPath);
+  }
+};
+
+// Delete a meeting minute
+exports.deleteMoM = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Get file path before deleting
+    const [minute] = await query(
+      "SELECT file_path FROM meeting_minutes WHERE id = ?",
+      [id]
+    );
+
+    if (!minute) {
+      req.session.errorMessage = "Meeting minute not found";
+      return res.redirect("/cms/admin-mom");
+    }
+
+    // Delete from database
+    await query("DELETE FROM meeting_minutes WHERE id = ?", [id]);
+
+    // Delete file from server
+    const filePath = path.join('public', minute.file_path);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    req.session.successMessage = "Meeting minute deleted successfully";
+    res.redirect("/cms/admin-mom");
+  } catch (err) {
+    console.error("Error deleting meeting minute:", err);
+    req.session.errorMessage = "Failed to delete meeting minute";
+    res.redirect("/cms/admin-mom");
+  }
+};
+const uploadAQARDocument = multer({
   storage: aqarDocumentsStorage,
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB limit
   fileFilter: (req, file, cb) => {
@@ -51,7 +261,7 @@ const uploadAQARDocument = multer({
       'image/jpeg',
       'image/png'
     ];
-    
+
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
@@ -63,18 +273,18 @@ const uploadAQARDocument = multer({
 // Get criteria and documents for editing
 exports.getEditCriteriaForm = async (req, res) => {
   const { year_id, criteria_id } = req.params;
-  
+
   try {
     const [yearResult, criteriaResult] = await Promise.all([
       query("SELECT * FROM aqar_years WHERE id = ?", [year_id]),
       query("SELECT * FROM aqar_criteria WHERE id = ?", [criteria_id])
     ]);
-    
+
     if (yearResult.length === 0 || criteriaResult.length === 0) {
       req.session.errorMessage = "Year or criteria not found";
       return res.redirect("/cms/admin-aqar");
     }
-    
+
     // Get documents for this criteria
     const documents = await query(
       `SELECT id, document_title, file_path, original_file_name, file_type, uploaded_at 
@@ -83,13 +293,13 @@ exports.getEditCriteriaForm = async (req, res) => {
        ORDER BY uploaded_at DESC`,
       [criteria_id]
     );
-    
+
     // Format dates
     const formattedDocuments = documents.map(doc => ({
       ...doc,
       uploaded_at: new Date(doc.uploaded_at)
     }));
-    
+
     res.render("admin/criteria-form", {
       year: yearResult[0],
       criteria: criteriaResult[0],
@@ -97,7 +307,7 @@ exports.getEditCriteriaForm = async (req, res) => {
       successMessage: req.session.successMessage,
       errorMessage: req.session.errorMessage
     });
-    
+
     delete req.session.successMessage;
     delete req.session.errorMessage;
   } catch (err) {
@@ -107,23 +317,27 @@ exports.getEditCriteriaForm = async (req, res) => {
   }
 };
 
+exports.getminutesofminutes = async (req, res) => {
+
+}
+
 // Add document to a criteria
 exports.addAQARDocument = (req, res) => {
   const { year_id, criteria_id } = req.params;
-  
+
   uploadAQARDocument(req, res, async (err) => {
     try {
       if (err) {
         throw err;
       }
-      
+
       const { title } = req.body;
       const file = req.file;
-      
+
       if (!file) {
         throw new Error("No file uploaded");
       }
-      
+
       // Insert document into database (REMOVED uploaded_by)
       await query(
         `INSERT INTO aqar_documents (
@@ -141,19 +355,19 @@ exports.addAQARDocument = (req, res) => {
           file.mimetype
         ]
       );
-      
+
       req.session.successMessage = "Document uploaded successfully";
       res.redirect(`/cms/admin-aqar/${year_id}/criteria/${criteria_id}/edit`);
     } catch (error) {
       console.error("Error uploading document:", error);
-      
+
       // Delete uploaded file if it exists
       if (req.file) {
         fs.unlink(req.file.path, (unlinkErr) => {
           if (unlinkErr) console.error("Error deleting file:", unlinkErr);
         });
       }
-      
+
       req.session.errorMessage = error.message || "Failed to upload document";
       res.redirect(`/cms/admin-aqar/${year_id}/criteria/${criteria_id}/edit`);
     }
@@ -162,7 +376,7 @@ exports.addAQARDocument = (req, res) => {
 exports.updateAQARDocument = async (req, res) => {
   const { year_id, criteria_id, document_id } = req.params;
   const { title } = req.body;
-  
+
   try {
     // Convert document_id to integer
     const docId = parseInt(document_id);
@@ -175,17 +389,17 @@ exports.updateAQARDocument = async (req, res) => {
       "UPDATE aqar_documents SET document_title = ? WHERE id = ?",
       [title, docId]
     );
-    
+
     // Handle file upload if new file was provided
     if (req.file) {
       const { originalname, mimetype, filename } = req.file;
-      
+
       // Get current file path for deletion
       const [currentFile] = await query(
         "SELECT file_path FROM aqar_documents WHERE id = ?",
         [docId]
       );
-      
+
       // Update file information - CORRECTED PARAMETER ORDER
       await query(
         `UPDATE aqar_documents 
@@ -196,15 +410,15 @@ exports.updateAQARDocument = async (req, res) => {
          WHERE id = ?`,
         [originalname, mimetype, filename, docId]  // Correct order and count
       );
-      
+
       // Delete old file if exists
       if (currentFile && currentFile.file_path) {
         const filePath = path.join(
-          __dirname, 
-          '../public/uploads/aqar/', 
+          __dirname,
+          '../public/uploads/aqar/',
           currentFile.file_path
         );
-        
+
         if (fs.existsSync(filePath)) {
           fs.unlink(filePath, (err) => {
             if (err) console.error("Error deleting old file:", err);
@@ -214,27 +428,27 @@ exports.updateAQARDocument = async (req, res) => {
         }
       }
     }
-    
+
     req.session.successMessage = "Document updated successfully";
     res.redirect(`/cms/admin-aqar/${year_id}/criteria/${criteria_id}/edit`);
   } catch (error) {
     console.error("Error updating document:", error);
-    
+
     // Delete new file if upload failed during update
     if (req.file) {
       const filePath = path.join(
-        __dirname, 
-        '../public/uploads/aqar/', 
+        __dirname,
+        '../public/uploads/aqar/',
         req.file.filename
       );
-      
+
       if (fs.existsSync(filePath)) {
         fs.unlink(filePath, (unlinkErr) => {
           if (unlinkErr) console.error("Error deleting new file:", unlinkErr);
         });
       }
     }
-    
+
     req.session.errorMessage = error.message || "Failed to update document";
     res.redirect(`/cms/admin-aqar/${year_id}/criteria/${criteria_id}/documents/${document_id}/edit`);
   }
@@ -243,23 +457,23 @@ exports.updateAQARDocument = async (req, res) => {
 // Edit document form
 exports.getEditDocumentForm = async (req, res) => {
   const { year_id, criteria_id, document_id } = req.params;
-  
+
   try {
     const [yearResult, criteriaResult, documentResult] = await Promise.all([
       query("SELECT * FROM aqar_years WHERE id = ?", [year_id]),
       query("SELECT * FROM aqar_criteria WHERE id = ?", [criteria_id]),
       query("SELECT * FROM aqar_documents WHERE id = ?", [document_id])
     ]);
-    
+
     if (yearResult.length === 0 || criteriaResult.length === 0 || documentResult.length === 0) {
       req.session.errorMessage = "Year, criteria or document not found";
       return res.redirect(`/cms/admin-aqar/${year_id}/criteria/${criteria_id}/edit`);
     }
-    
+
     const year = yearResult[0];
     const criteria = criteriaResult[0];
     const document = documentResult[0];
-    
+
     // Get all documents for this criteria
     const documents = await query(
       `SELECT id, document_title, file_path, original_file_name, file_type, uploaded_at 
@@ -268,13 +482,13 @@ exports.getEditDocumentForm = async (req, res) => {
        ORDER BY uploaded_at DESC`,
       [criteria_id]
     );
-    
+
     // Format dates
     const formattedDocuments = documents.map(doc => ({
       ...doc,
       uploaded_at: new Date(doc.uploaded_at)
     }));
-    
+
     res.render("admin/aqar-criteria-documents", {
       year,
       criteria,
@@ -283,7 +497,7 @@ exports.getEditDocumentForm = async (req, res) => {
       successMessage: req.session.successMessage,
       errorMessage: req.session.errorMessage
     });
-    
+
     delete req.session.successMessage;
     delete req.session.errorMessage;
   } catch (err) {
@@ -298,33 +512,33 @@ exports.getEditDocumentForm = async (req, res) => {
 // Delete document
 exports.deleteAQARDocument = async (req, res) => {
   const { year_id, criteria_id, document_id } = req.params;
-  
+
   try {
     // Get document info - remove the array destructuring
     const documentResult = await query(
       "SELECT file_path FROM aqar_documents WHERE id = ?",
       [document_id]
     );
-    
+
     // Check if we got results
     if (documentResult.length === 0) {
       throw new Error("Document not found");
     }
-    
+
     // Access the first element in the result array
     const filePath = path.join("public", "uploads", "aqar", documentResult[0].file_path);
-    
+
     // Soft delete in database
     await query(
       "UPDATE aqar_documents SET is_deleted = 1 WHERE id = ?",
       [document_id]
     );
-    
+
     // Delete file from filesystem
     fs.unlink(filePath, (err) => {
       if (err) console.error("Error deleting file:", err);
     });
-    
+
     req.session.successMessage = "Document deleted successfully";
     res.redirect(`/cms/admin-aqar/${year_id}/criteria/${criteria_id}/edit`);
   } catch (error) {
@@ -337,21 +551,21 @@ exports.deleteAQARDocument = async (req, res) => {
 // Download document
 exports.downloadAQARDocument = async (req, res) => {
   const { document_id } = req.params;
-  
+
   try {
     const [documentResult] = await query(
       "SELECT file_path, original_file_name FROM aqar_documents WHERE id = ?",
       [document_id]
     );
-    
+
     if (documentResult.length === 0) {
       return res.status(404).send("Document not found");
     }
-    
+
     const document = documentResult[0];
     console.log(document)
     const filePath = path.join("public", "uploads", "aqar", document.file_path);
-    
+
     res.download(filePath, document.original_file_name, (err) => {
       if (err) {
         console.error("Error downloading file:", err);
@@ -397,7 +611,7 @@ exports.getEditAqarYearForm = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await query("SELECT * FROM aqar_years WHERE id = ?", [id]);
-    const criteriaList = await query("SELECT * FROM aqar_criteria WHERE year_id = ?",[id]);
+    const criteriaList = await query("SELECT * FROM aqar_criteria WHERE year_id = ?", [id]);
     const year = result[0];
 
     if (!year) {
@@ -453,7 +667,7 @@ exports.postUpdateAqarYear = async (req, res) => {
 };
 exports.getAqarCriteria = async (req, res) => {
   const { year_id } = req.params;
-  
+
   try {
     // Get the year details
     const yearResult = await query("SELECT * FROM aqar_years WHERE id = ?", [year_id]);
@@ -462,20 +676,20 @@ exports.getAqarCriteria = async (req, res) => {
       return res.redirect("/cms/admin-aqar");
     }
     const year = yearResult[0];
-    
+
     // Get criteria for this year
     const criteriaList = await query(
       "SELECT * FROM aqar_criteria WHERE year_id = ? ORDER BY criteria_label",
       [year_id]
     );
-    
+
     res.render("admin/aqar-criteria", {
       year,
       criteriaList,
       successMessage: req.session.successMessage,
       errorMessage: req.session.errorMessage
     });
-    
+
     // Clear flash messages
     delete req.session.successMessage;
     delete req.session.errorMessage;
@@ -489,22 +703,22 @@ exports.getAqarCriteria = async (req, res) => {
 // Show form to add new criteria
 exports.getAddCriteriaForm = async (req, res) => {
   const { year_id } = req.params;
-  
+
   try {
     const yearResult = await query("SELECT * FROM aqar_years WHERE id = ?", [year_id]);
-    
+
     if (yearResult.length === 0) {
       req.session.errorMessage = "AQAR Year not found";
       return res.redirect("/cms/admin-aqar");
     }
-    
+
     res.render("admin/criteria-form", {
       year: yearResult[0],
       criteria: null,
       successMessage: req.session.successMessage,
       errorMessage: req.session.errorMessage
     });
-    
+
     delete req.session.successMessage;
     delete req.session.errorMessage;
   } catch (err) {
@@ -521,7 +735,7 @@ exports.getAddCriteriaForm = async (req, res) => {
 exports.saveCriteria = async (req, res) => {
   const { year_id, criteria_id } = req.params;
   const { criteria_label, title, description } = req.body;
-  
+
   try {
     if (criteria_id) {
       // Update existing criteria
@@ -538,13 +752,13 @@ exports.saveCriteria = async (req, res) => {
       );
       req.session.successMessage = "Criteria added successfully";
     }
-    
+
     res.redirect(`/cms/admin-aqar/${year_id}/criteria`);
   } catch (err) {
     console.error("Error saving criteria:", err);
     req.session.errorMessage = "Failed to save criteria";
-    res.redirect(criteria_id 
-      ? `/cms/admin-aqar/${year_id}/criteria/${criteria_id}/edit` 
+    res.redirect(criteria_id
+      ? `/cms/admin-aqar/${year_id}/criteria/${criteria_id}/edit`
       : `/cms/admin-aqar/${year_id}/criteria/add`);
   }
 };
@@ -552,7 +766,7 @@ exports.saveCriteria = async (req, res) => {
 // Delete criteria
 exports.deleteCriteria = async (req, res) => {
   const { year_id, criteria_id } = req.params;
-  
+
   try {
     await query("DELETE FROM aqar_criteria WHERE id = ?", [criteria_id]);
     req.session.successMessage = "Criteria deleted successfully";

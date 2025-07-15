@@ -1,0 +1,133 @@
+extends ../layouts/base.pug
+
+block content
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading= minute.title
+                .line-above-heading
+                h2.heading-with-top-border Minutes of Meeting
+
+                .pdf-container
+                    iframe.pdf-viewer.hidden(src=minute.file_path)
+                    .pdf.margin-top-sm.hidden
+                    .pdf-download
+                        a.download-btn(href=minute.file_path, download=minute.original_filename)
+                            ion-icon(name="download-outline")
+                            span Download PDF
+
+                .meeting-meta
+                    .meta-item
+                        ion-icon(name="calendar-outline")
+                        span= new Date(minute.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                    .meta-item
+                        ion-icon(name="document-outline")
+                        span PDF Document
+                    .meta-item
+                        ion-icon(name="time-outline")
+                        span= minute.file_size ? `${Math.round(minute.file_size / 1024)} KB` : 'Size N/A'
+
+                a.back-link(href="/about/quality-assurance/mom")
+                    ion-icon(name="arrow-back-outline")
+                    span Back to all minutes
+
+    script.
+        // Initialize PDF viewer
+        pdfJs(["#{minute.file_path}"]);
+
+    style.
+        .pdf-container {
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .pdf-download {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: #2563eb;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .download-btn ion-icon {
+            font-size: 1.25rem;
+        }
+
+        .meeting-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0 2rem;
+            padding: 1.25rem;
+            background: #f1f5f9;
+            border-radius: 12px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        .meta-item ion-icon {
+            color: #64748b;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #334155;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #1e40af;
+        }
+
+        .back-link ion-icon {
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover ion-icon {
+            transform: translateX(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .meeting-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }

@@ -49,6 +49,11 @@ router.get("/quality-assurance/", aboutController.getQualityAssurance);
 router.get("/quality-assurance/about", aboutController.getAboutIQAC);
 router.get("/quality-assurance/composition", aboutController.getComposition);
 router.get("/quality-assurance/mom-22-23", aboutController.getMOM2223);
+
+router.get("/quality-assurance/mom", aboutController.getMOM);
+
+router.get('/quality-assurance/mom/:id', aboutController.getMoMDetail); 
+
 router.get("/quality-assurance/code-of-conduct", aboutController.getCodeOfConduct);
 router.get("/quality-assurance/divyangjan", aboutController.getDivyangjan);
 router.get("/quality-assurance/green-campus-policy", aboutController.getGreenCampusPolicy);

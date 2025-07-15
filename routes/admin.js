@@ -15,7 +15,17 @@ const { uploadAdmission } = require('./../controllers/upload')
 router.get("/cms/admin-cms", adminController.getAdminDash);
 
 
-
+// /////////
+router.get('/cms/admin-mom', adminController.getMinutesofminutes);
+router.get('/cms/admin-mom/edit/:id', adminController.getEditMinuteForm);
+router.post(
+  '/cms/admin-mom/save/:id?',
+  adminController.uploadMoM,
+  adminController.saveMoM
+);
+router.post('/cms/admin-mom/delete/:id', adminController.deleteMoM);
+router.get('/cms/admin-mom/create', adminController.getCreateMinuteForm);
+// ////////
 
 // CMS ADMIN ROUTE TO MANAGE HOME PAGE
 router.get("/cms/admin-home", adminController.getHomeDash);

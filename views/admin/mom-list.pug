@@ -1,0 +1,413 @@
+extends ../layouts/cms-base.pug
+
+block content
+  .cont.cms-admin
+    .custom-card
+      .custom-card-header
+        .header-content
+          .icon-container
+            ion-icon(name="document-text-outline")
+          .title-container
+            h1 Meeting Minutes
+            p Manage all meeting minutes documents
+        
+        a.add-button(href="/cms/admin-mom/create")
+          ion-icon(name="add-outline")
+          span Add New Minute
+
+      .custom-card-body
+        //- Alert messages
+        if successMessage
+          .custom-alert.success
+            ion-icon(name="checkmark-circle")
+            div= successMessage
+            .close-btn(onclick="this.parentElement.style.display='none'") &times;
+        
+        if errorMessage
+          .custom-alert.error
+            ion-icon(name="alert-circle")
+            div= errorMessage
+            .close-btn(onclick="this.parentElement.style.display='none'") &times;
+
+        //- Minutes list
+        if minutes && minutes.length > 0
+          .minutes-grid
+            each minute in minutes
+              .minute-card
+                .minute-header
+                  .minute-id ID: #{minute.id}
+                  .minute-date
+                    if minute.created_at
+                      | #{new Date(minute.created_at).toLocaleDateString()}
+                    else
+                      | -
+                
+                .minute-body
+                  h3= minute.title
+                
+                .minute-footer
+                  a.view-button(href=`${minute.file_path}` target="_blank" rel="noopener noreferrer")
+                    ion-icon(name="eye-outline")
+                    span View
+                  
+                  a.edit-button(href=`/cms/admin-mom/edit/${minute.id}`)
+                    ion-icon(name="create-outline")
+                    span Edit
+
+                  form.delete-form(method="POST" action=`/cms/admin-mom/delete/${minute.id}` onsubmit="return confirm('Are you sure you want to delete this meeting minute?');")
+                    input(type="hidden" name="_method" value="DELETE")
+                    button.delete-button(type="submit" title="Delete")
+                      ion-icon(name="trash-outline")
+                      span Delete
+        else
+          .empty-state
+            .empty-icon
+              ion-icon(name="document-outline")
+            h4 No Meeting Minutes Found
+            p You haven't added any meeting minutes yet. Get started by adding your first one.
+            a.add-button(href="/cms/admin-mom/create")
+              ion-icon(name="add-outline")
+              span Add New Minute
+
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      // Close alert buttons functionality
+      document.querySelectorAll('.close-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          this.closest('.custom-alert').style.display = 'none';
+        });
+      });
+    });
+
+  style.
+    /* Base Styles */
+    .cms-admin {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      padding: 20px;
+      background-color: #f5f7fa;
+      min-height: 100vh;
+    }
+    
+    /* Card Styles */
+    .custom-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    /* Header Styles */
+    .custom-card-header {
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .icon-container {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .icon-container ion-icon {
+      font-size: 2rem;
+      color: white;
+    }
+    
+    .title-container h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    
+    .title-container p {
+      margin: 0.25rem 0 0;
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+    
+    /* Button Styles */
+    .add-button {
+      background: white;
+      color: #4361ee;
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    
+    .add-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      background: #f8f9fa;
+    }
+    
+    .add-button ion-icon {
+      font-size: 1.2rem;
+    }
+    
+    /* Body Styles */
+    .custom-card-body {
+      padding: 2rem;
+    }
+    
+    /* Alert Styles */
+    .custom-alert {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .custom-alert.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-left: 4px solid #4caf50;
+    }
+    
+    .custom-alert.error {
+      background: #ffebee;
+      color: #c62828;
+      border-left: 4px solid #f44336;
+    }
+    
+    .custom-alert ion-icon {
+      font-size: 1.5rem;
+    }
+    
+    .close-btn {
+      margin-left: auto;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: bold;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    
+    .close-btn:hover {
+      opacity: 1;
+    }
+    
+    /* Grid Styles */
+    .minutes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    /* Minute Card Styles */
+    .minute-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      border: 1px solid #eee;
+    }
+    
+    .minute-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .minute-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .minute-id {
+      background: #e0e7ff;
+      color: #4f46e5;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    
+    .minute-date {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+    
+    .minute-body {
+      padding: 1.5rem 1rem;
+      flex-grow: 1;
+    }
+    
+    .minute-body h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1e293b;
+      word-break: break-word;
+    }
+    
+    .minute-footer {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #f1f1f1;
+      background: #fafafa;
+      gap: 0.5rem;
+    }
+    
+    .view-button, .edit-button, .delete-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      flex: 1;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+    
+    .view-button {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    
+    .view-button:hover {
+      background: #bae6fd;
+    }
+    
+    .edit-button {
+      background: #d1fae5;
+      color: #047857;
+    }
+    
+    .edit-button:hover {
+      background: #a7f3d0;
+    }
+    
+    .delete-button {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    
+    .delete-button:hover {
+      background: #fecaca;
+    }
+    
+    /* Empty State Styles */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    
+    .empty-icon {
+      width: 100px;
+      height: 100px;
+      background: #f0f9ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    
+    .empty-icon ion-icon {
+      font-size: 3rem;
+      color: #0ea5e9;
+    }
+    
+    .empty-state h4 {
+      font-size: 1.5rem;
+      margin: 0 0 1rem;
+      color: #1e293b;
+    }
+    
+    .empty-state p {
+      color: #64748b;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .custom-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .add-button {
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+      }
+      
+      .minutes-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .minute-footer {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .cont.cms-admin {
+        padding: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .custom-card-header {
+        padding: 1rem;
+      }
+      
+      .title-container h1 {
+        font-size: 1.5rem;
+      }
+      
+      .title-container p {
+        font-size: 0.9rem;
+      }
+      
+      .custom-card-body {
+        padding: 1rem;
+      }
+    }
