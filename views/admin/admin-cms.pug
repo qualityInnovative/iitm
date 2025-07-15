@@ -1,72 +1,93 @@
 extends ../layouts/cms-base.pug
 
+block styles
+    style.
+        .dashboard-section-title {
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+            color: #333;
+            font-size: 1.8rem;
+        }
+        
+        .cms-admin-btns {
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
 block content 
     main
         .cont-sm.cms-admin
-            //- Buttons
+            //- Main Dashboard Section
+            h1.dashboard-section-title Main Dashboard
             .cms-admin-btns
-                //- Home dash button
                 a(href="/cms/admin-home").cms-admin-btns-btn
                     ion-icon(name="home" size="large")
                     h3 Home
-                    span Dashboard
-
-                //- Notifications dash button
-                a(href="/cms/admin-notifications").cms-admin-btns-btn
-                    ion-icon(name="notifications" size="large")
-                    h3 Notifications 
-                    span Dashboard
-
-                //- News dash button
-                a(href="/cms/admin-news").cms-admin-btns-btn
-                    ion-icon(name="newspaper" size="large")
-                    h3 News 
-                    span Dashboard
-
-                //- Events dash button
-                a(href="/cms/admin-events").cms-admin-btns-btn
-                    ion-icon(name="calendar" size="large")
-                    h3 Events
-                    span Dashboard
-
-                //- Feedbacks dash button
-                a(href="/cms/feedbacks").cms-admin-btns-btn
-                    ion-icon(name="document-text" size="large")
-                    h3 Feedbacks
-                    span Dashboard
-
-                //- Contact Submissions dash button
-                a(href="/cms/contact-form-submissions").cms-admin-btns-btn
-                    ion-icon(name="document-text" size="large")
-                    h3 Contact Submissions
-                    span Dashboard
-
-                a(href="/cms/admin-marquee").cms-admin-btns-btn
-                    ion-icon(name="document-text" size="large")
-                    h3 Marquee Links
-                    span Dashboard
-                
-                //- Visionaries dash button
-                a(href="/cms/admin-visionaries").cms-admin-btns-btn
-                    ion-icon(name="people" size="large")
-                    h3 Visionaries
                     span Dashboard
 
                 a(href="/cms/admin-statistics").cms-admin-btns-btn
                     ion-icon(name="stats-chart" size="large")
                     h3 Statistics
                     span Dashboard
-                
-                //- courses dash button
-                a(href="/cms/courses").cms-admin-btns-btn
-                    ion-icon(name="school" size="large")
-                    h3 Courses
+
+            //- Content Management Section
+            h1.dashboard-section-title Content Management
+            .cms-admin-btns
+                a(href="/cms/admin-notifications").cms-admin-btns-btn
+                    ion-icon(name="notifications" size="large")
+                    h3 Notifications 
+                    span Dashboard
+
+                a(href="/cms/admin-news").cms-admin-btns-btn
+                    ion-icon(name="newspaper" size="large")
+                    h3 News 
+                    span Dashboard
+
+                a(href="/cms/admin-events").cms-admin-btns-btn
+                    ion-icon(name="calendar" size="large")
+                    h3 Events
+                    span Dashboard
+
+                a(href="/cms/admin-marquee").cms-admin-btns-btn
+                    ion-icon(name="document-text" size="large")
+                    h3 Marquee Links
                     span Dashboard
 
                 a(href="/cms/banners").cms-admin-btns-btn
                     ion-icon(name="images" size="large")
                     h3 Banners
                     span Dashboard
+                a(href="/cms/feedbacks").cms-admin-btns-btn
+                    ion-icon(name="document-text" size="large")
+                    h3 Feedbacks
+                    span Dashboard
+
+                a(href="/cms/contact-form-submissions").cms-admin-btns-btn
+                    ion-icon(name="document-text" size="large")
+                    h3 Contact Submissions
+                    span Dashboard
+
+                a(href="/cms/admin-visionaries").cms-admin-btns-btn
+                    ion-icon(name="people" size="large")
+                    h3 Visionaries
+                    span Dashboard
+
+
+                
+            //- Academic Section
+            h1.dashboard-section-title Academic
+            .cms-admin-btns
+                a(href="/cms/courses").cms-admin-btns-btn
+                    ion-icon(name="school" size="large")
+                    h3 Courses
+                    span Admissions
+
+            //- AQAR Section
+            h1.dashboard-section-title AQAR
+            .cms-admin-btns
                 a(href="/cms/admin-aqar").cms-admin-btns-btn
                     ion-icon(name="folder" size="large")
                     h3 AQAR
@@ -74,6 +95,28 @@ block content
 
                 a(href="/cms/admin-mom").cms-admin-btns-btn
                     ion-icon(name="folder" size="large")
-                    h3 years meetings minutes
+                    h3 Meeting Minutes
                     span Dashboard
 
+            //- Admissions Section
+            h1.dashboard-section-title Admissions
+            .cms-admin-btns
+                a(href="/cms/admissions-iitm/add-adminsioninstructions").cms-admin-btns-btn
+                    ion-icon(name="person-add" size="large")
+                    h3 General Instructions
+                    span Add Instructions
+        
+                a(href="/cms/admissions-iitm/adminsioninstructions").cms-admin-btns-btn
+                    ion-icon(name="person-add" size="large")
+                    h3 IITM Instructions
+                    span Add IITM Instructions
+        
+                a(href="/cms/admissions-iitm/programdetails").cms-admin-btns-btn
+                    ion-icon(name="person-add" size="large")
+                    h3 Programme Details
+                    span Add Details
+
+                a(href="/cms/admissions-iitm/affidavit").cms-admin-btns-btn
+                    ion-icon(name="person-add" size="large")
+                    h3 Anti-Ragging Affidavit
+                    span Add Form
