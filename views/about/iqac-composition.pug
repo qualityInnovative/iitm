@@ -1,8 +1,6 @@
 extends ../layouts/base.pug
 
 block content
-    //- include ../layouts/banner.pug
-
     main.page-layout 
         include ../layouts/pagemenu.pug
 
@@ -24,119 +22,49 @@ block content
                             th.border-bottom-solid Members
                             th.border-bottom-solid Designation 
                             th.border-bottom-solid IQAC Composition as per NAAC Norms
-                        tr
-
-
-                        //- 1
-                        tr 
-                            td.border-right.border-bottom-solid 1
-                            td.border-right.border-bottom-solid Chariperson: Head of Institution
-                            td.border-right.border-bottom-solid Dr. R.A. Thakur
-                            td.border-right.border-bottom-solid Director
-                            td.border-bottom-solid Chairman IQAC
-                        tr
-
-
-                        //- 2
-                        tr 
-                            td.border-right.border-bottom-solid(rowspan=2) 2
-                            td.border-right.border-bottom-solid(rowspan=2) A few Senior Admisnistrative Officers of the Insitution
-                            td.border-right Mr. Javid Ahmad Parray
-                            td.border-right HOD Computer Science
-                            td Member (Senior Administrative)
-
-                        tr 
-                            td.border-right.border-bottom-solid Mrs. Sabina Tariq
-                            td.border-right.border-bottom-solid Dean Students Welfare
-                            td.border-bottom-solid  Member (Senior Administrative)
-
-
-                        //- 3
-                        tr 
-                            td.border-right.border-bottom-solid(rowspan=5) 3
-                            td.border-right.border-bottom-solid(rowspan=5) Three to Eight teachers
-                            td.border-right Mr. Sajad Gul
-                            td.border-right Assistant Professor, Department of Computer Science
-                            td Member (Senior Teacher)
-
-                        tr 
-                            td.border-right Mrs. Asifa Arabi
-                            td.border-right Assistant Professor, Department of Computer Science
-                            td Member (Senior Teacher)
-
-                        tr 
-                            td.border-right Mrs. Misbah Maqbool
-                            td.border-right Assistant Professor, Department of Management Studies
-                            td Member (Senior Teacher)
-
-                        tr 
-                            td.border-right Mr. Adil Mehraj
-                            td.border-right Assistant Professor, Department of Management Studies
-                            td Member (Senior Teacher)
-
-                        tr 
-                            td.border-right.border-bottom-solid Mrs. Qurat Ul Ain
-                            td.border-right.border-bottom-solid Assistant Professor, Department of Computer Science
-                            td.border-bottom-solid Member (Senior Teacher)
-
-                        tr
-
-
-                        //- 4
-                        tr 
-                            td.border-right.border-bottom-solid 4
-                            td.border-right.border-bottom-solid One member from Management
-                            td.border-right.border-bottom-solid Prof.(Dr.) Aijaz Ahmad Mir
-                            td.border-right.border-bottom-solid Professor
-                            td.border-bottom-solid Member (Management)
-                        tr
-
-                        //- 5
-                        tr 
-                            td.border-right.border-bottom-solid(rowspan=4) 5
-                            td.border-right.border-bottom-solid(rowspan=4) One/two nominees from local Society, Student and Alumni
-                            td.border-right Mr. Ali Mohammad
-                            td.border-right NA
-                            td Member (Local Society)
-
-                        tr 
-                            td.border-right Ms. Sadaf Jan
-                            td.border-right Student, MBA 2nd Sem
-                            td Member (Student)
-
-                        tr 
-                            td.border-right Mr. Soloman Adnan
-                            td.border-right Multimedia Graphic Designer
-                            td Member (Alumni)
-
-                        tr 
-                            td.border-right.border-bottom-solid Mr. Abdul Shakoor
-                            td.border-right.border-bottom-solid Lecturer
-                            td.border-bottom-solid Member (Alumni)
-
-
-                        //- 6
-                        tr 
-                            td.border-right.border-bottom-solid(rowspan=2) 6
-                            td.border-right.border-bottom-solid(rowspan=2) One/two nominees from employees/industrialists/ stakeholders
-                            td.border-right Mr. Hafiz Ullah
-                            td.border-right Accounts Manager, IMT Bemina
-                            td Member (Employees)
-
-                        tr 
-                            td.border-right.border-bottom-solid Mr.Javid Ahmad Chisti
-                            td.border-right.border-bottom-solid CEO Sublime enterprises
-                            td.border-bottom-solid Member (Industries)
-
-
-                        //- 7
-                        tr 
-
-                            td.border-right 7
-                            td.border-right One of the Senior teachers as the Coordinator/ Director of the IQAC
-                            td.border-right Mrs. Asma Gulzar.
-                            td.border-right Accounts Manager, IMT Bemina
-                            td Member (Employees)
+                        
+                        //- Group members by category from database
+                        - const categories = {};
+                        - iqacMembers.forEach(member => {
+                        -   if (!categories[member.category_description]) {
+                        -     categories[member.category_description] = [];
+                        -   }
+                        -   categories[member.category_description].push(member);
+                        - });
+                        
+                        //- Counter for serial numbers
+                        - let categoryCounter = 1;
+                        
+                        //- Render each category
+                        each members, category in categories
+                            //- Get rowspan count for this category
+                            - const rowspan = members.length > 1 ? members.length : 1
+                            
+                            //- First member in category
+                            - const firstMember = members[0]
+                            tr
+                                td.border-right.border-bottom-solid(rowspan=rowspan)= categoryCounter++
+                                td.border-right.border-bottom-solid(rowspan=rowspan)= category
+                                td.border-right= firstMember.member_name
+                                td.border-right= firstMember.member_designation
+                                td= firstMember.naac_role
+                            
+                            //- Remaining members in category
+                            if members.length > 1
+                                each member, index in members
+                                    if index > 0
+                                        tr
+                                            td.border-right= member.member_name
+                                            td.border-right= member.member_designation
+                                            td= member.naac_role
+                                        
+                                        //- Add bottom border to last row in category
+                                        if index === members.length - 1
+                                            script.
+                                                // Add bottom border class to last row cells
+                                                document.querySelectorAll('tr:last-child td').forEach(td => {
+                                                    td.classList.add('border-bottom-solid');
+                                                });
 
                 div.btn-two
                     a(href="/data/documents/iqac-composition.pdf" target="_blank")

@@ -1,0 +1,183 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  style.
+    .iqac-form-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .iqac-form-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .iqac-form-header h1 {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      margin: 0;
+    }
+    
+    .iqac-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #34495e;
+    }
+    
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+    
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
+    
+    .form-actions {
+      grid-column: span 2;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #eee;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+    
+    .btn-primary {
+      background-color: #3498db;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #2980b9;
+    }
+    
+    .btn-secondary {
+      background-color: #ecf0f1;
+      color: #2c3e50;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #bdc3c7;
+    }
+    
+    @media (max-width: 768px) {
+      .iqac-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+      
+      .form-actions {
+        grid-column: span 1;
+      }
+    }
+
+block content
+  .iqac-form-container
+    .iqac-form-header
+      h1= member ? 'Edit IQAC Member' : 'Add New IQAC Member'
+    
+    form.iqac-form(method="POST", action="/cms/admin-iqac/save")
+      if member
+        input(type="hidden", name="id", value=member.id)
+      
+      .form-group
+        label(for="serial_no") Serial Number
+        input(type="number", id="serial_no", name="serial_no", value=member ? member.serial_no : '', required)
+      
+      .form-group.full-width
+        label(for="category_description") Category Description
+        input(type="text", id="category_description", name="category_description", value=member ? member.category_description : '', required)
+      
+      .form-group
+        label(for="member_name") Member Name
+        input(type="text", id="member_name", name="member_name", value=member ? member.member_name : '', required)
+      
+      .form-group
+        label(for="member_designation") Designation
+        input(type="text", id="member_designation", name="member_designation", value=member ? member.member_designation : '', required)
+      
+      .form-group
+        label(for="member_department") Department (if applicable)
+        input(type="text", id="member_department", name="member_department", value=member ? member.member_department : '')
+      
+      .form-group
+        label(for="naac_role") NAAC Role
+        input(type="text", id="naac_role", name="naac_role", value=member ? member.naac_role : '', required)
+      
+      .form-group
+        label(for="member_type") Member Type
+        select(id="member_type", name="member_type", required)
+          option(value="", disabled selected) Select Type
+          option(value="Chairperson", selected=member && member.member_type === 'Chairperson') Chairperson
+          option(value="Admin", selected=member && member.member_type === 'Admin') Admin
+          option(value="Teacher", selected=member && member.member_type === 'Teacher') Teacher
+          option(value="Management", selected=member && member.member_type === 'Management') Management
+          option(value="Society", selected=member && member.member_type === 'Society') Society
+          option(value="Student", selected=member && member.member_type === 'Student') Student
+          option(value="Alumni", selected=member && member.member_type === 'Alumni') Alumni
+          option(value="Industry", selected=member && member.member_type === 'Industry') Industry
+          option(value="Coordinator", selected=member && member.member_type === 'Coordinator') Coordinator
+      
+      .form-group.full-width.checkbox-group
+        input(type="checkbox", id="is_active", name="is_active", checked=member ? member.is_active : true)
+        label(for="is_active") Active Member
+      
+      .form-actions
+        a.btn.btn-secondary(href="/cms/admin-iqac") Cancel
+        button.btn.btn-primary(type="submit")= member ? 'Update Member' : 'Add Member'

@@ -26,6 +26,11 @@ router.post(
 router.post('/cms/admin-mom/delete/:id', adminController.deleteMoM);
 router.get('/cms/admin-mom/create', adminController.getCreateMinuteForm);
 // ////////
+router.get('/cms/admin-iqac', adminController.getIqacDash);
+router.get('/cms/admin-iqac/new', adminController.getIqacForm);
+router.get('/cms/admin-iqac/:id/edit', adminController.getIqacForm);
+router.post('/cms/admin-iqac/save', adminController.postSaveIqacMember);
+router.post('/cms/admin-iqac/:id/delete', adminController.deleteIqacMember);
 
 // CMS ADMIN ROUTE TO MANAGE HOME PAGE
 router.get("/cms/admin-home", adminController.getHomeDash);

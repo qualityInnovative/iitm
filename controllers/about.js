@@ -291,18 +291,61 @@ exports.getAboutIQAC = (req, res, next) => {
 };
 
 exports.getComposition = (req, res, next) => {
-  res.render(
-    "about/iqac-composition",
-    Object.assign(
-      params(
-        `IQAC Composition`,
-        "/quality-assurance/composition",
-        "/data/imgs/iqac-composition.jpg",
-        ""
-      ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
+  // First get the IQAC members data
+  query(`
+    SELECT * FROM iqac_composition 
+    WHERE is_active = 1
+    ORDER BY display_order ASC, serial_no ASC, member_name ASC
+  `)
+    .then((iqacMembers) => {
+      // Group members by category for the table
+      const categories = {};
+      iqacMembers.forEach(member => {
+        if (!categories[member.category_description]) {
+          categories[member.category_description] = [];
+        }
+        categories[member.category_description].push(member);
+      });
+
+      // Render the template with both your params and the members data
+      res.render(
+        "about/iqac-composition",
+        Object.assign(
+          params(
+            `IQAC Composition`,
+            "/quality-assurance/composition",
+            "/data/imgs/iqac-composition.jpg",
+            ""
+          ),
+          { 
+            isAuthenticated: req.session.isLoggedIn,
+            iqacMembers: iqacMembers || [],
+            categories: categories
+          }
+        )
+      );
+    })
+    .catch(err => {
+      console.error("Error fetching IQAC composition:", err);
+      // Render the page even if there's an error (with empty data)
+      res.render(
+        "about/iqac-composition",
+        Object.assign(
+          params(
+            `IQAC Composition`,
+            "/quality-assurance/composition",
+            "/data/imgs/iqac-composition.jpg",
+            ""
+          ),
+          { 
+            isAuthenticated: req.session.isLoggedIn,
+            iqacMembers: [],
+            categories: {},
+            errorMessage: "Failed to load IQAC composition data"
+          }
+        )
+      );
+    });
 };
 
 exports.getMOM2223 = (req, res, next) => {

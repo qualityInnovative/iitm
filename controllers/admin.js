@@ -1622,6 +1622,148 @@ exports.deleteMarqueeLink = (req, res) => {
       res.redirect("/cms/admin-marquee");
     });
 };
+// iqac composiston
+
+
+exports.getIqacDash = (req, res, next) => {
+  query("SELECT * FROM iqac_composition ORDER BY display_order ASC, serial_no ASC")
+    .then((iqacMembers) => {
+      const successMessage = req.session.successMessage;
+      const errorMessage = req.session.errorMessage;
+
+      delete req.session.successMessage;
+      delete req.session.errorMessage;
+
+      res.render("admin/iqac_composition", {
+        pageTitle: "CMS - IQAC Composition",
+        pageName: "IQAC Composition",
+        isAuthenticated: req.session.isLoggedIn,
+        iqacMembers: iqacMembers || [],
+        successMessage,
+        errorMessage
+      });
+    })
+    .catch((err) => {
+      console.error("Error in getIqacDash:", err);
+      req.session.errorMessage = "Failed to load IQAC composition";
+      res.redirect("/cms/admin-home");
+    });
+};
+
+// GET - Render form to create/edit IQAC member
+exports.getIqacForm = (req, res) => {
+  const id = req.params.id;
+
+  if (id) {
+    // Edit existing
+    query("SELECT * FROM iqac_composition WHERE id = ?", [id])
+      .then(([member]) => {
+        if (!member) {
+          req.session.errorMessage = "Member not found.";
+          return res.redirect("/cms/admin-iqac");
+        }
+
+        res.render("admin/iqac-form", {
+          pageTitle: "Edit IQAC Member",
+          pageName: "Edit IQAC Member",
+          member,
+          isAuthenticated: req.session.isLoggedIn
+        });
+      })
+      .catch(err => {
+        console.error("Error fetching IQAC member:", err);
+        req.session.errorMessage = "Error loading member.";
+        res.redirect("/cms/admin-iqac");
+      });
+  } else {
+    // Create new
+    res.render("admin/iqac-form", {
+      pageTitle: "Add IQAC Member",
+      pageName: "Add IQAC Member",
+      member: null,
+      isAuthenticated: req.session.isLoggedIn
+    });
+  }
+};
+
+exports.postSaveIqacMember = (req, res) => {
+  const {
+    id,
+    serial_no,
+    category_description,
+    member_name,
+    member_designation,
+    member_department,
+    naac_role,
+    member_type,
+    is_active
+  } = req.body;
+
+  const isActive = is_active === "on" ? 1 : 0;
+  const displayOrder = Number(serial_no) || 0;
+
+  if (id) {
+    // UPDATE existing member
+    query(
+      `UPDATE iqac_composition 
+       SET serial_no = ?, category_description = ?, member_name = ?, 
+           member_designation = ?, member_department = ?, naac_role = ?,
+           member_type = ?, is_active = ?, display_order = ?
+       WHERE id = ?`,
+      [
+        serial_no, category_description, member_name, 
+        member_designation, member_department, naac_role,
+        member_type, isActive, displayOrder, id
+      ]
+    )
+      .then(() => {
+        req.session.successMessage = "Member updated successfully.";
+        res.redirect("/cms/admin-iqac");
+      })
+      .catch((err) => {
+        console.error("Error updating member:", err);
+        req.session.errorMessage = "Failed to update member.";
+        res.redirect(`/cms/admin-iqac/${id}/edit`);
+      });
+  } else {
+    // INSERT new member
+    query(
+      `INSERT INTO iqac_composition 
+       (serial_no, category_description, member_name, member_designation, 
+        member_department, naac_role, member_type, is_active, display_order)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        serial_no, category_description, member_name, member_designation,
+        member_department, naac_role, member_type, isActive, displayOrder
+      ]
+    )
+      .then(() => {
+        req.session.successMessage = "Member added successfully.";
+        res.redirect("/cms/admin-iqac");
+      })
+      .catch((err) => {
+        console.error("Error creating member:", err);
+        req.session.errorMessage = "Failed to add member.";
+        res.redirect("/cms/admin-iqac/new");
+      });
+  }
+};
+
+// POST - Delete IQAC member
+exports.deleteIqacMember = (req, res) => {
+  const id = req.params.id;
+
+  query("DELETE FROM iqac_composition WHERE id = ?", [id])
+    .then(() => {
+      req.session.successMessage = "Member deleted successfully.";
+      res.redirect("/cms/admin-iqac");
+    })
+    .catch((err) => {
+      console.error("Error deleting member:", err);
+      req.session.errorMessage = "Failed to delete member.";
+      res.redirect("/cms/admin-iqac");
+    });
+};
 
 // Visionaries Admin Dashboard
 exports.getVisionariesDash = (req, res, next) => {
