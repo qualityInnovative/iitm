@@ -1,0 +1,32 @@
+extends ../layouts/base.pug
+
+block content
+    //- include ../layouts/banner.pug
+
+    main.page-layout 
+        include ../layouts/pagemenu.pug
+
+        .main
+            div
+                h1.page-heading= subsection.subsection_title
+                p= subsection.subsection_description
+
+                if subsection.pdf_path
+                    .line-above-heading 
+                    h2.heading-with-top-border Discover
+                    iframe.pdf-viewer.hidden(src=subsection.pdf_path)
+                    .pdf.margin-top-sm.hidden
+                        .pdf__heading
+                        .pdf__container
+                        .pdf__download
+                            a(href=subsection.pdf_path target="_blank" download=subsection.original_filename)
+                                button Download
+                else
+                    .no-pdf-message
+                        p No document available for this accreditation
+
+    script.
+        //- Initialize PDF viewer if PDF exists
+        if ('#{subsection.pdf_path}' !== '') {
+            pdfJs(["#{subsection.pdf_path}"]);
+        }

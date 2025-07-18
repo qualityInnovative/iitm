@@ -35,6 +35,7 @@ router.get("/institutional-clubs", aboutController.getInstitutionalClubs);
 //? Accreditations Routes
 // Route to /accreditations at /about
 router.get("/accreditations", aboutController.getAccreditations);
+router.get('/newaccreditations/:id', aboutController.getAccreditationSubsection);
 // Route to /accreditations/naac at /about
 router.get("/accreditations/naac", aboutController.getNAACAccreditation);
 router.get("/accreditations/ssr", aboutController.getSSR);

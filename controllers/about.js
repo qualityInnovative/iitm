@@ -5,6 +5,28 @@ const bannerPath = "/data/imgs/";
 const query = require("../utils/db");
 const mainParams = require("../utils/params");
 
+let Accreditationsubmenu = ["1", "2", "3"];
+let Accreditationsubtitle = ["NAAC.", "SSR.", "Quality Profile."];
+
+
+async function refreshAccreditationMenu() {
+  try {
+    const subsections = await query(
+      "SELECT * FROM accreditation_subsections WHERE section_id = 2 ORDER BY subsection_order ASC"
+    );
+
+    if (subsections.length > 0) {
+      Accreditationsubmenu = subsections.map(sub => sub.id);
+      Accreditationsubtitle = subsections.map(sub => sub.subsection_title);
+      console.log(Accreditationsubtitle.map(sub=>sub))
+    }
+  } catch (error) {
+    console.error('Error refreshing accreditation menu:', error);
+    
+  }
+}
+refreshAccreditationMenu();
+
 const params = mainParams(
   `${pageTitle}`,
   `${pagePath}`,
@@ -15,7 +37,7 @@ const params = mainParams(
     ["Organisation Chart"],
     ["Institutional Committees"],
     ["Institutional Clubs"],
-    ["Accreditation", "NAAC", "SSR", "Quality Profile"],
+    ["accreditations",...Accreditationsubtitle],
     [
       "Quality Assurance",
       "About IQAC",
@@ -44,9 +66,7 @@ const params = mainParams(
     [`${pagePath}/institutional-clubs`],
     [
       `${pagePath}/accreditations`,
-      `${pagePath}/accreditations/naac`,
-      `${pagePath}/accreditations/ssr`,
-      `${pagePath}/accreditations/quality-profile`,
+      ...Accreditationsubmenu.map(sub => `${pagePath}/newaccreditations/${sub}`)
     ],
     [
       `${pagePath}/quality-assurance/`,
@@ -106,8 +126,6 @@ exports.getAbout = (req, res, next) => {
     )
   );
 };
-
-
 
 exports.getFounder = (req, res, next) => {
   res.render(
@@ -201,19 +219,71 @@ exports.getInstitutionalClubs = (req, res, next) => {
   );
 };
 
-exports.getAccreditations = (req, res, next) => {
-  res.render(
-    "about/accreditations",
-    Object.assign(
-      params(
-        `${pageTitle} - Accreditations`,
-        "/accreditations",
-        `${bannerPath}accreditations-banner.jpg`,
-        ""
-      ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
+exports.getAccreditations = async (req, res, next) => {
+  try {
+    // Get the main accreditation section
+    const [accreditation] = await query(
+      "SELECT * FROM accreditation_sections WHERE section_name = 'accreditation'"
+    );
+
+    // Get all subsections for this accreditation
+    const subsections = await query(
+      "SELECT * FROM accreditation_subsections WHERE section_id = ? ORDER BY subsection_order ASC",
+      [accreditation.id]
+    );
+
+    res.render(
+      "about/accreditations",
+      Object.assign(
+        params(
+          `${pageTitle} - Accreditations`,
+          "/newaccreditations",
+          `${bannerPath}accreditations-banner.jpg`,
+          ""
+        ),
+        {
+          isAuthenticated: req.session.isLoggedIn,
+          accreditation: accreditation,
+          subsections: subsections
+        }
+      )
+    );
+  } catch (error) {
+    console.error('Error fetching accreditations:', error);
+    next(error);
+  }
+};
+// Get single accreditation subsection
+exports.getAccreditationSubsection = async (req, res, next) => {
+  try {
+    const [subsection] = await query(
+      "SELECT * FROM accreditation_subsections WHERE id = ?",
+      [req.params.id]
+    );
+
+    if (!subsection) {
+      return res.status(404).render('error/404');
+    }
+
+    res.render(
+      "about/accreditation-subsection",
+      Object.assign(
+        params(
+          `${pageTitle} - ${subsection.subsection_title}`,
+          `/accreditations/${subsection.id}`,
+          `${bannerPath}accreditations-banner.jpg`,
+          ""
+        ),
+        {
+          isAuthenticated: req.session.isLoggedIn,
+          subsection: subsection
+        }
+      )
+    );
+  } catch (error) {
+    console.error('Error fetching accreditation subsection:', error);
+    next(error);
+  }
 };
 
 exports.getNAACAccreditation = (req, res, next) => {
@@ -317,7 +387,7 @@ exports.getComposition = (req, res, next) => {
             "/data/imgs/iqac-composition.jpg",
             ""
           ),
-          { 
+          {
             isAuthenticated: req.session.isLoggedIn,
             iqacMembers: iqacMembers || [],
             categories: categories
@@ -337,7 +407,7 @@ exports.getComposition = (req, res, next) => {
             "/data/imgs/iqac-composition.jpg",
             ""
           ),
-          { 
+          {
             isAuthenticated: req.session.isLoggedIn,
             iqacMembers: [],
             categories: {},
@@ -385,7 +455,7 @@ exports.getMOM = async (req, res, next) => {
           "/data/imgs/iqac-composition.jpg",
           ""
         ),
-        { 
+        {
           isAuthenticated: req.session.isLoggedIn,
           minutes  // Pass the ordered minutes to the view
         }
@@ -403,9 +473,9 @@ exports.getMOM = async (req, res, next) => {
           "/data/imgs/iqac-composition.jpg",
           ""
         ),
-        { 
+        {
           isAuthenticated: req.session.isLoggedIn,
-          minutes: [] 
+          minutes: []
         }
       )
     );
@@ -413,7 +483,7 @@ exports.getMOM = async (req, res, next) => {
 };;
 exports.getMoMDetail = async (req, res, next) => {
   const { id } = req.params;
-  
+
   try {
     // Fetch specific meeting minute by ID
     const [minute] = await query(`
@@ -436,7 +506,7 @@ exports.getMoMDetail = async (req, res, next) => {
           "/data/imgs/iqac-composition.jpg",
           ""
         ),
-        { 
+        {
           isAuthenticated: req.session.isLoggedIn,
           minute
         }

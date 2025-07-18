@@ -8,41 +8,35 @@ block content
 
         .main
             div
-                h1.page-heading accreditations
-                p At Iqbal Institute of Technology and Management (IITM), we take pride in our commitment to maintaining the highest standards of quality in education. Our dedication to excellence has been recognized through prestigious accreditations. These accreditations serve as a testament to our unwavering pursuit of educational innovation and continuous improvement.
+                h1.page-heading= accreditation.section_title || 'Accreditations'
+                p= accreditation.section_description
 
-                //- Cards container
+            //- Cards container
             .courses-cards.align-cards-center
-                //- Card
-                article.courses-card
-                    //- Card image
-                    div 
-                        img(src="/data/imgs/naac-card.jpg" alt="alt")
-                    //- Card content
-                    .courses-card__content
-                        span.courses-card__content--title NAAC Accreditation
-                        span.courses-card__content--subtitle Recognized for Excellence: NAAC Accreditation Validates Our Commitment to Quality Education.
-                        p.courses-card__content--description IITM holds prestigious accreditation from NAAC, validating our commitment to high-quality education. It acknowledges our adherence to rigorous benchmarks in curriculum, teaching, infrastructure, student support, and governance, ensuring an exceptional learning experience for our students.
-                        //- Card button
-                        a(href="/about/accreditations/naac")
-                            button.btn-psu Explore
-                //- Card
-                article.courses-card
-                    div 
-                        img(src="/data/imgs/ssr-report.jpg" alt="alt")
-                    .courses-card__content
-                        span.courses-card__content--title SSR Report
-                        span.courses-card__content--subtitle Assessing Progress: Our Ongoing Pursuit of Continuous Improvement and Excellence.
-                        p.courses-card__content--description The SSR evaluation at IITM critically analyzes our strengths, weaknesses, opportunities, and challenges. It serves as a roadmap for quality enhancement, highlighting achievements, areas for improvement, and action plans, ultimately enriching the transformative learning experience we offer.
-                        a(href="/about/accreditations/ssr")
-                            button.btn-psu Explore
-                //- Card
-                article.courses-card
-                    div 
-                        img(src="/data/imgs/quality-profile.jpg" alt="alt")
-                    .courses-card__content
-                        span.courses-card__content--title Quality Profile
-                        span.courses-card__content--subtitle Showcasing Excellence: A Comprehensive Overview of Our Commitment to Quality Education.
-                        p.courses-card__content--description IITM's comprehensive Quality Profile showcases our commitment to excellence. It provides an overview of academic programs, faculty qualifications, infrastructure, research activities, student achievements, and collaborations. It reflects our relentless pursuit of high-quality education and the benchmarks we strive to meet.
-                        a(href="/about/accreditations/quality-profile")
-                            button.btn-psu Explore
+                //- Dynamic Cards
+                each subsection in subsections
+                    article.courses-card(onclick=`window.location.href='/about/newaccreditations/${subsection.id}'` style="cursor: pointer")
+                        //- Card image
+                        div 
+                            if subsection.thumbnail_path
+                                img(src=subsection.thumbnail_path, alt=subsection.subsection_title)
+                            else
+                                //- Fallback image if no thumbnail
+                                img(src="/data/imgs/default-accreditation.jpg", alt="Accreditation")
+                        
+                        //- Card content
+                        .courses-card__content
+                            span.courses-card__content--title= subsection.subsection_title
+                            
+                            //- Create subtitle from first sentence of description
+                            - const firstSentence = subsection.subsection_description.split('.')[0]
+                            span.courses-card__content--subtitle= firstSentence ? `${firstSentence}.` : ''
+
+                            p.courses-card__content--description= subsection.subsection_description
+                            
+                            if subsection.pdf_path
+                                a(href=subsection.pdf_path, target="_blank" onclick="event.stopPropagation()")
+                                    button.btn-psu Explore PDF
+                            else
+                                a(href=`/about/newaccreditations/${subsection.id}` onclick="event.stopPropagation()")
+                                    button.btn-psu Explore

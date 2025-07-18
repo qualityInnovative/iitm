@@ -6,7 +6,7 @@ const bannerUpload = bannerController.uploadBannerImage;
 const upload = adminController.uploadVisionary;
 
 const uploadAQARDocument =adminController.uploaddocument
-
+const adminaccreditationscontroller=require("../controllers/adminaccreditationscontroller")
 const router = express.Router();
 
 const { uploadAdmission } = require('./../controllers/upload')
@@ -23,6 +23,20 @@ router.post(
   adminController.uploadMoM,
   adminController.saveMoM
 );
+
+router.get("/cms/adminaccreditations",adminaccreditationscontroller.getAccreditations)
+router.get("/cms/admin-accreditations/sections/new", adminaccreditationscontroller.getSectionForm);
+router.get("/cms/admin-accreditations/sections/:id/edit", adminaccreditationscontroller.getSectionForm);
+router.post("/cms/admin-accreditations/sections/:id?", adminaccreditationscontroller.saveSection);
+router.post("/cms/admin-accreditations/sections/:id/delete", adminaccreditationscontroller.deleteSection);
+
+// Subsection routes
+router.get("/cms/admin-accreditations/subsections/new", adminaccreditationscontroller.getSubsectionForm);
+router.get("/cms/admin-accreditations/subsections/:id/edit", adminaccreditationscontroller.getSubsectionForm);
+router.post("/cms/admin-accreditations/subsections/:id?", adminaccreditationscontroller.saveSubsection);
+router.post("/cms/admin-accreditations/subsections/:id/delete", adminaccreditationscontroller.deleteSubsection);
+
+
 router.post('/cms/admin-mom/delete/:id', adminController.deleteMoM);
 router.get('/cms/admin-mom/create', adminController.getCreateMinuteForm);
 // ////////
