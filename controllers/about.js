@@ -6,7 +6,7 @@ const query = require("../utils/db");
 const mainParams = require("../utils/params");
 
 let Accreditationsubmenu = ["1", "2", "3"];
-let Accreditationsubtitle = ["NAAC.", "SSR.", "Quality Profile."];
+let Accreditationsubtitle = ["NAAC", "SSR", "Quality Profile"];
 
 
 async function refreshAccreditationMenu() {
@@ -18,7 +18,7 @@ async function refreshAccreditationMenu() {
     if (subsections.length > 0) {
       Accreditationsubmenu = subsections.map(sub => sub.id);
       Accreditationsubtitle = subsections.map(sub => sub.subsection_title);
-      console.log(Accreditationsubtitle.map(sub=>sub))
+      console.log(Accreditationsubtitle)
     }
   } catch (error) {
     console.error('Error refreshing accreditation menu:', error);
@@ -37,7 +37,7 @@ const params = mainParams(
     ["Organisation Chart"],
     ["Institutional Committees"],
     ["Institutional Clubs"],
-    ["accreditations",...Accreditationsubtitle],
+    ["Accreditation", ...Accreditationsubtitle.map(sub=>sub)],
     [
       "Quality Assurance",
       "About IQAC",
