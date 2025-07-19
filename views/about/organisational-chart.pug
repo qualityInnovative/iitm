@@ -1,12 +1,151 @@
 extends ../layouts/base.pug
 
 block content
-    //- include ../layouts/banner.pug
+  main.page-layout 
+    include ../layouts/pagemenu.pug
 
-    main.page-layout 
-        include ../layouts/pagemenu.pug
+    .main
+      .org-chart-container
+        h1.page-heading Organizational Chart
+        
+        if orgChart
+          //- Display the actual organizational chart data
+          .org-chart-content
+            .chart-image
+              img(
+                src=orgChart.image_path 
+                alt=orgChart.title
+                onerror="this.onerror=null;this.src='/uploads/org-charts/naac_card.jpg'"
+              )
+            
+            .chart-details
+              h2= orgChart.title
+              .description!= orgChart.description.replace(/\n/g, '<br>')
+              
+              .meta-info
+                span Last updated: #{new Date(orgChart.updated_at).toLocaleDateString()}
+        
+        else
+          //- Fallback content when no chart exists
+          .no-chart
+            i.fas.fa-sitemap
+            p No organizational chart available at this time
 
-        .main
-            div
-                h1.page-heading organizational chart
-                p Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea suscipit repudiandae eligendi magni sequi, possimus veritatis? Nisi, obcaecati. Nisi expedita aliquam, libero architecto ab totam sit reprehenderit alias fuga vitae.Exercitationem, assumenda! Perspiciatis consectetur, sapiente neque ratione nihil deserunt itaque ipsa deleniti cum iusto labore exercitationem facere eveniet nemo, excepturi magnam optio, asperiores officia. Quae officia quidem consequatur expedita modi!Harum dolor ea eligendi assumenda, hic consequatur, praesentium, libero accusamus molestiae itaque dolorum. Numquam, assumenda dolores. Enim vero facilis inventore autem aspernatur placeat, molestias, qui quaerat repudiandae iusto obcaecati id.In exercitationem id nulla ab praesentium minima, quo ea consequuntur quod, nesciunt nemo sapiente, aperiam deserunt harum voluptas voluptatibus aut dolor! Distinctio ut temporibus illo neque eligendi vel eum esse.Perferendis unde libero ullam facilis suscipit dignissimos nesciunt quaerat excepturi laudantium temporibus consequuntur, architecto qui ratione dolorem maxime repellat saepe cum! Tenetur exercitationem facere reprehenderit ipsam quasi esse hic maiores.Recusandae quae velit nemo tempore quis perferendis voluptatibus soluta in laudantium reiciendis illum mollitia delectus neque, vitae, animi alias numquam unde dolorum voluptate, aliquid cum ipsa? Impedit similique sint maiores?Quidem ducimus quo dicta fuga doloribus maiores vitae dolorem! Deserunt harum velit, voluptates natus dignissimos minima! Voluptate accusamus dolores ea aperiam quae voluptas sint, culpa quas iusto labore nisi quidem?Dicta veritatis nisi quos, aliquid, laboriosam provident ut magni tempore dolor totam sunt porro ipsum nesciunt et quaerat quae officiis facilis numquam quibusdam aliquam illum sapiente explicabo voluptatibus impedit! Dolorum?Magni repudiandae aut cupiditate vel. Beatae, animi! Architecto perferendis, eos eligendi at accusantium iure commodi odio maiores neque necessitatibus recusandae ab iste blanditiis veritatis quas, ex tempore nisi. Pariatur, doloribus?Aspernatur dignissimos amet aut tempora est dolorem non, cupiditate veniam assumenda ad accusantium eligendi fuga deleniti molestias velit atque voluptas adipisci quae fugiat perspiciatis reprehenderit quia sapiente! Atque, aperiam odit!Eaque ad id deleniti, necessitatibus reprehenderit nobis. Commodi ex quaerat possimus a omnis nisi, perferendis excepturi pariatur officiis aut nulla numquam. Quam unde doloribus cum id dolores harum soluta nesciunt!Obcaecati facere, sunt quam numquam, aliquid autem eius amet optio delectus inventore quis accusantium architecto labore nisi nam? Suscipit, ipsam deleniti. Ad minus unde eligendi ipsum sed quae. Tempore, sit!Quibusdam sed ex excepturi esse deleniti voluptatum rerum, necessitatibus dolorum reiciendis repudiandae modi quidem quod ut, delectus quam temporibus perferendis? Necessitatibus dolores repellat possimus cumque aut eius quam recusandae ab.Consequatur vel amet molestiae odio, cumque, quasi, explicabo tempora neque esse magni veritatis non. Modi quas asperiores placeat, aliquid odit earum amet fugit vitae ea qui repudiandae distinctio ipsam accusantium?Quas dolore aut et corporis esse sit dicta reiciendis nam ullam voluptatibus, impedit ut ipsam ad labore maxime distinctio fugit nulla delectus repellendus voluptates pariatur provident doloremque, aperiam sed. Saepe.
+block styles
+  style.
+    /* Main Container */
+    .org-chart-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    /* Page Heading */
+    .page-heading {
+      color: #2c3e50;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+    
+    /* Chart Content */
+    .org-chart-content {
+      background: #fff;
+      border-radius: 0px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border: 1px solid #e0e0e0;
+    }
+    
+    /* Image Styles */
+    .chart-image {
+      text-align: center;
+      padding: 0px;
+      background: #f9f9f9;
+     
+    }
+    
+    .chart-image img {
+      max-width: 100%;
+      height: auto;
+      max-height: 600px;
+      object-fit: cover;
+    }
+    
+    /* Details Section */
+    .chart-details {
+      padding: 10px;
+    }
+    
+    .chart-details h2 {
+      color: #3498db;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    
+    .description {
+      color: #555;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+    
+    /* Meta Info */
+    .meta-info {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+      color: #777;
+      font-size: 0.9rem;
+      text-align: right;
+    }
+    
+    /* No Chart Available */
+    .no-chart {
+      text-align: center;
+      padding: 50px 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      border: 1px dashed #ddd;
+    }
+    
+    .no-chart i {
+      font-size: 3rem;
+      color: #95a5a6;
+      margin-bottom: 15px;
+    }
+    
+    .no-chart p {
+      color: #666;
+      font-size: 1.1rem;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .org-chart-container {
+        padding: 15px;
+      }
+      
+      .page-heading {
+        font-size: 1.6rem;
+      }
+      
+      .chart-details {
+        padding: 15px;
+      }
+      
+      .chart-details h2 {
+        font-size: 1.3rem;
+      }
+    }
+
+block scripts
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      // Fallback for Font Awesome if not loaded
+      if (!document.querySelector('.fa-sitemap')) {
+        document.querySelector('.no-chart i').textContent = '⌂';
+      }
+    });

@@ -6,4 +6,9 @@ structure.jpg
 .env
 .vscode
 iitm.sql
+<<<<<<< HEAD
 structure.jpglogs/
+=======
+structure.jpg
+logs/
+>>>>>>> 8bc64fdeee88ad90f48fb783dc7175c236c3d761

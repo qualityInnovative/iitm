@@ -174,19 +174,33 @@ exports.getLeadership = (req, res, next) => {
   );
 };
 
-exports.getOrganisationalChart = (req, res, next) => {
-  res.render(
-    "about/organisational-chart",
-    Object.assign(
-      params(
-        `${pageTitle} - Organisational Chart`,
-        "/organisational-chart",
-        `${bannerPath}org-chart-banner.jpg`,
-        ""
-      ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
+exports.getOrganisationalChart = async (req, res, next) => {
+  try {
+    // Get the organizational chart data from database
+    const [orgChart] = await query(
+      "SELECT id, title, description, image_path, updated_at FROM organizational_charts ORDER BY id DESC LIMIT 1"
+    );
+
+    // Render the view with all necessary parameters
+    res.render(
+      "about/organisational-chart",
+      Object.assign(
+        params(
+          `${pageTitle} - Organisational Chart`,
+          "/organisational-chart",
+          `${bannerPath}org-chart-banner.jpg`,
+          ""
+        ),
+        { 
+          isAuthenticated: req.session.isLoggedIn,
+          orgChart // Pass the organizational chart data to the view
+        }
+      )
+    );
+  } catch (err) {
+    console.error("Error loading organizational chart:", err);
+    next(err); // Pass to error handling middleware
+  }
 };
 
 exports.getInstitutionalCommittees = (req, res, next) => {
