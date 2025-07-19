@@ -2,7 +2,7 @@ const pageTitle = "About";
 const pagePath = "/about";
 
 const query = require("../utils/db");
-
+const validator = require('validator');
 exports.postContactUs = (req, res, next) => {
   const name = req.body.name || null;
   const phone = req.body.phone || null;
@@ -238,6 +238,17 @@ exports.postNewAdmission = (req, res, next) => {
   const insertQuery =
     "INSERT INTO newAdmissions (name, parentage, address, qualification, phone, email, interestedIn, applicationNo, remark) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    if (!name || !qualification || !phone || !email) {
+      // Required fields missing
+      return res.redirect('/admissions/new-admission?error=missing_required_fields');
+    }
+  
+    if (!validator.isEmail(email)) {
+      // Invalid email format
+      return res.redirect('/admissions/new-admission?error=invalid_email');
+    }
+  
+    
   query(insertQuery, [
     name,
     parentage,

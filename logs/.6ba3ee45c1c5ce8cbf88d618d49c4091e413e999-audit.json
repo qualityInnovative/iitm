@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/mac/Desktop/iitm/logs/.6ba3ee45c1c5ce8cbf88d618d49c4091e413e999-audit.json",
+    "files": [
+        {
+            "date": 1752908014264,
+            "name": "/Users/mac/Desktop/iitm/logs/app-2025-07-19.log",
+            "hash": "6ec228178e890286209345ade1e5b6d5d77086b36fc2cc34a3026687c8a9475a"
+        }
+    ],
+    "hashType": "sha256"
+}

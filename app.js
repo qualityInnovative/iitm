@@ -15,6 +15,8 @@ const session = require("express-session");
 const errorController = require("./controllers/error");
 const authenticateLogin = require("./utils/middlewareAuth");
 
+const logger = require("./utils/logger");
+
 const app = express();
 
 // Setting view engine and views folder
@@ -27,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json()); // for JSON body
 app.use(express.urlencoded({ extended: true })); //
 app.use(express.static(path.join(__dirname, "public")));
-
+app.set('trust proxy', 1);
 // Middleware for parsing form data
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -38,6 +40,19 @@ app.use(
     cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, //1 week
   })
 );
+
+app.use((req, res, next) => {
+  const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+  const suspicious = /select|sleep|union|--|\/\*/i.test(req.originalUrl + JSON.stringify(req.body));
+  logger.info(`IP: ${ip} | ${req.method} ${req.originalUrl}`);
+  if (suspicious) {
+    logger.warn(`Suspicious request from ${ip}: ${req.method} ${req.originalUrl}`);
+  }
+
+  next();
+});
+
+
 
 const homeRoute = require("./routes/home");
 const aboutRoutes = require("./routes/about");
