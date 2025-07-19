@@ -190,3 +190,37 @@
 2025-07-19 13:50:14 [INFO]: IP: ::1 | GET /uploads/visionaries/1752569316524-Director---Copy.JPG
 2025-07-19 13:50:14 [WARN]: Suspicious request from ::1: GET /uploads/visionaries/1752569316524-Director---Copy.JPG
 2025-07-19 13:50:19 [INFO]: IP: ::1 | GET /about/organisational-chart
+2025-07-19 14:20:01 [INFO]: IP: ::1 | GET /home
+2025-07-19 14:20:03 [INFO]: IP: ::1 | GET /uploads/banners/1750233789557-new-banner.jpg
+2025-07-19 14:20:03 [INFO]: IP: ::1 | GET /uploads/banners/1750064540097-resizebanner2.jpg
+2025-07-19 14:20:03 [INFO]: IP: ::1 | GET /uploads/events/1752908681007-WhatsApp-Image-2025-07-19-at-11.31.33-AM.jpeg
+2025-07-19 14:20:04 [INFO]: IP: ::1 | GET /uploads/visionaries/1752569316524-Director---Copy.JPG
+2025-07-19 14:20:04 [WARN]: Suspicious request from ::1: GET /uploads/visionaries/1752569316524-Director---Copy.JPG
+2025-07-19 14:20:09 [INFO]: IP: ::1 | GET /about/organisational-chart
+2025-07-19 14:20:48 [INFO]: IP: ::1 | GET /about/organisational-chart
+2025-07-19 14:21:10 [INFO]: IP: ::1 | GET /about/organisational-chart
+2025-07-19 14:21:20 [INFO]: IP: ::1 | GET /.well-known/appspecific/com.chrome.devtools.json
+2025-07-19 14:23:01 [INFO]: IP: ::1 | GET /about/organisational-chart
+2025-07-19 14:23:01 [INFO]: IP: ::1 | GET /.well-known/appspecific/com.chrome.devtools.json
+2025-07-19 14:23:25 [INFO]: IP: ::1 | GET /about/organisational-chart
+2025-07-19 14:23:26 [INFO]: IP: ::1 | GET /.well-known/appspecific/com.chrome.devtools.json
+2025-07-19 14:23:49 [INFO]: IP: ::1 | GET /about/organisational-chart
+2025-07-19 14:25:21 [INFO]: IP: ::1 | GET /cms
+2025-07-19 14:25:21 [INFO]: IP: ::1 | GET /cms/admin-cms
+2025-07-19 14:25:25 [INFO]: IP: ::1 | GET /cms/adminorganizationalchart
+2025-07-19 14:25:48 [INFO]: IP: ::1 | POST /cms/adminorganizationalchart/save
+2025-07-19 14:25:48 [INFO]: IP: ::1 | GET /cms/adminorganizationalchart
+2025-07-19 14:25:52 [INFO]: IP: ::1 | GET /
+2025-07-19 14:25:54 [INFO]: IP: ::1 | GET /uploads/banners/1750233789557-new-banner.jpg
+2025-07-19 14:25:54 [INFO]: IP: ::1 | GET /uploads/banners/1750064540097-resizebanner2.jpg
+2025-07-19 14:25:54 [INFO]: IP: ::1 | GET /uploads/events/1752908681007-WhatsApp-Image-2025-07-19-at-11.31.33-AM.jpeg
+2025-07-19 14:25:54 [INFO]: IP: ::1 | GET /uploads/visionaries/1752569316524-Director---Copy.JPG
+2025-07-19 14:25:54 [WARN]: Suspicious request from ::1: GET /uploads/visionaries/1752569316524-Director---Copy.JPG
+2025-07-19 14:25:57 [INFO]: IP: ::1 | GET /about/organisational-chart
+2025-07-19 14:27:13 [INFO]: IP: ::1 | GET /
+2025-07-19 14:27:13 [INFO]: IP: ::1 | GET /uploads/banners/1750233789557-new-banner.jpg
+2025-07-19 14:27:13 [INFO]: IP: ::1 | GET /uploads/banners/1750064540097-resizebanner2.jpg
+2025-07-19 14:27:14 [INFO]: IP: ::1 | GET /uploads/events/1752908681007-WhatsApp-Image-2025-07-19-at-11.31.33-AM.jpeg
+2025-07-19 14:27:14 [INFO]: IP: ::1 | GET /uploads/visionaries/1752569316524-Director---Copy.JPG
+2025-07-19 14:27:14 [WARN]: Suspicious request from ::1: GET /uploads/visionaries/1752569316524-Director---Copy.JPG
+2025-07-19 14:28:24 [INFO]: IP: ::1 | GET /about/organisational-chart

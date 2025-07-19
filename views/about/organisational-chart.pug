@@ -15,7 +15,7 @@ block content
               img(
                 src=orgChart.image_path 
                 alt=orgChart.title
-                onerror="this.onerror=null;this.src='/images/default-org-chart.png'"
+                onerror="this.onerror=null;this.src='/uploads/org-charts/naac_card.jpg'"
               )
             
             .chart-details
@@ -35,7 +35,7 @@ block styles
   style.
     /* Main Container */
     .org-chart-container {
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
     }
@@ -53,7 +53,7 @@ block styles
     /* Chart Content */
     .org-chart-content {
       background: #fff;
-      border-radius: 8px;
+      border-radius: 0px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       overflow: hidden;
       border: 1px solid #e0e0e0;
@@ -64,19 +64,19 @@ block styles
       text-align: center;
       padding: 0px;
       background: #f9f9f9;
-      border-bottom: 1px solid #e0e0e0;
+     
     }
     
     .chart-image img {
       max-width: 100%;
       height: auto;
       max-height: 600px;
-      object-fit: contain;
+      object-fit: cover;
     }
     
     /* Details Section */
     .chart-details {
-      padding: 25px;
+      padding: 10px;
     }
     
     .chart-details h2 {
