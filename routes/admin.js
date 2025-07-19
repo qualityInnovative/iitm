@@ -4,7 +4,8 @@ const adminController = require("../controllers/admin");
 const bannerController = require("../controllers/bannersController");
 const bannerUpload = bannerController.uploadBannerImage;
 const upload = adminController.uploadVisionary;
-
+const organizational_charts = require("../controllers/organizationalchartcontroller");
+const o = require("../controllers/organizationalchartStorage");
 const uploadAQARDocument =adminController.uploaddocument
 const adminaccreditationscontroller=require("../controllers/adminaccreditationscontroller")
 const router = express.Router();
@@ -22,6 +23,14 @@ router.post(
   '/cms/admin-mom/save/:id?',
   adminController.uploadMoM,
   adminController.saveMoM
+);
+// adminorganizationalchart
+router.get("/cms/adminorganizationalchart", adminController.getOrganizationalChart);
+router.post(
+  "/cms/adminorganizationalchart/save",
+  o.uploadOrgChart,
+  organizational_charts
+  .saveOrgChart
 );
 
 router.get("/cms/adminaccreditations",adminaccreditationscontroller.getAccreditations)

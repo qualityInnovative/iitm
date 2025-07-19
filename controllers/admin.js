@@ -86,6 +86,27 @@ exports.getMinutesofminutes = async (req, res) => {
   }
 };
 
+exports.getOrganizationalChart = async (req, res) => {
+  try {
+    const [orgChart] = await query(
+      "SELECT id, title, description, image_path, created_at, updated_at FROM organizational_charts ORDER BY id DESC LIMIT 1"
+    );
+
+    res.render("admin/adminorganizationalchart", {
+      orgChart,
+      successMessage: req.session.successMessage,
+      errorMessage: req.session.errorMessage
+    });
+    
+    delete req.session.successMessage;
+    delete req.session.errorMessage;
+  } catch (err) {
+    console.error("Error loading organizational chart:", err);
+    req.session.errorMessage = "Failed to load organizational chart";
+    res.redirect("/cms/admin-home");
+  }
+};
+
 // Show form to create new meeting minute
 exports.getCreateMinuteForm = (req, res) => {
   res.render("admin/mom-form", {
