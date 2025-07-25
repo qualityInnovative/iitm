@@ -11,9 +11,43 @@ const adminaccreditationscontroller=require("../controllers/adminaccreditationsc
 const router = express.Router();
 
 const { uploadAdmission } = require('./../controllers/upload')
-
+const {uploadCommitteeDoc} =require('./../controllers/uploadCommitteeDoc')
+const { uploadClubDoc } = require('./../controllers/uploadClubDoc');
 // CMS ADMIN ROUTE
 router.get("/cms/admin-cms", adminController.getAdminDash);
+
+router.get("/cms/admininstitutionalcommittees", adminController.getAllInstitutionalCommittees);
+router.get("/cms/institutioncommittees/new", adminController.getAddInstitutionalCommittee);
+
+router.get("/cms/institutioncommittees/edit/:id", adminController.getEditInstitutionalCommittee);
+
+router.post("/cms/institutioncommittees/delete/:id", adminController.deleteInstitutionalCommittee);
+router.post(
+  "/cms/institutioncommittees/new",
+  uploadCommitteeDoc,
+  adminController.postAddInstitutionalCommittee
+);
+
+// Edit committee 
+router.post(
+  "/cms/institutioncommittees/edit/:id",
+  uploadCommitteeDoc,
+  adminController.postEditInstitutionalCommittee
+);
+router.get("/cms/admininstitutionalclubs", adminController.getAllInstitutionalClubs);
+router.get("/cms/institutionclubs/new", adminController.getAddInstitutionalClub);
+router.post(
+  "/cms/institutionclubs/new",
+  uploadClubDoc,
+  adminController.postAddInstitutionalClub
+);
+router.get("/cms/institutionclubs/edit/:id", adminController.getEditInstitutionalClub);
+router.post(
+  "/cms/institutionclubs/edit/:id",
+  uploadClubDoc,
+  adminController.postEditInstitutionalClub
+);
+router.post("/cms/institutionclubs/delete/:id", adminController.deleteInstitutionalClub);
 
 
 // /////////

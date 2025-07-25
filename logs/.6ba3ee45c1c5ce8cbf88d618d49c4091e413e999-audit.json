@@ -9,6 +9,16 @@
             "date": 1752916652722,
             "name": "/Users/mac/Desktop/iitm/logs/app-2025-07-19.log",
             "hash": "bef397377f950541cade268a9f648539a9c7d486c55156abcca5153517b98eb6"
+        },
+        {
+            "date": 1753075664103,
+            "name": "/Users/mac/Desktop/iitm/logs/app-2025-07-21.log",
+            "hash": "f15b4d26aaa11d9e5e1365041cd31f4164e84a9cbd4b9b117b049a11187b0d21"
+        },
+        {
+            "date": 1753420885041,
+            "name": "/Users/mac/Desktop/iitm/logs/app-2025-07-25.log",
+            "hash": "60d87722f26efb969f51ab7d0bfe682e263f426753502bf250a63a7609ddc602"
         }
     ],
     "hashType": "sha256"

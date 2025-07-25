@@ -1,0 +1,131 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  style.
+    /* Same beautiful styles as committee form */
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #6366f1;
+      --danger: #ef4444;
+      --success: #10b981;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --radius: 0.5rem;
+      --transition: all 0.2s ease;
+    }
+
+    .form-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2.5rem;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ... rest of the same styles as committee form ... */
+
+block content
+  main.form-container
+    h1.form-header #{club ? 'Edit' : 'Add'} Institutional Club
+
+    
+
+    form(method="POST", action=club ? `/cms/institutionclubs/edit/${club.id}` : "/cms/institutionclubs/new", enctype="multipart/form-data")
+      input(type="hidden", name="_csrf", value=csrfToken)
+      if club
+        input(type="hidden", name="id", value=club.id)
+      
+      .form-group
+        label.form-label.required(for="name") Club Name
+        input.form-control(
+          type="text",
+          name="name",
+          id="name",
+          value=club ? club.name : '',
+          required,
+          minlength="3"
+        )
+
+      .form-group
+        label.form-label(for="display_order") Display Order
+        input.form-control(
+          type="number",
+          name="display_order",
+          id="display_order",
+          value=club ? club.display_order : '',
+          min="1"
+        )
+        small.text-muted Optional. Lower numbers appear first.
+
+      .form-group
+        label.form-label(for="description") Description
+        textarea.form-control.form-textarea(
+          name="description",
+          id="description"
+        )= club ? club.description : ''
+
+      .form-group
+        label.form-label.required(for="members") Members (one per line)
+        textarea.form-control.form-textarea(
+          name="members",
+          id="members",
+          required,
+          style="white-space: pre"
+        )= club ? club.members : ''
+
+      .form-group
+        label.form-label(for="pdf") Club Document (PDF)
+        if club && club.pdf_filepath
+          .file-preview
+            a.file-link(href=club.pdf_filepath, target="_blank")
+              i.bi.bi-file-earmark-pdf.file-icon
+              span View Current Document
+            button.btn.btn-secondary(
+              type="button",
+              onclick="document.getElementById('removePdf').value = '1'; this.parentNode.remove()"
+            ) Remove
+            input(type="hidden", name="removePdf", id="removePdf", value="0")
+        input.form-control(
+          type="file",
+          id="pdf",
+          name="pdf",
+          accept=".pdf"
+        )
+        small.text-muted Maximum file size: 10MB. PDF only.
+
+      .form-actions
+        button.btn.btn-primary(type="submit")
+          i.bi.bi-save.me-1
+          | #{club ? 'Update' : 'Create'} Club
+        a.btn.btn-secondary(href="/cms/admininstitutionalclubs")
+          i.bi.bi-x-circle.me-1
+          | Cancel
+
+block scripts
+  script.
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const nameInput = document.getElementById('name');
+      const membersTextarea = document.getElementById('members');
+      
+      if (!nameInput.value.trim()) {
+        e.preventDefault();
+        alert('Club name is required');
+        nameInput.focus();
+        return false;
+      }
+
+      if (!membersTextarea.value.trim()) {
+        e.preventDefault();
+        alert('Club members are required');
+        membersTextarea.focus();
+        return false;
+      }
+      
+      return true;
+    });

@@ -52,7 +52,7 @@ const momStorage = multer.diskStorage({
   }
 });
 
-exports.uploadMoM = multer({ 
+exports.uploadMoM = multer({
   storage: momStorage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
   fileFilter: (req, file, cb) => {
@@ -63,6 +63,424 @@ exports.uploadMoM = multer({
     }
   }
 }).single('pdf');
+
+
+
+exports.getAllInstitutionalCommittees = async (req, res) => {
+  try {
+    const committees = await query(`
+      SELECT * FROM institutional_committees
+      ORDER BY display_order IS NULL, display_order, created_at DESC
+    `);
+
+    const statutoryCommittees = committees.filter(c => c.type === 'statutory');
+    const nonStatutoryCommittees = committees.filter(c => c.type === 'non-statutory');
+
+    res.render("admin/admin-institutionalcommittees", {
+      statutoryCommittees,
+      nonStatutoryCommittees,
+      successMessage: req.session.successMessage,
+      errorMessage: req.session.errorMessage
+    });
+
+    delete req.session.successMessage;
+    delete req.session.errorMessage;
+  } catch (err) {
+    console.error("Error fetching committees:", err);
+    req.session.errorMessage = "Failed to load committees";
+    res.redirect("/cms/admin-home");
+  }
+};
+
+// Show form to add new institutional committee
+exports.getAddInstitutionalCommittee = (req, res) => {
+  res.render("admin/committee-form", {
+    title: "Add New Committee",
+    committee: null,
+    errorMessage: req.session.errorMessage
+  });
+  delete req.session.errorMessage;
+};
+
+// Create new institutional committee
+exports.postAddInstitutionalCommittee = async (req, res) => {
+  try {
+    const { name, type, display_order, description, members } = req.body;
+
+    if (!name || !type || !members) {
+      req.session.errorMessage = "Name, type and members are required";
+      return res.redirect("/cms/institutioncommittees/new");
+    }
+
+    const cleanDescription = description ? sanitizeHtml(description) : null;
+    const cleanMembers = sanitizeHtml(members);
+    const pdf_filepath = req.file ? `/uploads/committees/${req.file.filename}` : null;
+    const orderValue = display_order === '' ? null : parseInt(display_order);
+
+    await query(`
+      INSERT INTO institutional_committees 
+      (name, type, display_order, description, members, pdf_filepath)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `, [name, type, orderValue, cleanDescription, cleanMembers, pdf_filepath]);
+
+    req.session.successMessage = "Committee created successfully";
+    res.redirect("/cms/admininstitutionalcommittees");
+  } catch (err) {
+    console.error("Error creating committee:", err);
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    req.session.errorMessage = "Failed to create committee: " + err.message;
+    res.redirect("/cms/institutioncommittees/new");
+  }
+};
+
+// Show form to edit institutional committee
+exports.getEditInstitutionalCommittee = async (req, res) => {
+  try {
+    const committee = await query(`
+      SELECT * FROM institutional_committees 
+      WHERE id = ?
+    `, [req.params.id]);
+
+    if (!committee || committee.length === 0) {
+      req.session.errorMessage = "Committee not found";
+      return res.redirect("/cms/admininstitutionalcommittees");
+    }
+
+    res.render("admin/committee-form", {
+      title: "Edit Committee",
+      committee: committee[0],
+      errorMessage: req.session.errorMessage
+    });
+
+    delete req.session.errorMessage;
+  } catch (err) {
+    console.error("Error fetching committee:", err);
+    req.session.errorMessage = "Failed to load committee";
+    res.redirect("/cms/admininstitutionalcommittees");
+  }
+};
+
+exports.postEditInstitutionalCommittee = async (req, res) => {
+  try {
+    const { id, name, type, display_order, description, members, removePdf } = req.body;
+    console.log('Request Body:', req.body);
+
+    if (!name || !type || !members) {
+      req.session.errorMessage = "Name, type and members are required";
+      return res.redirect(`/cms/institutioncommittees/edit/${id}`);
+    }
+
+    const cleanDescription = description ? sanitizeHtml(description) : null;
+    const cleanMembers = sanitizeHtml(members);
+    const orderValue = display_order === '' ? null : parseInt(display_order);
+
+    // Get current file path before making changes
+    const [existing] = await query(
+      "SELECT pdf_filepath FROM institutional_committees WHERE id = ?",
+      [id]
+    );
+    console.log('Existing file:', existing);
+
+    // Determine new file path
+    let newFilePath = existing[0]?.pdf_filepath; // Keep existing by default
+    let shouldDeleteOldFile = false;
+
+    if (req.file) {
+      newFilePath = `/uploads/committees/${req.file.filename}`;
+      shouldDeleteOldFile = true;
+    } else if (removePdf === '1') {
+      newFilePath = null;
+      shouldDeleteOldFile = true;
+    }
+
+    // Build update query
+    const updateQuery = `
+      UPDATE institutional_committees 
+      SET name = ?, 
+          type = ?, 
+          display_order = ?, 
+          description = ?, 
+          members = ?,
+          pdf_filepath = ?,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `;
+
+    const queryParams = [
+      name,
+      type,
+      orderValue,
+      cleanDescription,
+      cleanMembers,
+      newFilePath,
+      id
+    ];
+
+    console.log('Update Query:', updateQuery);
+    console.log('Query Parameters:', queryParams);
+
+    // Execute update
+    await query(updateQuery, queryParams);
+
+    // Delete old file if needed
+    if (shouldDeleteOldFile && existing[0]?.pdf_filepath) {
+      const oldPath = path.join(__dirname, '../public', existing[0].pdf_filepath);
+      if (fs.existsSync(oldPath)) {
+        fs.unlinkSync(oldPath);
+        console.log('Old file deleted successfully');
+      }
+    }
+    req.session.successMessage = "Committee updated successfully";
+    return res.redirect("/cms/admininstitutionalcommittees");
+  } catch (err) {
+    console.error("Error updating committee:", err);
+    if (req.file?.path && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    req.session.errorMessage = "Failed to update committee: " + err.message;
+    return res.redirect(`/cms/institutioncommittees/edit/${req.params?.id || req.body.id}`);
+  }
+};
+
+exports.deleteInstitutionalCommittee = async (req, res) => {
+  try {
+    const committee = await query(
+      "SELECT pdf_filepath FROM institutional_committees WHERE id = ?",
+      [req.params.id]
+    );
+
+    if (!committee || committee.length === 0) {
+      req.session.errorMessage = "Committee not found";
+      return res.redirect("/cms/admininstitutionalcommittees");
+    }
+
+    // Delete from database
+    await query(
+      "DELETE FROM institutional_committees WHERE id = ?",
+      [req.params.id]
+    );
+
+    // Delete associated file
+    if (committee[0].pdf_filepath) {
+      const filePath = path.join(__dirname, '../public', committee[0].pdf_filepath);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    req.session.successMessage = "Committee deleted successfully";
+    res.redirect("/cms/admininstitutionalcommittees");
+  } catch (err) {
+    console.error("Error deleting committee:", err);
+    req.session.errorMessage = "Failed to delete committee";
+    res.redirect("/cms/admininstitutionalcommittees");
+  }
+};
+
+
+
+// Get all institutional clubs
+exports.getAllInstitutionalClubs = async (req, res) => {
+  try {
+    const clubs = await query(`
+      SELECT * FROM institutional_clubs
+      ORDER BY display_order IS NULL, display_order, created_at DESC
+    `);
+
+    res.render("admin/admin-institutionalclubs", {
+      clubs,
+      successMessage: req.session.successMessage,
+      errorMessage: req.session.errorMessage
+    });
+
+    delete req.session.successMessage;
+    delete req.session.errorMessage;
+  } catch (err) {
+    console.error("Error fetching clubs:", err);
+    req.session.errorMessage = "Failed to load clubs";
+    res.redirect("/cms/admin-home");
+  }
+};
+
+// Show form to add new club
+exports.getAddInstitutionalClub = (req, res) => {
+  res.render("admin/club-form", {
+    title: "Add New Club",
+    club: null,
+    errorMessage: req.session.errorMessage
+  });
+  delete req.session.errorMessage;
+};
+
+// Create new club
+exports.postAddInstitutionalClub = async (req, res) => {
+  try {
+    const { name, display_order, description, members } = req.body;
+
+    if (!name || !members) {
+      req.session.errorMessage = "Name and members are required";
+      return res.redirect("/cms/institutionclubs/new");
+    }
+
+    const cleanDescription = description ? sanitizeHtml(description) : null;
+    const cleanMembers = sanitizeHtml(members);
+    const pdf_filepath = req.file ? `/uploads/clubs/${req.file.filename}` : null;
+    const orderValue = display_order === '' ? null : parseInt(display_order);
+
+    await query(`
+      INSERT INTO institutional_clubs 
+      (name, display_order, description, members, pdf_filepath)
+      VALUES (?, ?, ?, ?, ?)
+    `, [name, orderValue, cleanDescription, cleanMembers, pdf_filepath]);
+
+    req.session.successMessage = "Club created successfully";
+    res.redirect("/cms/admininstitutionalclubs");
+  } catch (err) {
+    console.error("Error creating club:", err);
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    req.session.errorMessage = "Failed to create club: " + err.message;
+    res.redirect("/cms/institutionclubs/new");
+  }
+};
+
+// Show form to edit club
+exports.getEditInstitutionalClub = async (req, res) => {
+  try {
+    const club = await query(`
+      SELECT * FROM institutional_clubs 
+      WHERE id = ?
+    `, [req.params.id]);
+
+    if (!club || club.length === 0) {
+      req.session.errorMessage = "Club not found";
+      return res.redirect("/cms/admininstitutionalclubs");
+    }
+
+    res.render("admin/club-form", {
+      title: "Edit Club",
+      club: club[0],
+      errorMessage: req.session.errorMessage
+    });
+
+    delete req.session.errorMessage;
+  } catch (err) {
+    console.error("Error fetching club:", err);
+    req.session.errorMessage = "Failed to load club";
+    res.redirect("/cms/admininstitutionalclubs");
+  }
+};
+
+// Update club
+exports.postEditInstitutionalClub = async (req, res) => {
+  try {
+    const { id, name, display_order, description, members, removePdf } = req.body;
+
+    if (!name || !members) {
+      req.session.errorMessage = "Name and members are required";
+      return res.redirect(`/cms/institutionclubs/edit/${id}`);
+    }
+
+    const cleanDescription = description ? sanitizeHtml(description) : null;
+    const cleanMembers = sanitizeHtml(members);
+    const orderValue = display_order === '' ? null : parseInt(display_order);
+
+    let pdf_filepath = undefined;
+    let deleteOldFile = false;
+
+    // Handle file operations
+    const [existing] = await query(
+      "SELECT pdf_filepath FROM institutional_clubs WHERE id = ?",
+      [id]
+    );
+
+    if (req.file) {
+      pdf_filepath = `/uploads/clubs/${req.file.filename}`;
+      deleteOldFile = true;
+    } else if (removePdf === '1') {
+      pdf_filepath = null;
+      deleteOldFile = true;
+    }
+
+    // Update database
+    await query(`
+      UPDATE institutional_clubs 
+      SET name = ?, 
+          display_order = ?, 
+          description = ?, 
+          members = ?,
+          ${pdf_filepath !== undefined ? 'pdf_filepath = ?,' : ''}
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `, [
+      name,
+      orderValue,
+      cleanDescription,
+      cleanMembers,
+      ...(pdf_filepath !== undefined ? [pdf_filepath] : []),
+      id
+    ]);
+
+    // Delete old file if needed
+    if (deleteOldFile && existing[0]?.pdf_filepath) {
+      const oldPath = path.join(__dirname, '../public', existing[0].pdf_filepath);
+      if (fs.existsSync(oldPath)) {
+        fs.unlinkSync(oldPath);
+      }
+    }
+
+    req.session.successMessage = "Club updated successfully";
+    res.redirect("/cms/admininstitutionalclubs");
+  } catch (err) {
+    console.error("Error updating club:", err);
+    if (req.file && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    req.session.errorMessage = "Failed to update club: " + err.message;
+    res.redirect(`/cms/institutionclubs/edit/${req.params.id}`);
+  }
+};
+
+// Delete club
+exports.deleteInstitutionalClub = async (req, res) => {
+  try {
+    const [club] = await query(
+      "SELECT pdf_filepath FROM institutional_clubs WHERE id = ?",
+      [req.params.id]
+    );
+
+    if (!club || club.length === 0) {
+      req.session.errorMessage = "Club not found";
+      return res.redirect("/cms/admininstitutionalclubs");
+    }
+
+    // Delete from database
+    await query(
+      "DELETE FROM institutional_clubs WHERE id = ?",
+      [req.params.id]
+    );
+
+    // Delete associated file
+    if (club[0].pdf_filepath) {
+      const filePath = path.join(__dirname, '../public', club[0].pdf_filepath);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    req.session.successMessage = "Club deleted successfully";
+    res.redirect("/cms/admininstitutionalclubs");
+  } catch (err) {
+    console.error("Error deleting club:", err);
+    req.session.errorMessage = "Failed to delete club";
+    res.redirect("/cms/admininstitutionalclubs");
+  }
+};
+
+
 
 exports.getMinutesofminutes = async (req, res) => {
   try {
@@ -76,7 +494,7 @@ exports.getMinutesofminutes = async (req, res) => {
       successMessage: req.session.successMessage,
       errorMessage: req.session.errorMessage
     });
-    
+
     delete req.session.successMessage;
     delete req.session.errorMessage;
   } catch (err) {
@@ -97,7 +515,7 @@ exports.getOrganizationalChart = async (req, res) => {
       successMessage: req.session.successMessage,
       errorMessage: req.session.errorMessage
     });
-    
+
     delete req.session.successMessage;
     delete req.session.errorMessage;
   } catch (err) {
@@ -124,17 +542,17 @@ exports.getEditMinuteForm = async (req, res) => {
       "SELECT id, title, display_order, file_path, original_filename FROM meeting_minutes WHERE id = ?",
       [id]
     );
-    
+
     if (!minute) {
       req.session.errorMessage = "Meeting minute not found";
       return res.redirect("/cms/admin-mom");
     }
-    
+
     res.render("admin/mom-form", {
       minute,
       errorMessage: req.session.errorMessage
     });
-    
+
     delete req.session.errorMessage;
   } catch (err) {
     console.error("Error fetching meeting minute:", err);
@@ -158,7 +576,7 @@ exports.saveMoM = async (req, res) => {
         "SELECT file_path, original_filename FROM meeting_minutes WHERE id = ?",
         [minuteId]
       );
-      
+
       if (!existingMinute) {
         req.session.errorMessage = "Meeting minute not found";
         return res.redirect("/cms/admin-mom");
@@ -173,7 +591,7 @@ exports.saveMoM = async (req, res) => {
         if (fs.existsSync(oldFilePath)) {
           fs.unlinkSync(oldFilePath);
         }
-        
+
         // Update with new file
         filePath = file.path.replace('public', '');
         originalFilename = file.originalname;
@@ -195,7 +613,7 @@ exports.saveMoM = async (req, res) => {
           [title, displayOrder, minuteId]
         );
       }
-      
+
       req.session.successMessage = "Meeting minute updated successfully";
       return res.redirect("/cms/admin-mom");
     }
@@ -212,26 +630,26 @@ exports.saveMoM = async (req, res) => {
          VALUES (?, ?, ?, ?)`,
         [title, displayOrder, file.path.replace('public', ''), file.originalname]
       );
-      
+
       req.session.successMessage = "Meeting minute created successfully";
       res.redirect("/cms/admin-mom");
     }
   } catch (err) {
     console.error("Error saving meeting minute:", err);
-    
+
     // Cleanup uploaded file if error occurred
     if (file && fs.existsSync(file.path)) {
       fs.unlinkSync(file.path);
     }
-    
-    const redirectPath = minuteId 
+
+    const redirectPath = minuteId
       ? `/cms/admin-mom/edit/${minuteId}`
       : "/cms/admin-mom/create";
-    
-    req.session.errorMessage = minuteId 
-      ? "Failed to update meeting minute" 
+
+    req.session.errorMessage = minuteId
+      ? "Failed to update meeting minute"
       : "Failed to create meeting minute";
-      
+
     res.redirect(redirectPath);
   }
 };
@@ -1732,7 +2150,7 @@ exports.postSaveIqacMember = (req, res) => {
            member_type = ?, is_active = ?, display_order = ?
        WHERE id = ?`,
       [
-        serial_no, category_description, member_name, 
+        serial_no, category_description, member_name,
         member_designation, member_department, naac_role,
         member_type, isActive, displayOrder, id
       ]
