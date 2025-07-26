@@ -31,6 +31,9 @@ router.get(
 //? Institutional Clubs Routes
 // Route to /institutional-clubs at /about
 router.get("/institutional-clubs", aboutController.getInstitutionalClubs);
+router.get('/institutional-clubs/:id', aboutController.getClubDetails);
+
+router.get('/institutional-committees/institutionalcommittees/:id', aboutController.getCommitteeDetails);
 
 //? Accreditations Routes
 // Route to /accreditations at /about

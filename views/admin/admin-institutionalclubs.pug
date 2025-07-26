@@ -3,55 +3,83 @@ extends ../layouts/cms-base.pug
 block styles
   style.
     /* Club Management Styles */
+    /* Club Management Styles */
     .club-management {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       max-width: 1200px;
-      padding: 30px;
+      padding: 40px 30px;
       margin: 0 auto;
-      color: #333;
+      color: #2d3748;
+      background-color: #f8fafc;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
 
     .club-header {
-      color: #2c3e50;
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 10px;
-      margin-bottom: 25px;
+      color: #1e3a8a;
+      border-bottom: 2px solid #3b82f6;
+      padding-bottom: 15px;
+      margin-bottom: 30px;
       text-align: center;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 2.2rem;
+      letter-spacing: -0.5px;
+      position: relative;
     }
 
-    /* Add New Button Styles */
+    .club-header::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: #10b981;
+      border-radius: 2px;
+    }
+
+    /* Button Styles */
     .btn-add-new {
-      background-color: #3498db;
-      border-color: #3498db;
-      transition: all 0.3s ease;
-      padding: 10px 20px;
-      font-weight: 500;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      border: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 12px 24px;
+      font-weight: 600;
       letter-spacing: 0.5px;
-      box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+      box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3), 0 2px 4px -1px rgba(59, 130, 246, 0.2);
       display: inline-flex;
       align-items: center;
-      border-radius: 6px;
+      border-radius: 8px;
+      color: white;
+      text-transform: uppercase;
+      font-size: 0.875rem;
     }
 
     .btn-add-new:hover {
-      background-color: #2980b9;
-      border-color: #2980b9;
+      background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.2);
     }
 
     .btn-add-new:active {
       transform: translateY(0);
-      box-shadow: 0 2px 3px rgba(52, 152, 219, 0.3);
+      box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
     }
 
     .btn-add-new i {
       font-size: 1.1rem;
-      margin-right: 8px;
+      margin-right: 10px;
     }
 
-    /* Alert Close Button Styles */
+    /* Alert Styles */
+    .alert {
+      position: relative;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid;
+    }
+
     .alert .close {
       position: absolute;
       top: 50%;
@@ -72,111 +100,179 @@ block styles
       opacity: 1;
     }
 
+    /* Card Styles */
     .club-card {
-      border-radius: 8px;
-      padding:20px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 12px;
+      padding: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       border: none;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       overflow: hidden;
+      background: white;
+      border: 1px solid #e2e8f0;
     }
 
     .club-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-body {
+      padding: 24px;
     }
 
     .card-title {
-      color: #2c3e50;
-      font-weight: 600;
-      margin-bottom: 15px;
+      color: #1e3a8a;
+      font-weight: 700;
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 1.25rem;
     }
 
     .order-badge {
-      background-color: #7f8c8d;
-      font-size: 0.8rem;
-      font-weight: normal;
-      padding: 5px 10px;
-      border-radius: 4px;
+      background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
     }
 
     .card-text {
-      color: #555;
-      margin-bottom: 15px;
+      color: #4a5568;
+      margin-bottom: 16px;
+      line-height: 1.6;
     }
 
     .members-list {
-      background-color: #f8f9fa;
-      padding: 10px;
-      border-radius: 5px;
+      background-color: #f8fafc;
+      padding: 12px 16px;
+      border-radius: 8px;
       font-size: 0.9rem;
+      border: 1px solid #e2e8f0;
+      color: #4a5568;
     }
 
     .documents-list {
-      margin: 15px 0;
+      margin: 20px 0;
     }
 
     .document-item {
-      padding: 10px;
-      border-radius: 5px;
-      background-color: #f8f9fa;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
+    }
+
+    .document-item:hover {
+      background-color: #f1f5f9;
     }
 
     .document-link {
-      color: #e74c3c;
+      color: #ef4444;
       text-decoration: none;
       transition: color 0.2s;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
     }
 
     .document-link:hover {
-      color: #c0392b;
-      text-decoration: underline;
+      color: #dc2626;
+      text-decoration: none;
     }
 
     .document-icon {
-      margin-right: 8px;
+      margin-right: 10px;
+      font-size: 1.2rem;
     }
 
     .upload-date {
-      font-size: 0.8rem;
-      color: #7f8c8d;
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 500;
     }
 
+    /* Action Buttons */
     .action-buttons {
       display: flex;
-      gap: 10px;
-      margin-top: 20px;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      letter-spacing: 0.5px;
+    }
+
+    .btn i {
+      margin-right: 8px;
     }
 
     .btn-edit {
-      background-color: #2ecc71;
-      border-color: #2ecc71;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border: none;
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
     }
 
     .btn-edit:hover {
-      background-color: #27ae60;
-      border-color: #27ae60;
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      border: none;
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.2);
     }
 
     .no-clubs {
       text-align: center;
-      padding: 20px;
-      background-color: #f8f9fa;
-      border-radius: 8px;
+      padding: 40px 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      border: 1px dashed #cbd5e0;
+    }
+
+    .no-clubs .alert-info {
+      background-color: #f0f9ff;
+      border-color: #bae6fd;
+      color: #0369a1;
     }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
       .club-management {
-        padding: 15px;
+        padding: 20px 15px;
       }
       
       .club-header {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
+        padding-bottom: 12px;
       }
       
       .action-buttons {
@@ -185,16 +281,41 @@ block styles
       
       .btn {
         width: 100%;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+      }
+      
+      .club-card {
+        margin-bottom: 20px;
       }
     }
 
+    /* Animation for card entrance */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .col-md-6.mb-4 {
+      animation: fadeInUp 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    /* Add delay for each card */
+    .col-md-6.mb-4:nth-child(1) { animation-delay: 0.1s; }
+    .col-md-6.mb-4:nth-child(2) { animation-delay: 0.2s; }
+    .col-md-6.mb-4:nth-child(3) { animation-delay: 0.3s; }
+    .col-md-6.mb-4:nth-child(4) { animation-delay: 0.4s; }
+    .col-md-6.mb-4:nth-child(5) { animation-delay: 0.5s; }
+    .col-md-6.mb-4:nth-child(6) { animation-delay: 0.6s; }
 block content
   .club-management
     h1.club-header Institutional Clubs Management
-    
-   
-    
     a.btn.btn-primary.btn-add-new.mb-4(href="/cms/institutionclubs/new")
       i.bi.bi-plus-circle.me-2
       | Add New Club

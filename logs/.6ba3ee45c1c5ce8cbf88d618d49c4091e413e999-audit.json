@@ -19,6 +19,11 @@
             "date": 1753420885041,
             "name": "/Users/mac/Desktop/iitm/logs/app-2025-07-25.log",
             "hash": "60d87722f26efb969f51ab7d0bfe682e263f426753502bf250a63a7609ddc602"
+        },
+        {
+            "date": 1753511438438,
+            "name": "/Users/mac/Desktop/iitm/logs/app-2025-07-26.log",
+            "hash": "fc47546178ad83ca0bda80565551bef8dfde0fb42019b6241e8ea346e64ba2da"
         }
     ],
     "hashType": "sha256"

@@ -22,7 +22,7 @@ async function refreshAccreditationMenu() {
     }
   } catch (error) {
     console.error('Error refreshing accreditation menu:', error);
-    
+
   }
 }
 refreshAccreditationMenu();
@@ -37,7 +37,7 @@ const params = mainParams(
     ["Organisation Chart"],
     ["Institutional Committees"],
     ["Institutional Clubs"],
-    ["Accreditation", ...Accreditationsubtitle.map(sub=>sub)],
+    ["Accreditation", ...Accreditationsubtitle.map(sub => sub)],
     [
       "Quality Assurance",
       "About IQAC",
@@ -191,7 +191,7 @@ exports.getOrganisationalChart = async (req, res, next) => {
           `${bannerPath}org-chart-banner.jpg`,
           ""
         ),
-        { 
+        {
           isAuthenticated: req.session.isLoggedIn,
           orgChart // Pass the organizational chart data to the view
         }
@@ -202,35 +202,209 @@ exports.getOrganisationalChart = async (req, res, next) => {
     next(err); // Pass to error handling middleware
   }
 };
+exports.getCommitteeDetails = async (req, res, next) => {
+  try {
+    const committeeId = req.params.id;
+    const pageTitle = 'Committee Details';
 
-exports.getInstitutionalCommittees = (req, res, next) => {
-  res.render(
-    "about/institutional-committees",
-    Object.assign(
-      params(
-        `${pageTitle} - Institutional Committees`,
-        "/institutional-committees",
-        `${bannerPath}institutional-committees-banner.jpg`,
-        ""
-      ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
+    // Fetch the specific committee from database
+    const [committee] = await query(
+      "SELECT * FROM institutional_committees WHERE id = ?", 
+      [committeeId]
+    );
+
+    if (!committee) {
+      const error = new Error('Committee not found');
+      error.httpStatusCode = 404;
+      return next(error);
+    }
+
+    // Process committee data
+    const processedCommittee = {
+      ...committee,
+      members: committee.members 
+        ? committee.members.split('\r\n').filter(m => m.trim() !== '')
+        : [],
+      descriptionPoints: committee.description 
+        ? committee.description.split('\r\n').filter(p => p.trim() !== '')
+        : []
+    };
+
+    res.render(
+      "about/institutinalcommittee-details",
+      Object.assign(
+        params(
+          `${pageTitle} - ${committee.name}`,
+          `/about/institutional-committees/institutionalcommittees/${committeeId}`,
+          `${bannerPath}institutional-committees-banner.jpg`,
+          ""
+        ),
+        { 
+          committee: processedCommittee,
+          isAuthenticated: req.session.isLoggedIn 
+        }
+      )
+    );
+
+  } catch (err) {
+    console.error('Error fetching committee details:', err);
+    const error = new Error('Failed to load committee details');
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+};
+exports.getInstitutionalCommittees = async (req, res, next) => {
+  try {
+    const pageTitle = 'Institutional Committees';
+    
+    // Fetch all committees from database
+    const committees = await query(
+      "SELECT * FROM institutional_committees ORDER BY type, name"
+    );
+
+    // Separate committees by type
+    const statutoryCommittees = committees.filter(c => c.type === 'statutory');
+    const nonStatutoryCommittees = committees.filter(c => c.type === 'non-statutory');
+
+    // Process committee data
+    const processCommittee = (committee) => {
+      return {
+        ...committee,
+        // Generate the detail page URL
+        detailUrl: `/about/institutional-committees/institutionalcommittees/${committee.id}`,
+        members: committee.members 
+          ? committee.members.split('\r\n').filter(m => m.trim() !== '')
+          : [],
+        descriptionPoints: committee.description 
+          ? committee.description.split('\r\n').filter(p => p.trim() !== '')
+          : []
+      };
+    };
+
+    res.render(
+      "about/institutional-committees",
+      Object.assign(
+        params(
+          `${pageTitle} - Institutional Committees`,
+          "/institutional-committees",
+          `${bannerPath}institutional-committees-banner.jpg`,
+          ""
+        ),
+        { 
+          statutoryCommittees: statutoryCommittees.map(processCommittee),
+          nonStatutoryCommittees: nonStatutoryCommittees.map(processCommittee),
+          isAuthenticated: req.session.isLoggedIn 
+        }
+      )
+    );
+
+  } catch (err) {
+    console.error('Error fetching committees:', err);
+    const error = new Error('Failed to load committees data');
+    error.httpStatusCode = 500;
+    return next(error);
+  }
 };
 
-exports.getInstitutionalClubs = (req, res, next) => {
-  res.render(
-    "about/institutional-clubs",
-    Object.assign(
+exports.getInstitutionalClubs = async (req, res, next) => {
+  try {
+    const pageTitle = 'Institutional Clubs';
+    const clubs = await query(
+      "SELECT * FROM institutional_clubs ORDER BY display_order ASC, name ASC"
+    );
+    const processedClubs = clubs.map(club => ({
+      ...club,
+      members: typeof club.members === 'string'
+        ? club.members
+          .split(/\r\n|\n/)
+          .map(member => member.trim())
+          .filter(member => member.length > 0)
+        : [],
+      // Create a URL-friendly slug for each club
+      slug: club.name.toLowerCase().replace(/[^\w\s]/gi, '').replace(/\s+/g, '-')
+    }));
+    
+    const viewData = Object.assign(
       params(
         `${pageTitle} - Institutional Clubs`,
         "/institutional-clubs",
         "/data/imgs/institutional-clubs-banner.jpg",
         ""
       ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
+      {
+        clubs: processedClubs,
+        isAuthenticated: req.session.isLoggedIn
+      }
+    );
+
+    res.render("about/institutional-clubs", viewData);
+
+  } catch (err) {
+    console.error('Error fetching institutional clubs:', err);
+    const error = new Error('Failed to load institutional clubs');
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+};
+
+exports.getClubDetails = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    
+    // Strict validation - must be positive integer
+    if (!id || !/^\d+$/.test(id)) {
+      return res.status(404).send('Not found'); // Simple response for invalid IDs
+    }
+
+    const clubId = parseInt(id, 10);
+    
+    console.log(`Fetching club with ID: ${clubId}`);
+    
+    const [club] = await query(
+      `SELECT * FROM institutional_clubs WHERE id = ? LIMIT 1`,
+      [clubId]
+    );
+
+    if (!club) {
+      return res.status(404).render('error', { 
+        message: 'Club not found',
+        error: { status: 404 }
+      });
+    }
+
+    // Process data safely
+    const processedClub = {
+      ...club,
+      members: club.members && typeof club.members === 'string'
+        ? club.members.split(/\r\n|\n/)
+                   .map(m => m.trim())
+                   .filter(m => m.length > 0)
+        : [],
+      pdf_filepath: club.pdf_filepath || null
+    };
+
+    res.render("about/club-details", {
+      ...params(
+        `${processedClub.name} - Club Details`,
+        `/institutional-clubs/${id}`,
+        "/data/imgs/institutional-clubs-banner.jpg",
+        ""
+      ),
+      club: processedClub,
+      isAuthenticated: req.session.isLoggedIn
+    });
+
+  } catch (err) {
+    console.error('Club details error:', {
+      message: err.message,
+      params: req.params,
+      timestamp: new Date().toISOString()
+    });
+    res.status(500).render('error', {
+      message: 'Failed to load club details',
+      error: { status: 500 }
+    });
+  }
 };
 
 exports.getAccreditations = async (req, res, next) => {
