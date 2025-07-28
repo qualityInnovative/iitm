@@ -1,3 +1,4 @@
+
 extends layouts/base.pug
 
 block styles
@@ -257,7 +258,7 @@ block content
 
         //- If there are no events then show empty container with message
         if events.length == 0
-            .empty-container.padding-top-sm.padding-bottom-xs(style="background-color: white")
+            .empty-container.padding-top-sm.padding-bottom-xs(style="background-color: white;color:black")
                 ion-icon(name="alert-circle-sharp")
                 | No Upcoming Events are Scheduled Yet!
                 br
@@ -279,7 +280,7 @@ block content
                                     img(src=events[i].path)
                                 else
                                     img(src="/data/imgs/image_not_available.jpg")
-                            .latest-events__event--details
+                            .latest-events__event--details(style="white;color:black")
                                 a(href=`/events/id/${events[i].eid}`)
                                     h2 #{events[i].event}
                                 .date 
@@ -306,8 +307,8 @@ block content
 
         //- If there are no events then show empty container with message
         if notifications.length == 0
-            .empty-container.padding-top-xs.padding-bottom-xs(style="background-color: white")
-                ion-icon(name="alert-circle-sharp")
+            .empty-container.padding-top-xs.padding-bottom-xs.text-black(style="background-color: white; color:black")
+                ion-icon(name="alert-circle-sharp" style="color: black")
                 | No Recent Notifications
                 br
                 | Come Back Later 
@@ -686,4 +687,3 @@ block scripts
     script(type="module" src="/scripts/tabs.js") 
     script(src="https://unpkg.com/swiper/swiper-bundle.min.js")
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous")
-
