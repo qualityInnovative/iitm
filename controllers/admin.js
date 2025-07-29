@@ -164,6 +164,7 @@ exports.getEditInstitutionalCommittee = async (req, res) => {
 exports.postEditInstitutionalCommittee = async (req, res) => {
   try {
     const { id, name, type, display_order, removePdf } = req.body;
+    console.log("dsadsadsadsa",req.body);
 
     if (!name || !type) {
       req.session.errorMessage = "Name and type are required";
@@ -173,24 +174,28 @@ exports.postEditInstitutionalCommittee = async (req, res) => {
     const orderValue = display_order === '' ? null : parseInt(display_order);
 
     // Get current file path
-    const [existing] = await query(
+    const existing = await query(
       "SELECT pdf_filepath FROM institutional_committees WHERE id = ?",
       [id]
     );
+    console.log("dsdsdsds",existing)
 
     // Handle file updates
-    let newFilePath = existing[0]?.pdf_filepath;
+    let newFilePath = existing[0]?.pdf_filepath; // Keep existing by default
     let shouldDeleteOldFile = false;
 
     if (req.file) {
+      // New file uploaded - replace existing
       newFilePath = `/uploads/committees/${req.file.filename}`;
       shouldDeleteOldFile = true;
     } else if (removePdf === '1') {
+      // Remove PDF requested
       newFilePath = null;
       shouldDeleteOldFile = true;
     }
+    // Else: No file changes - keep existing file as is
 
-    // Update query without description and members
+    // Update query
     const updateQuery = `
       UPDATE institutional_committees 
       SET name = ?, 
@@ -209,7 +214,7 @@ exports.postEditInstitutionalCommittee = async (req, res) => {
       id
     ]);
 
-    // Clean up old file if needed
+    // Only delete old file if we're replacing or removing it
     if (shouldDeleteOldFile && existing[0]?.pdf_filepath) {
       const oldPath = path.join(__dirname, '../public', existing[0].pdf_filepath);
       if (fs.existsSync(oldPath)) {
@@ -221,6 +226,7 @@ exports.postEditInstitutionalCommittee = async (req, res) => {
     return res.redirect("/cms/admininstitutionalcommittees");
   } catch (err) {
     console.error("Error updating committee:", err);
+    // Clean up newly uploaded file if error occurred
     if (req.file?.path && fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path);
     }
@@ -359,10 +365,10 @@ exports.getEditInstitutionalClub = async (req, res) => {
 // Update club
 exports.postEditInstitutionalClub = async (req, res) => {
   try {
-    const { id, name, display_order, description, members, removePdf } = req.body;
+    const { id, name, display_order, removePdf } = req.body;
 
-    if (!name || !members) {
-      req.session.errorMessage = "Name and members are required";
+    if (!name ) {
+      req.session.errorMessage = "Name are required";
       return res.redirect(`/cms/institutionclubs/edit/${id}`);
     }
 
@@ -399,7 +405,8 @@ exports.postEditInstitutionalClub = async (req, res) => {
     `, [
       name,
       orderValue,
-     
+      " ",
+      " ",
       ...(pdf_filepath !== undefined ? [pdf_filepath] : []),
       id
     ]);
