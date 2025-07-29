@@ -302,19 +302,34 @@ exports.getLibrary = (req, res, next) => {
 };
 
 // Route to labs
-exports.getAcademicCalendar = (req, res, next) => {
-  res.render(
-    `academics/academic-calendar`,
-    Object.assign(
-      params(
-        `${pageTitle} - Academic Calendar`,
-        `/academic-calendar`,
-        "/data/imgs/academic-calendar-banner.jpg",
-        ""
-      ),
-      { isAuthenticated: req.session.isLoggedIn }
-    )
-  );
+exports.getAcademicCalendar = async (req, res, next) => {
+  try {
+    // Get the academic calendar data
+    const [academicCalendar] = await query(`
+      SELECT * FROM academiccalendars 
+      WHERE id = 1
+      LIMIT 1
+    `);
+
+    // Render the page with calendar data
+    res.render('academics/academic-calendar', 
+      Object.assign(
+        params(
+          `${pageTitle} - Academic Calendar`,
+          `/academic-calendar`,
+          "/data/imgs/academic-calendar-banner.jpg",
+          ""
+        ),
+        { 
+          isAuthenticated: req.session.isLoggedIn,
+          academicCalendar: academicCalendar || null
+        }
+      )
+    );
+  } catch (err) {
+    console.error("Error fetching academic calendar:", err);
+    next(err); // Pass to error handler middleware
+  }
 };
 
 // Route to syllabus

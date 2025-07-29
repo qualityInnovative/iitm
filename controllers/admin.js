@@ -63,8 +63,84 @@ exports.uploadMoM = multer({
     }
   }
 }).single('pdf');
+// .getacademiccalendar
+exports.getAcademicCalendar = async (req, res) => {
+  try {
+    const [academicCalendar] = await query(`
+      SELECT * FROM academiccalendars 
+      WHERE id = 1
+      LIMIT 1
+    `);
 
+    res.render('admin/admingetacademiccalendar', {
+      academicCalendar: academicCalendar || null,
+      successMessage: req.session.successMessage,
+      errorMessage: req.session.errorMessage
+    });
 
+    delete req.session.successMessage;
+    delete req.session.errorMessage;
+  } catch (err) {
+    console.error("Error fetching academic calendar:", err);
+    req.session.errorMessage = "Failed to load academic calendar";
+    res.redirect("/cms/admin-cms");
+  }
+};
+
+exports.postAcademicCalendar = async (req, res) => {
+  try {
+    const { description, removePdf } = req.body;
+    
+    const [existing] = await query(`
+      SELECT * FROM academiccalendars 
+      WHERE id = 1
+      LIMIT 1
+    `);
+
+    let pdfPath = existing?.pdf_filepath;
+    let shouldDeleteOldFile = false;
+
+    if (req.file) {
+      pdfPath = `/uploads/academic-calendars/${req.file.filename}`;
+      shouldDeleteOldFile = true;
+    } else if (removePdf === '1') {
+      pdfPath = null;
+      shouldDeleteOldFile = true;
+    }
+
+    if (existing) {
+      await query(`
+        UPDATE academiccalendars 
+        SET description = ?, 
+            pdf_filepath = ?,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = 1
+      `, [description, pdfPath]);
+    } else {
+      await query(`
+        INSERT INTO academiccalendars (id, description, pdf_filepath)
+        VALUES (1, ?, ?)
+      `, [description, pdfPath]);
+    }
+
+    if (shouldDeleteOldFile && existing?.pdf_filepath) {
+      const oldPath = path.join(__dirname, '../../public', existing.pdf_filepath);
+      if (fs.existsSync(oldPath)) {
+        fs.unlinkSync(oldPath);
+      }
+    }
+
+    req.session.successMessage = "Academic calendar updated successfully";
+    res.redirect("/cms/academiccalendar");
+  } catch (err) {
+    console.error("Error saving academic calendar:", err);
+    if (req.file?.path && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+    req.session.errorMessage = "Failed to save academic calendar";
+    res.redirect("/cms/academiccalendar");
+  }
+};
 
 exports.getAllInstitutionalCommittees = async (req, res) => {
   try {

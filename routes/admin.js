@@ -13,6 +13,7 @@ const router = express.Router();
 const { uploadAdmission } = require('./../controllers/upload')
 const {uploadCommitteeDoc} =require('./../controllers/uploadCommitteeDoc')
 const { uploadClubDoc } = require('./../controllers/uploadClubDoc');
+const {uploadAcademicCalendar} = require("./../controllers/uploadAcademicCalendar")
 // CMS ADMIN ROUTE
 router.get("/cms/admin-cms", adminController.getAdminDash);
 
@@ -29,6 +30,12 @@ router.post(
 );
 
 // Edit committee 
+
+router.get("/cms/academiccalendar",adminController.getAcademicCalendar)
+router.post('/cms/academiccalendar', 
+  uploadAcademicCalendar.single('pdf'), 
+  adminController.postAcademicCalendar
+);
 router.post(
   "/cms/institutioncommittees/edit/:id",
   uploadCommitteeDoc,
