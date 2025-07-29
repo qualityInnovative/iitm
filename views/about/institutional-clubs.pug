@@ -47,15 +47,4 @@ block content
                   img(src="/data/imgs/criteria.png", alt=club.name)
                   div
                     h2= club.name
-                .club-meta
-                    svg.club-icon(xmlns='http://www.w3.org/2000/svg' viewbox='0 0 512 512')
-                        path(fill="currentColor", d='M304...')
                 
-                    - const members = typeof club.members === 'string' ? club.members.split(',') : []
-                    
-                    if members.length > 0
-                        .member-list
-                        each member in members
-                            div= member.trim()
-                    else
-                        span No members yet
