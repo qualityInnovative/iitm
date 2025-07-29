@@ -105,15 +105,14 @@ exports.getAddInstitutionalCommittee = (req, res) => {
 // Create new institutional committee
 exports.postAddInstitutionalCommittee = async (req, res) => {
   try {
-    const { name, type, display_order, description, members } = req.body;
+    const { name, type, display_order } = req.body;
 
-    if (!name || !type || !members) {
-      req.session.errorMessage = "Name, type and members are required";
+    if (!name || !type ) {
+      req.session.errorMessage = "Name, type are required";
       return res.redirect("/cms/institutioncommittees/new");
     }
 
-    const cleanDescription = description ? sanitizeHtml(description) : null;
-    const cleanMembers = sanitizeHtml(members);
+   
     const pdf_filepath = req.file ? `/uploads/committees/${req.file.filename}` : null;
     const orderValue = display_order === '' ? null : parseInt(display_order);
 
@@ -121,7 +120,7 @@ exports.postAddInstitutionalCommittee = async (req, res) => {
       INSERT INTO institutional_committees 
       (name, type, display_order, description, members, pdf_filepath)
       VALUES (?, ?, ?, ?, ?, ?)
-    `, [name, type, orderValue, cleanDescription, cleanMembers, pdf_filepath]);
+    `, [name, type, orderValue, "KHJKH","JHKJHJH",pdf_filepath]);
 
     req.session.successMessage = "Committee created successfully";
     res.redirect("/cms/admininstitutionalcommittees");
@@ -164,27 +163,23 @@ exports.getEditInstitutionalCommittee = async (req, res) => {
 
 exports.postEditInstitutionalCommittee = async (req, res) => {
   try {
-    const { id, name, type, display_order, description, members, removePdf } = req.body;
-    console.log('Request Body:', req.body);
+    const { id, name, type, display_order, removePdf } = req.body;
 
-    if (!name || !type || !members) {
-      req.session.errorMessage = "Name, type and members are required";
+    if (!name || !type) {
+      req.session.errorMessage = "Name and type are required";
       return res.redirect(`/cms/institutioncommittees/edit/${id}`);
     }
 
-    const cleanDescription = description ? sanitizeHtml(description) : null;
-    const cleanMembers = sanitizeHtml(members);
     const orderValue = display_order === '' ? null : parseInt(display_order);
 
-    // Get current file path before making changes
+    // Get current file path
     const [existing] = await query(
       "SELECT pdf_filepath FROM institutional_committees WHERE id = ?",
       [id]
     );
-    console.log('Existing file:', existing);
 
-    // Determine new file path
-    let newFilePath = existing[0]?.pdf_filepath; // Keep existing by default
+    // Handle file updates
+    let newFilePath = existing[0]?.pdf_filepath;
     let shouldDeleteOldFile = false;
 
     if (req.file) {
@@ -195,43 +190,33 @@ exports.postEditInstitutionalCommittee = async (req, res) => {
       shouldDeleteOldFile = true;
     }
 
-    // Build update query
+    // Update query without description and members
     const updateQuery = `
       UPDATE institutional_committees 
       SET name = ?, 
           type = ?, 
           display_order = ?, 
-          description = ?, 
-          members = ?,
           pdf_filepath = ?,
           updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `;
 
-    const queryParams = [
+    await query(updateQuery, [
       name,
       type,
       orderValue,
-      cleanDescription,
-      cleanMembers,
       newFilePath,
       id
-    ];
+    ]);
 
-    console.log('Update Query:', updateQuery);
-    console.log('Query Parameters:', queryParams);
-
-    // Execute update
-    await query(updateQuery, queryParams);
-
-    // Delete old file if needed
+    // Clean up old file if needed
     if (shouldDeleteOldFile && existing[0]?.pdf_filepath) {
       const oldPath = path.join(__dirname, '../public', existing[0].pdf_filepath);
       if (fs.existsSync(oldPath)) {
         fs.unlinkSync(oldPath);
-        console.log('Old file deleted successfully');
       }
     }
+
     req.session.successMessage = "Committee updated successfully";
     return res.redirect("/cms/admininstitutionalcommittees");
   } catch (err) {
@@ -317,15 +302,12 @@ exports.getAddInstitutionalClub = (req, res) => {
 // Create new club
 exports.postAddInstitutionalClub = async (req, res) => {
   try {
-    const { name, display_order, description, members } = req.body;
+    const { name, display_order } = req.body;
 
-    if (!name || !members) {
-      req.session.errorMessage = "Name and members are required";
-      return res.redirect("/cms/institutionclubs/new");
-    }
+  
 
-    const cleanDescription = description ? sanitizeHtml(description) : null;
-    const cleanMembers = sanitizeHtml(members);
+   
+   
     const pdf_filepath = req.file ? `/uploads/clubs/${req.file.filename}` : null;
     const orderValue = display_order === '' ? null : parseInt(display_order);
 
@@ -333,7 +315,7 @@ exports.postAddInstitutionalClub = async (req, res) => {
       INSERT INTO institutional_clubs 
       (name, display_order, description, members, pdf_filepath)
       VALUES (?, ?, ?, ?, ?)
-    `, [name, orderValue, cleanDescription, cleanMembers, pdf_filepath]);
+    `, [name, orderValue," "," ", pdf_filepath]);
 
     req.session.successMessage = "Club created successfully";
     res.redirect("/cms/admininstitutionalclubs");
@@ -384,8 +366,7 @@ exports.postEditInstitutionalClub = async (req, res) => {
       return res.redirect(`/cms/institutionclubs/edit/${id}`);
     }
 
-    const cleanDescription = description ? sanitizeHtml(description) : null;
-    const cleanMembers = sanitizeHtml(members);
+    
     const orderValue = display_order === '' ? null : parseInt(display_order);
 
     let pdf_filepath = undefined;
@@ -418,8 +399,7 @@ exports.postEditInstitutionalClub = async (req, res) => {
     `, [
       name,
       orderValue,
-      cleanDescription,
-      cleanMembers,
+     
       ...(pdf_filepath !== undefined ? [pdf_filepath] : []),
       id
     ]);
