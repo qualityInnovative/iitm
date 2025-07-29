@@ -122,7 +122,7 @@ block content
   .committee-management
     h1.committee-header Institutional Committees Management
     
-    a.btn.btn-primary.btn-add-new.mb-4(href="/cms/institutioncommittees/new")
+    a.btn.btn-secoundry.mb-4(href="/cms/institutioncommittees/new")
       i.bi.bi-plus-circle.me-2
       | Add New Committee
     
@@ -138,9 +138,9 @@ block content
                   span.badge.badge-primary.badge-type= committee.type
                   if committee.display_order
                     span.badge.badge-secondary.order-badge Order: #{committee.display_order}
-                p.card-text.text-muted.mb-3= committee.description
-                h6.font-weight-bold Members:
-                p.members-list.mb-3= committee.members
+                //- p.card-text.text-muted.mb-3= committee.description
+                //- h6.font-weight-bold Members:
+                //- p.members-list.mb-3= committee.members
                 
                 if committee.pdf_filepath
                   .documents-list
@@ -154,11 +154,11 @@ block content
                           span.upload-date= new Date(committee.updated_at).toLocaleDateString()
                 
                 .action-buttons
-                  a.btn.btn-info.btn-edit(href=`/cms/institutioncommittees/edit/${committee.id}`)
+                  a.btn(href=`/cms/institutioncommittees/edit/${committee.id}`)
                     i.bi.bi-pencil.me-1
                     | Edit
                   form.d-inline(method="POST" action=`/cms/institutioncommittees/delete/${committee.id}`)
-                    button.btn.btn-danger(type="submit" onclick="return confirm('Are you sure you want to delete this committee?')")
+                    button.btn(type="submit" onclick="return confirm('Are you sure you want to delete this committee?')")
                       i.bi.bi-trash.me-1
                       | Delete
     else

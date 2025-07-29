@@ -239,21 +239,21 @@ block content
         )
         small.text-muted Optional. Lower numbers appear first.
 
-      .form-group
-        label.form-label(for="description") Description
-        textarea.form-control.form-textarea(
-          name="description",
-          id="description"
-        )= committee ? committee.description : ''
+      //- .form-group
+      //-   label.form-label(for="description") Description
+      //-   textarea.form-control.form-textarea(
+      //-     name="description",
+      //-     id="description"
+      //-   )= committee ? committee.description : ''
 
-      .form-group
-        label.form-label.required(for="members") Members (one per line)
-        textarea.form-control.form-textarea(
-          name="members",
-          id="members",
-          required,
-          style="white-space: pre"
-        )= committee ? committee.members : ''
+      //- .form-group
+      //-   label.form-label.required(for="members") Members (one per line)
+      //-   textarea.form-control.form-textarea(
+      //-     name="members",
+      //-     id="members",
+      //-     required,
+      //-     style="white-space: pre"
+      //-   )= committee ? committee.members : ''
 
       .form-group
         label.form-label(for="pdf") Committee Document (PDF)

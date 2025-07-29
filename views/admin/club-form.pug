@@ -63,21 +63,21 @@ block content
         )
         small.text-muted Optional. Lower numbers appear first.
 
-      .form-group
-        label.form-label(for="description") Description
-        textarea.form-control.form-textarea(
-          name="description",
-          id="description"
-        )= club ? club.description : ''
+      //- .form-group
+      //-   label.form-label(for="description") Description
+      //-   textarea.form-control.form-textarea(
+      //-     name="description",
+      //-     id="description"
+      //-   )= club ? club.description : ''
 
-      .form-group
-        label.form-label.required(for="members") Members (one per line)
-        textarea.form-control.form-textarea(
-          name="members",
-          id="members",
+      //- .form-group
+      //-   label.form-label.required(for="members") Members (one per line)
+      //-   textarea.form-control.form-textarea(
+      //-     name="members",
+      //-     id="members",
           
-          style="white-space: pre"
-        )= club ? club.members : ''
+      //-     style="white-space: pre"
+      //-   )= club ? club.members : ''
 
       .form-group
         label.form-label(for="pdf") Club Document (PDF)
