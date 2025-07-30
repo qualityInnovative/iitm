@@ -10,14 +10,8 @@ block content
             div
                 h1.page-heading Academic Calendar
 
-                p Our academic calendar is closely aligned with the academic schedule set by Kashmir University, with which our college is proudly affiliated. The university determines key academic events, including semester breaks, class schedules, important deadlines, and graduation and commencement ceremonies. As a result, our students benefit from a structured and comprehensive academic experience that is in line with the university's academic standards.
-
-                .line-above-heading
-                h2.heading-with-top-border Holidays and Celebrations
                 p=academicCalendar.description
-
                 .line-above-heading
-                h2.heading-with-top-border Holiday Calendar for the Current Year
                 if academicCalendar && academicCalendar.pdf_filepath
                     iframe.pdf-viewer.margin-top-xs.hidden(src=`${academicCalendar.pdf_filepath}`)
                     .pdf.margin-top-sm.hidden
