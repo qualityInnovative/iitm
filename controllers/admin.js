@@ -63,7 +63,10 @@ exports.uploadMoM = multer({
     }
   }
 }).single('pdf');
-// .getacademiccalendar
+
+
+
+
 exports.getAcademicCalendar = async (req, res) => {
   try {
     const [academicCalendar] = await query(`
@@ -90,7 +93,7 @@ exports.getAcademicCalendar = async (req, res) => {
 exports.postAcademicCalendar = async (req, res) => {
   try {
     const { description, removePdf } = req.body;
-    
+
     const [existing] = await query(`
       SELECT * FROM academiccalendars 
       WHERE id = 1
@@ -183,12 +186,12 @@ exports.postAddInstitutionalCommittee = async (req, res) => {
   try {
     const { name, type, display_order } = req.body;
 
-    if (!name || !type ) {
+    if (!name || !type) {
       req.session.errorMessage = "Name, type are required";
       return res.redirect("/cms/institutioncommittees/new");
     }
 
-   
+
     const pdf_filepath = req.file ? `/uploads/committees/${req.file.filename}` : null;
     const orderValue = display_order === '' ? null : parseInt(display_order);
 
@@ -196,7 +199,7 @@ exports.postAddInstitutionalCommittee = async (req, res) => {
       INSERT INTO institutional_committees 
       (name, type, display_order, description, members, pdf_filepath)
       VALUES (?, ?, ?, ?, ?, ?)
-    `, [name, type, orderValue, "KHJKH","JHKJHJH",pdf_filepath]);
+    `, [name, type, orderValue, "KHJKH", "JHKJHJH", pdf_filepath]);
 
     req.session.successMessage = "Committee created successfully";
     res.redirect("/cms/admininstitutionalcommittees");
@@ -240,7 +243,7 @@ exports.getEditInstitutionalCommittee = async (req, res) => {
 exports.postEditInstitutionalCommittee = async (req, res) => {
   try {
     const { id, name, type, display_order, removePdf } = req.body;
-    console.log("dsadsadsadsa",req.body);
+    console.log("dsadsadsadsa", req.body);
 
     if (!name || !type) {
       req.session.errorMessage = "Name and type are required";
@@ -254,7 +257,7 @@ exports.postEditInstitutionalCommittee = async (req, res) => {
       "SELECT pdf_filepath FROM institutional_committees WHERE id = ?",
       [id]
     );
-    console.log("dsdsdsds",existing)
+    console.log("dsdsdsds", existing)
 
     // Handle file updates
     let newFilePath = existing[0]?.pdf_filepath; // Keep existing by default
@@ -386,10 +389,10 @@ exports.postAddInstitutionalClub = async (req, res) => {
   try {
     const { name, display_order } = req.body;
 
-  
 
-   
-   
+
+
+
     const pdf_filepath = req.file ? `/uploads/clubs/${req.file.filename}` : null;
     const orderValue = display_order === '' ? null : parseInt(display_order);
 
@@ -397,7 +400,7 @@ exports.postAddInstitutionalClub = async (req, res) => {
       INSERT INTO institutional_clubs 
       (name, display_order, description, members, pdf_filepath)
       VALUES (?, ?, ?, ?, ?)
-    `, [name, orderValue," "," ", pdf_filepath]);
+    `, [name, orderValue, " ", " ", pdf_filepath]);
 
     req.session.successMessage = "Club created successfully";
     res.redirect("/cms/admininstitutionalclubs");
@@ -443,12 +446,12 @@ exports.postEditInstitutionalClub = async (req, res) => {
   try {
     const { id, name, display_order, removePdf } = req.body;
 
-    if (!name ) {
+    if (!name) {
       req.session.errorMessage = "Name are required";
       return res.redirect(`/cms/institutionclubs/edit/${id}`);
     }
 
-    
+
     const orderValue = display_order === '' ? null : parseInt(display_order);
 
     let pdf_filepath = undefined;

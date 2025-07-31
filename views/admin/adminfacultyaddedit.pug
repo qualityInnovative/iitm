@@ -1,0 +1,360 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  link(href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet")
+  link(href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet")
+  style.
+    /* Faculty Form Styles */
+    .faculty-form-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    .form-header {
+      color: #1e3a8a;
+      border-bottom: 2px solid #3b82f6;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    .image-preview {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #e5e7eb;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    
+    .file-upload-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .file-upload-wrapper {
+      flex: 1;
+    }
+    
+    .file-upload-btn {
+      background: #f3f4f6;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+      margin-bottom: 0.5rem;
+    }
+    
+    .file-upload-btn:hover {
+      background: #e5e7eb;
+    }
+    
+    .file-name {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-left: 0.5rem;
+    }
+    
+    .required-field::after {
+      content: '*';
+      color: #ef4444;
+      margin-left: 0.25rem;
+    }
+    
+    .current-file {
+      display: flex;
+      align-items: center;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .current-file a {
+      color: #3b82f6;
+      text-decoration: none;
+      margin-left: 0.5rem;
+    }
+    
+    .current-file a:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      .file-upload-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .image-preview {
+        width: 100px;
+        height: 100px;
+      }
+    }
+
+block content
+  .faculty-form-container
+    h2.form-header= isEditMode ? 'Edit Faculty Member' : 'Add New Faculty Member'
+    
+    if errorMessage
+      .alert.alert-danger.mb-4= errorMessage
+    
+    form(
+      method="POST" 
+      action=isEditMode ? `/cms/adminfaculty/save/${faculty.faculty_id}` : "/cms/adminfaculty/save"
+      enctype="multipart/form-data"
+      onsubmit="return validateForm()"
+    )
+      input(type="hidden" name="faculty_id" value=faculty ? faculty.faculty_id : '')
+      
+      // Profile Image Upload
+      .file-upload-container
+        div
+          if faculty && faculty.profile_image
+            img.image-preview(src=faculty.profile_image id="imagePreview" alt="Profile Preview")
+          else
+            img.image-preview(src="/images/default-profile.png" id="imagePreview" alt="Profile Preview")
+        
+        .file-upload-wrapper
+          label.form-label Profile Image
+          input(type="file" name="profile_image" id="imageUpload" accept="image/*" style="display: none")
+          label.file-upload-btn(for="imageUpload")
+            i.bi.bi-cloud-arrow-up
+            span= faculty && faculty.profile_image ? 'Change Image' : 'Upload Image'
+          span.file-name(id="imageFileName")
+      
+      // Resume Upload
+      .file-upload-container
+        .file-upload-wrapper
+          label.form-label Resume (PDF)
+          input(type="file" name="resume_file" id="resumeUpload" accept=".pdf" style="display: none")
+          label.file-upload-btn(for="resumeUpload")
+            i.bi.bi-file-earmark-pdf
+            span= faculty && faculty.resume_path ? 'Change Resume' : 'Upload Resume'
+          span.file-name(id="resumeFileName")
+          
+          if faculty && faculty.resume_path
+            .current-file
+              i.bi.bi-check-circle-fill.text-success
+              span Current file: 
+              a(href=faculty.resume_path target="_blank" rel="noopener noreferrer") View PDF
+      
+      .row
+        .col-md-6
+          .form-group
+            label.form-label.required-field Full Name
+            input.form-control(
+              type="text" 
+              name="full_name" 
+              required
+              value=faculty ? faculty.full_name : ''
+              placeholder="Enter full name"
+            )
+        
+        .col-md-6
+          .form-group
+            label.form-label.required-field Position
+            input.form-control(
+              type="text" 
+              name="position" 
+              required
+              value=faculty ? faculty.position : ''
+              placeholder="e.g. Assistant Professor"
+            )
+      
+      .row
+        .col-md-6
+          .form-group
+            label.form-label.required-field Department
+            select.form-control(name="department" required)
+              option(value="" disabled selected) Select Department
+              option(value="Computer Science" selected=faculty && faculty.department === 'Computer Science') Computer Science
+              option(value="Business Administration" selected=faculty && faculty.department === 'Business Administration') Business Administration
+        
+        .col-md-6
+          .form-group
+            label.form-label.required-field Experience
+            input.form-control(
+              type="text" 
+              name="experience" 
+              required
+              value=faculty ? faculty.experience : ''
+              placeholder="e.g. 5 years"
+            )
+      
+      .form-group
+        label.form-label.required-field Specialization
+        input.form-control(
+          type="text" 
+          name="specialization" 
+          required
+          value=faculty ? faculty.specialization : ''
+          placeholder="e.g. Operating Systems, IoT"
+        )
+      
+      // New Education Field
+      .form-group
+        label.form-label Education
+        input.form-control(
+          type="text" 
+          name="education" 
+          value=faculty ? faculty.education : ''
+          placeholder="e.g. PhD in Computer Science, University of XYZ"
+        )
+      
+      .row
+        .col-md-6
+          .form-group
+            label.form-label.required-field Email
+            input.form-control(
+              type="email" 
+              name="email" 
+              required
+              value=faculty ? faculty.email : ''
+              placeholder="faculty@example.com"
+            )
+        
+        .col-md-6
+          .form-group
+            label.form-label Phone
+            input.form-control(
+              type="tel" 
+              name="phone" 
+              value=faculty ? faculty.phone : ''
+              placeholder="+1 (123) 456-7890"
+            )
+      
+      .form-group
+        label.form-label Display Order
+        input.form-control(
+          type="number" 
+          name="order" 
+          min="1"
+          value=faculty ? faculty.order : (nextOrder || '1')
+          placeholder="Display order number"
+        )
+        small.text-muted Lower numbers appear first in listings
+      
+      .form-actions
+        a.cms-btn.cms-btn-secondary(href="/cms/adminfaculty")
+          i.bi.bi-x-circle
+          span Cancel
+        button.cms-btn.cms-btn-primary(type="submit")
+          i.bi.bi-save
+          span= isEditMode ? 'Update Faculty' : 'Add Faculty'
+
+block scripts
+  script.
+    // Form validation
+    function validateForm() {
+      console.log('Form validation running...');
+      const imageFile = document.getElementById('imageUpload').files[0];
+      const resumeFile = document.getElementById('resumeUpload').files[0];
+      
+      if (imageFile && !imageFile.type.startsWith('image/')) {
+        alert('Please upload a valid image file for profile picture');
+        return false;
+      }
+      
+      if (resumeFile && resumeFile.type !== 'application/pdf') {
+        alert('Please upload a PDF file for resume');
+        return false;
+      }
+      
+      return true;
+    }
+
+    // Image preview functionality
+    const imageUpload = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const imageFileName = document.getElementById('imageFileName');
+    
+    imageUpload.addEventListener('change', function(e) {
+      console.log('Image file selected:', e.target.files[0]);
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          imagePreview.src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+        imageFileName.textContent = file.name;
+      } else {
+        imageFileName.textContent = '';
+      }
+    });
+    
+    // Resume file name display
+    const resumeUpload = document.getElementById('resumeUpload');
+    const resumeFileName = document.getElementById('resumeFileName');
+    
+    resumeUpload.addEventListener('change', function(e) {
+      console.log('Resume file selected:', e.target.files[0]);
+      const file = e.target.files[0];
+      if (file) {
+        resumeFileName.textContent = file.name;
+        
+        // Hide current file display when new file is selected
+        const currentFileDisplay = document.querySelector('.current-file');
+        if (currentFileDisplay) {
+          currentFileDisplay.style.display = 'none';
+        }
+      } else {
+        resumeFileName.textContent = '';
+      }
+    });
+    
+    // Initialize file names if editing
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Form initialized');
+      if (imageUpload.files.length > 0) {
+        imageFileName.textContent = imageUpload.files[0].name;
+      }
+      if (resumeUpload.files.length > 0) {
+        resumeFileName.textContent = resumeUpload.files[0].name;
+      }
+    });

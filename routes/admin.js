@@ -9,6 +9,7 @@ const o = require("../controllers/organizationalchartStorage");
 const uploadAQARDocument =adminController.uploaddocument
 const adminaccreditationscontroller=require("../controllers/adminaccreditationscontroller")
 const router = express.Router();
+const facultyController= require("../controllers/faculty")
 
 const { uploadAdmission } = require('./../controllers/upload')
 const {uploadCommitteeDoc} =require('./../controllers/uploadCommitteeDoc')
@@ -16,6 +17,36 @@ const { uploadClubDoc } = require('./../controllers/uploadClubDoc');
 const {uploadAcademicCalendar} = require("./../controllers/uploadAcademicCalendar")
 // CMS ADMIN ROUTE
 router.get("/cms/admin-cms", adminController.getAdminDash);
+
+
+
+// View all faculty
+router.get("/cms/adminfaculty", facultyController.getFaculty);
+
+// View add form
+router.get("/cms/adminfaculty/new", facultyController.getFacultyForm);
+
+// View edit form
+router.get("/cms/adminfaculty/edit/:id", facultyController.getFacultyForm);
+
+// Handle form submission (for both create and update)
+router.post("/cms/adminfaculty/save", 
+    facultyController.uploadFacultyFiles,
+    facultyController.saveFaculty
+);
+
+router.post("/cms/adminfaculty/save/:id", 
+    facultyController.uploadFacultyFiles,
+    facultyController.saveFaculty
+);
+
+// Update faculty order
+router.post("/cms/adminfaculty/update-order", 
+    facultyController.updateFacultyOrder
+);
+
+// Delete faculty
+router.post("/cms/adminfaculty/delete/:id", facultyController.deleteFaculty);
 
 router.get("/cms/admininstitutionalcommittees", adminController.getAllInstitutionalCommittees);
 router.get("/cms/institutioncommittees/new", adminController.getAddInstitutionalCommittee);

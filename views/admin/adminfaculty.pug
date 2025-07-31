@@ -1,0 +1,386 @@
+extends ../layouts/cms-base.pug
+
+block styles
+  link(href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet")
+  link(href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet")
+  style.
+    /* Faculty Management Dashboard - Table Style */
+    .faculty-container {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      max-width: 1400px;
+      padding: 1.5rem;
+      margin: 0 auto;
+      color: #1a1a1a;
+    }
+    
+    .faculty-header {
+      color: #1e3a8a;
+      border-bottom: 2px solid #3b82f6;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      font-size: 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* Table Styles */
+    .faculty-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    
+    .faculty-table thead th {
+      background-color: #1e40af;
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      position: sticky;
+      top: 0;
+    }
+    
+    .faculty-table tbody tr {
+      transition: background-color 0.2s ease;
+    }
+    
+    .faculty-table tbody tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    
+    .faculty-table tbody tr:hover {
+      background-color: #eff6ff;
+    }
+    
+    .faculty-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: middle;
+    }
+    
+    .faculty-profile {
+      display: flex;
+      align-items: center;
+    }
+    
+    .faculty-img-container {
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    .faculty-education {
+      background: #f5f3ff;
+      color: #5b21b6;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      display: inline-block;
+      border-left: 2px solid #a78bfa;
+    }
+    
+    .faculty-img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 1px solid #e5e7eb;
+      background-color: #f8fafc;
+    }
+    
+    .faculty-info {
+      min-width: 0;
+    }
+    .alert-dismissible {
+      position: relative;
+      padding-right: 3rem;
+    }
+    .btn-close {
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      opacity: 0.75;
+      cursor: pointer;
+    }
+    .btn-close:hover {
+      opacity: 1;
+    }
+    
+    .faculty-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 0.1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .faculty-position {
+      color: #64748b;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .faculty-department {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    
+    .faculty-specialization {
+      background: #f0fdf4;
+      color: #166534;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      display: inline-block;
+      border-left: 2px solid #86efac;
+    }
+    
+    .faculty-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .sortable-handle {
+      cursor: move;
+      color: #64748b;
+      transition: color 0.2s;
+      font-size: 1rem;
+      padding: 0.25rem;
+    }
+    
+    .sortable-handle:hover {
+      color: #334155;
+    }
+    
+    /* Department Section */
+    .department-section {
+      margin-bottom: 2rem;
+    }
+    
+    .department-heading {
+      color: #1e40af;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+    
+    /* Empty State */
+    .empty-state {
+      background-color: #f0f9ff;
+      border: 1px dashed #bae6fd;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .empty-state-icon {
+      font-size: 2.5rem;
+      color: #3b82f6;
+      margin-bottom: 0.75rem;
+    }
+    
+    /* Responsive Table */
+    @media (max-width: 768px) {
+      .faculty-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      
+      .faculty-container {
+        padding: 1rem;
+      }
+      
+      .faculty-header {
+        font-size: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      
+      .faculty-img {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+block content
+  .faculty-container
+    .faculty-header
+      span Faculty Management
+      a.cms-btn.cms-btn-primary(href="/cms/adminfaculty/new")
+        i.bi.bi-plus-circle.cms-btn-icon
+        | Add Faculty
+    
+   
+    
+    if successMessage
+      .alert.alert-success.mb-3.alert-dismissible.fade.show(role="alert")= successMessage
+        button.btn-close(type="button" aria-label="Close") &times;
+    
+    if errorMessage
+      .alert.alert-danger.mb-3.alert-dismissible.fade.show(role="alert")= errorMessage
+        button.btn-close(type="button" aria-label="Close") &times;
+    
+    
+    if Object.keys(faculty).length > 0
+      each departmentMembers, department in faculty
+        .department-section
+          h2.department-heading= department
+            small.text-muted.ms-2 (Drag to reorder)
+          
+          .table-responsive
+            table.faculty-table.sortable-faculty(data-department=department)
+              thead
+                tr
+                  th(style="width: 30%") Faculty Member
+                  th(style="width: 20%") Department
+                  th(style="width: 20%") Specialization
+                  th(style="width: 15%") Education
+                  th(style="width: 20%") Contact
+                  th(style="width: 10%") Actions
+              tbody
+                each member in departmentMembers
+                  tr(
+                    data-id=member.faculty_id
+                    data-order=member.order
+                  )
+                    td
+                      .faculty-profile
+                        .faculty-img-container
+                          if member.profile_image
+                            img.faculty-img(
+                              src=member.profile_image 
+                              alt=`${member.full_name}`
+                              loading="lazy"
+                            )
+                          else
+                            .faculty-img.d-flex.align-items-center.justify-content-center
+                              i.bi.bi-person.text-muted(style="font-size: 1.25rem")
+                        .faculty-info
+                          .faculty-name= member.full_name
+                          .faculty-position= member.position
+                    td
+                      span.faculty-department= member.department
+                    td
+                      if member.specialization
+                        span.faculty-specialization= member.specialization
+                    td
+                      if member.education
+                        span.faculty-education= member.education
+                        
+                    td
+                      if member.email
+                        div
+                          a(href=`mailto:${member.email}`)= member.email
+                      if member.phone
+                        div= member.phone
+                    td
+                      .faculty-actions
+                        i.bi.bi-grip-vertical.sortable-handle(
+                          title="Drag to reorder"
+                          aria-label="Drag to reorder"
+                        )
+                        a.cms-btn.cms-btn-edit(
+                          href=`/cms/adminfaculty/edit/${member.faculty_id}`
+                          aria-label=`Edit ${member.full_name}`
+                        )
+                          i.bi.bi-pencil
+                        a.cms-btn.cms-btn-danger(
+                          href=`/cms/adminfaculty/delete/${member.faculty_id}`
+                          onclick="return confirm('Are you sure you want to delete this faculty member?')"
+                          aria-label=`Delete ${member.full_name}`
+                        )
+                          i.bi.bi-trash
+    else
+      .empty-state
+        i.bi.bi-people.empty-state-icon
+        h4 No Faculty Members
+        p.mb-3 Add faculty members to get started
+        a.cms-btn.cms-btn-primary(href="/cms/adminfaculty/new")
+          i.bi.bi-plus-circle
+          | Add Faculty
+
+  //- Loading overlay
+  .loading-overlay
+    .loading-spinner
+
+block scripts
+  script(src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js")
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize sortable for each department table
+      document.querySelectorAll('.sortable-faculty tbody').forEach(el => {
+        new Sortable(el, {
+          handle: '.sortable-handle',
+          animation: 150,
+          ghostClass: 'sortable-ghost',
+          onEnd: async function() {
+            const loading = document.querySelector('.loading-overlay');
+            loading.style.display = 'flex';
+            
+            const department = this.el.closest('.sortable-faculty').dataset.department;
+            const facultyIds = Array.from(this.el.children)
+              .map(child => child.dataset.id);
+            
+            try {
+              const response = await fetch('/cms/adminfaculty/update-order', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ facultyIds })
+              });
+              
+              if (!response.ok) throw new Error('Failed to update order');
+              
+              // Update order attributes
+              Array.from(this.el.children).forEach((child, index) => {
+                child.dataset.order = index + 1;
+              });
+              
+            } catch (error) {
+              console.error('Error:', error);
+              alert('Failed to save new order. Please try again.');
+              window.location.reload();
+            } finally {
+              loading.style.display = 'none';
+            }
+          }
+        });
+      });
+      
+      // Confirm before deleting
+      document.querySelectorAll('[onclick*="confirm"]').forEach(btn => {
+        btn.onclick = function() {
+          const loading = document.querySelector('.loading-overlay');
+          loading.style.display = 'flex';
+          return confirm(btn.getAttribute('onclick').match(/'([^']+)'/)[1]);
+        };
+      });
+    });
+    document.querySelectorAll('.btn-close').forEach(button => {
+        button.addEventListener('click', function() {
+          const alert = this.closest('.alert');
+          alert.classList.remove('show');
+          setTimeout(() => alert.remove(), 150);
+        });
+      });
