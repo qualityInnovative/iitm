@@ -40,8 +40,7 @@ exports.uploadFacultyFiles = multer({
 ]);
 
 // List all faculty
-exports.getFaculty = async (req, res) => {
-    
+exports.getFaculty = async (req, res) => {  
   try {
     const faculty = await query(`
       SELECT * FROM faculty 
@@ -119,69 +118,10 @@ exports.getFacultyForm = async (req, res) => {
   }
 };
 
-// Save faculty member
 exports.saveFaculty = async (req, res) => {
-  try {
-   
-
-    const facultyId = req.params.id || req.body.faculty_id;
-    const {
-      full_name,
-      position,
-      department,
-      experience,
-      specialization,
-      education,
-      email,
-      phone,
-      order,
-      is_active
-    } = req.body;
-
-    const activeStatus = 1;
-    
-    // Get file paths if they were uploaded
-    const profile_image = req.files?.profile_image ? `/uploads/profile_images/${req.files.profile_image[0].filename}` : null;
-    const resume_path = req.files?.resume_file ? `/uploads/resumes/${req.files.resume_file[0].filename}` : null;
-
-    if (facultyId) {
-      // Update existing faculty
-      const [currentFaculty] = await query(`
-        SELECT profile_image, resume_path FROM faculty WHERE faculty_id = ?
-      `, [facultyId]);
-
-      // Handle file deletions for updates
-      if (profile_image && currentFaculty?.profile_image) {
-        const oldImagePath = path.join(__dirname, '../public', currentFaculty.profile_image);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
-        }
-      }
-
-      if (resume_path && currentFaculty?.resume_path) {
-        const oldResumePath = path.join(__dirname, '../public', currentFaculty.resume_path);
-        if (fs.existsSync(oldResumePath)) {
-          fs.unlinkSync(oldResumePath);
-        }
-      }
-
-      await query(`
-        UPDATE faculty SET
-          profile_image = COALESCE(?, profile_image),
-          full_name = ?,
-          position = ?,
-          department = ?,
-          experience = ?,
-          specialization = ?,
-          education= ?,
-          email = ?,
-          phone = ?,
-          \`order\` = ?,
-          resume_path = COALESCE(?, resume_path),
-          is_active = ?
-        WHERE faculty_id = ?
-      `, [
-        profile_image,
+    try {
+      const facultyId = req.params.id || req.body.faculty_id;
+      const {
         full_name,
         position,
         department,
@@ -191,16 +131,53 @@ exports.saveFaculty = async (req, res) => {
         email,
         phone,
         order,
-        resume_path,
-        1,
-        facultyId
-      ]);
-
-      req.session.successMessage = "Faculty member updated successfully";
-    } else {
-      // Insert new faculty
-      await query(`
-        INSERT INTO faculty (
+        is_active
+      } = req.body;
+  
+      const activeStatus = is_active || 1;
+      
+      // Get file paths if they were uploaded
+      const profile_image = req.files?.profile_image ? `/uploads/profile_images/${req.files.profile_image[0].filename}` : null;
+      const resume_path = req.files?.resume_file ? `/uploads/resumes/${req.files.resume_file[0].filename}` : null;
+  
+      if (facultyId) {
+        // Update existing faculty
+        const [currentFaculty] = await query(`
+          SELECT profile_image, resume_path FROM faculty WHERE faculty_id = ?
+        `, [facultyId]);
+  
+        // Handle file deletions for updates
+        if (profile_image && currentFaculty?.profile_image) {
+          const oldImagePath = path.join(__dirname, '../public', currentFaculty.profile_image);
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
+        }
+  
+        if (resume_path && currentFaculty?.resume_path) {
+          const oldResumePath = path.join(__dirname, '../public', currentFaculty.resume_path);
+          if (fs.existsSync(oldResumePath)) {
+            fs.unlinkSync(oldResumePath);
+          }
+        }
+  
+        await query(`
+          UPDATE faculty SET
+            profile_image = COALESCE(?, profile_image),
+            full_name = ?,
+            position = ?,
+            department = ?,
+            experience = ?,
+            specialization = ?,
+            education = ?,
+            email = ?,
+            phone = ?,
+            \`order\` = ?,
+            resume_path = COALESCE(?, resume_path),
+            is_active = ?,
+            updated_at = CURRENT_TIMESTAMP
+          WHERE faculty_id = ?
+        `, [
           profile_image,
           full_name,
           position,
@@ -210,44 +187,64 @@ exports.saveFaculty = async (req, res) => {
           education,
           email,
           phone,
-          \`order\`,
+          order,
           resume_path,
-          is_active
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `, [
-        profile_image,
-        full_name,
-        position,
-        department,
-        experience,
-        specialization,
-        education,
-        email,
-        phone,
-        order,
-        resume_path,
-        activeStatus
-      ]);
-
-      req.session.successMessage = "Faculty member added successfully";
+          activeStatus,
+          facultyId
+        ]);
+  
+        req.session.successMessage = "Faculty member updated successfully";
+      } else {
+        // Insert new faculty - FIXED VALUE COUNT HERE
+        await query(`
+          INSERT INTO faculty (
+            profile_image,
+            full_name,
+            position,
+            department,
+            experience,
+            specialization,
+            education,
+            email,
+            phone,
+            \`order\`,
+            resume_path,
+            is_active
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [
+          profile_image,
+          full_name,
+          position,
+          department,
+          experience,
+          specialization,
+          education,
+          email,
+          phone,
+          order,
+          resume_path,
+          activeStatus
+        ]);
+  
+        req.session.successMessage = "Faculty member added successfully";
+      }
+  
+      res.redirect("/cms/adminfaculty");
+    } catch (err) {
+      console.error('Error saving faculty:', err);
+      
+      // Clean up uploaded files if error occurred
+      if (req.files?.profile_image) {
+        fs.unlinkSync(req.files.profile_image[0].path);
+      }
+      if (req.files?.resume_file) {
+        fs.unlinkSync(req.files.resume_file[0].path);
+      }
+  
+      req.session.errorMessage = "Failed to save faculty member: " + err.message;
+      res.redirect(req.headers.referer || '/cms/adminfaculty');
     }
-
-    res.redirect("/cms/adminfaculty");
-  } catch (err) {
-    console.error('Error saving faculty:', err);
-    
-    // Clean up uploaded files if error occurred
-    if (req.files?.profile_image) {
-      fs.unlinkSync(req.files.profile_image[0].path);
-    }
-    if (req.files?.resume_file) {
-      fs.unlinkSync(req.files.resume_file[0].path);
-    }
-
-    req.session.errorMessage = "Failed to save faculty member: " + err.message;
-    res.redirect(req.headers.referer || '/cms/adminfaculty');
-  }
-};
+  };
 
 // Delete faculty (soft delete)
 exports.deleteFaculty = async (req, res) => {
