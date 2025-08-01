@@ -20,20 +20,20 @@ block content
                 - for (var i = 0; i < teachingFaculty.length; ++i) {
                     .card-person
                         .card-person__border-top
-                        if teachingFaculty[i].photograph == null
+                        if teachingFaculty[i].profile_image == null
                             if teachingFaculty[i].gender == "m"
                                 img(src="/data/imgs/man-default-profile.png" alt="").card-person__img
                             else
                                 img(src="/data/imgs/woman-default-profile.png" alt="").card-person__img
                         else
-                            img(src=`/data/collegeImgs/${teachingFaculty[i].photograph}` alt="").card-person__img
+                            img(src=`${teachingFaculty[i].profile_image}` alt="").card-person__img
                         span.card-person__name #{teachingFaculty[i].name}
                         span.card-person__job #{teachingFaculty[i].appointedAs}
                         span.card-person__qualification #{teachingFaculty[i].qualification}
                         span.card-person__experience #{teachingFaculty[i].experience}
                         span.card-person__specialization #{teachingFaculty[i].specialization}
                         if teachingFaculty[i].resume != null
-                            a(href=`/data/resumes/${teachingFaculty[i].resume}`, target="_blank" rel="noopener noreferrer")
+                            a(href=`${teachingFaculty[i].resume}`, target="_blank" rel="noopener noreferrer")
                                 button 
                                     ion-icon(name="download")
                                     | resume

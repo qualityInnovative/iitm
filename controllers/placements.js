@@ -25,8 +25,11 @@ exports.getPlacements = (req, res, next) => {
       "SELECT * FROM placementDriveHighlights WHERE YEAR(date) IN (YEAR(CURDATE()), YEAR(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))) ORDER BY date DESC"
     ),
     query(
-      "SELECT name, gender, photograph, qualification, experience, specialization, appointedAs, department, resume FROM ?? WHERE (department = 'placement') ORDER BY name",
-      ["teachingFaculty"]
+      "SELECT faculty_id, profile_image , full_name as name, " +
+      "position as appointedAs, department, experience, specialization, " +
+      "education as qualification, resume_path as resume " +
+      "FROM faculty WHERE department = 'placement_officer' AND is_active = 1 " +
+      "ORDER BY `order`, full_name"
     ),
   ])
     .then(

@@ -182,11 +182,16 @@ exports.getFaculty = (req, res, next) => {
     )
   );
 };
+
 exports.getCSFaculty = (req, res, next) => {
   // Fetches details of computer science faculty from db
   query(
-    "SELECT name, gender, photograph, qualification, experience, specialization, appointedAs, department, resume FROM ?? WHERE (department = 'cs') ORDER BY name",
-    ["teachingFaculty"]
+    "SELECT faculty_id, profile_image, full_name as name, position as appointedAs, " +
+    "department, experience, specialization, education as qualification, " +
+    "resume_path as resume FROM ?? " +
+    "WHERE department = 'Computer Science' AND is_active = 1 " +
+    "ORDER BY `order`, full_name",
+    ["faculty"]
   )
     .then((result) => {
       // Renders the view
@@ -199,7 +204,10 @@ exports.getCSFaculty = (req, res, next) => {
             "/data/collegeImgs/faculty.JPG",
             ""
           ),
-          { teachingFaculty: result, isAuthenticated: req.session.isLoggedIn }
+          { 
+            teachingFaculty: result, 
+            isAuthenticated: req.session.isLoggedIn 
+          }
         )
       );
     })
@@ -208,11 +216,16 @@ exports.getCSFaculty = (req, res, next) => {
       res.status(500).send("Internal Server Error");
     });
 };
+
 exports.getManagementFaculty = (req, res, next) => {
   // Fetches details of management faculty from db
   query(
-    "SELECT name, gender, photograph, qualification, experience, specialization, appointedAs, department, resume FROM ?? WHERE (department = 'ms') ORDER BY name",
-    ["teachingFaculty"]
+    "SELECT faculty_id, profile_image, full_name as name, position as appointedAs, " +
+    "department, experience, specialization, education as qualification, " +
+    "resume_path as resume FROM ?? " +
+    "WHERE department = 'Business Administration' AND is_active = 1 " +
+    "ORDER BY `order`, full_name",
+    ["faculty"]
   )
     .then((result) => {
       // Renders the view
@@ -225,7 +238,10 @@ exports.getManagementFaculty = (req, res, next) => {
             "/data/collegeImgs/faculty.JPG",
             ""
           ),
-          { teachingFaculty: result, isAuthenticated: req.session.isLoggedIn }
+          { 
+            teachingFaculty: result, 
+            isAuthenticated: req.session.isLoggedIn 
+          }
         )
       );
     })

@@ -8105,6 +8105,7 @@ p {
 }
 .cards-person-container .card-person__img {
   height: 6.5rem;
+  width: 6.5rem;
   display: block;
   object-fit: cover;
   border: 5px solid rgb(86.8913043478, 177.1391304348, 219.6086956522);

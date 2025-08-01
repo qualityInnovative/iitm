@@ -96,20 +96,20 @@ block content
                 - for (var i = 0; i < placementFaculty.length; ++i) {
                     .card-person
                         .card-person__border-top
-                        if placementFaculty[i].photograph == null
+                        if placementFaculty[i].profile_image == null
                             if placementFaculty[i].gender == "m"
                                 img(src="/data/imgs/man-default-profile.png" alt="").card-person__img
                             else
                                 img(src="/data/imgs/woman-default-profile.png" alt="").card-person__img
                         else
-                            img(src=`/data/collegeImgs/${placementFaculty[i].photograph}` alt="").card-person__img
+                            img(src=`${placementFaculty[i].profile_image}` alt="").card-person__img
                         span.card-person__name #{placementFaculty[i].name}
                         span.card-person__job #{placementFaculty[i].appointedAs}
                         span.card-person__qualification #{placementFaculty[i].qualification}
                         span.card-person__experience #{placementFaculty[i].experience}
                         span.card-person__specialization #{placementFaculty[i].specialization}
                         if placementFaculty[i].resume != null
-                            a(href=`/data/resumes/${placementFaculty[i].resume}`, target="_blank" rel="noopener noreferrer")
+                            a(href=`${placementFaculty[i].resume}`, target="_blank" rel="noopener noreferrer")
                                 button 
                                     ion-icon(name="download")
                                     | resume
