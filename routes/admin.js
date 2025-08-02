@@ -46,7 +46,7 @@ router.post("/cms/adminfaculty/update-order",
 );
 
 // Delete faculty
-router.post("/cms/adminfaculty/delete/:id", facultyController.deleteFaculty);
+router.get("/cms/adminfaculty/delete/:id", facultyController.deleteFaculty);
 
 router.get("/cms/admininstitutionalcommittees", adminController.getAllInstitutionalCommittees);
 router.get("/cms/institutioncommittees/new", adminController.getAddInstitutionalCommittee);
