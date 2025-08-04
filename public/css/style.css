@@ -3989,7 +3989,7 @@ footer .credits a {
 .directory-page__introduction {
   font-size: 1.8em;
   line-height: 1.6em;
-  padding-right: 25%;
+  padding-right: 0%;
   text-align: justify;
 }
 .about-page__introduction *,
@@ -8105,7 +8105,6 @@ p {
 }
 .cards-person-container .card-person__img {
   height: 6.5rem;
-  width: 6.5rem;
   display: block;
   object-fit: cover;
   border: 5px solid rgb(86.8913043478, 177.1391304348, 219.6086956522);

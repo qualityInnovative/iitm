@@ -16,6 +16,7 @@ router.get("/authenticate", (req, res, next) => {
         user[0]?.username == "coordinator@ms" ||
         user[0]?.username == "so@iitm" ||
         user[0]?.username == "po@iitm" ||
+        user[0]?.username == "PO@iitm" ||
         user[0]?.username == "pro@iitm" ||
         user[0]?.username == "director@iitm"
           ? req.session.isLoggedIn

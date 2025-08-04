@@ -3588,11 +3588,12 @@ exports.postHighlight = (req, res, next) => {
 
     const headline = req.body.headline;
     const description = req.body.description;
+    const nedate = new Date();
 
     const sql =
-      "INSERT INTO placementDriveHighlights (headline, description, picture) VALUES (?, ?, ?)";
+      "INSERT INTO placementDriveHighlights (headline, description, picture,date) VALUES (?, ?, ?,?)";
 
-    query(sql, [headline, description, fileUrl], req.session.user)
+    query(sql, [headline, description, fileUrl,nedate], req.session.user)
       .then(() => {
         res.redirect("/cms/po-iitm");
       })

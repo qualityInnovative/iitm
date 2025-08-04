@@ -6,16 +6,6 @@
     "auditLog": "/Users/mac/Desktop/iitm/logs/.6ba3ee45c1c5ce8cbf88d618d49c4091e413e999-audit.json",
     "files": [
         {
-            "date": 1752916652722,
-            "name": "/Users/mac/Desktop/iitm/logs/app-2025-07-19.log",
-            "hash": "bef397377f950541cade268a9f648539a9c7d486c55156abcca5153517b98eb6"
-        },
-        {
-            "date": 1753075664103,
-            "name": "/Users/mac/Desktop/iitm/logs/app-2025-07-21.log",
-            "hash": "f15b4d26aaa11d9e5e1365041cd31f4164e84a9cbd4b9b117b049a11187b0d21"
-        },
-        {
             "date": 1753420885041,
             "name": "/Users/mac/Desktop/iitm/logs/app-2025-07-25.log",
             "hash": "60d87722f26efb969f51ab7d0bfe682e263f426753502bf250a63a7609ddc602"
@@ -54,6 +44,16 @@
             "date": 1754126152384,
             "name": "/Users/mac/Desktop/iitm/logs/app-2025-08-02.log",
             "hash": "951178270d71989bba02b27e07ff06cb6d357b075f38eb5800d867881010dc21"
+        },
+        {
+            "date": 1754163250038,
+            "name": "/Users/mac/Desktop/iitm/logs/app-2025-08-03.log",
+            "hash": "7d001fc8ef481c9c8dd30a1b0e38751e8d4003d1130a21e52142c389d85c3217"
+        },
+        {
+            "date": 1754299535476,
+            "name": "/Users/mac/Desktop/iitm/logs/app-2025-08-04.log",
+            "hash": "3b71a351af5a03f570d4d8f69ad98d65c27dd031158219b32a7a6b1013690650"
         }
     ],
     "hashType": "sha256"
