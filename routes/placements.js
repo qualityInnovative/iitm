@@ -16,5 +16,9 @@ router.get("/industrial-visits", placementsController.getIndustrialVisists);
 
 // Route to /mou at /placements
 router.get("/mous", placementsController.getMOUS);
+router.post(
+    "/placement-drive-highlights/delete",
+    placementsController.deletePlacementDriveHighlight
+);
 
 module.exports = router;

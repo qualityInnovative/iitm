@@ -10,7 +10,7 @@ const params = mainParams(
   [
     ["Graduate programmes"],
     ["Post Graduate programmes"],
-    ["Tution & Fees"],
+    ["Tution Fees"],
     ["Scholarships", "STEM Scholarship", "Sakhawat Center"],
     ["Rules and Regulations"],
     ["FAQ"],
