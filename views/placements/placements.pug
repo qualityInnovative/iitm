@@ -80,7 +80,7 @@ block content
                                 h4.clear-text.uppercase.font-lg #{placementDriveHighlights[i].headline}
                                 p.clear-text #{placementDriveHighlights[i].description}
                                 if isAuthenticated
-                                    form.delete-form(method='POST' action='/placements/placement-drive-highlights/delete')
+                                    form.delete-form(method='POST' action='/placements')
                                         input(type='hidden' name='id' value=placementDriveHighlights[i].pid)
                                         button.btn.btn-danger.delete-button(type='submit') Delete
                                 
