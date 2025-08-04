@@ -33,9 +33,7 @@ exports.getPlacements = (req, res, next) => {
     ),
   ])
     .then(
-      ([placementTestimonials, placementDriveHighlights, placementFaculty]) => {
-        console.log(req.session);
-        console.log(placementDriveHighlights)
+      ([placementTestimonials, placementDriveHighlights, placementFaculty]) => { 
         res.render(
           `placements/placements`,
           Object.assign(
