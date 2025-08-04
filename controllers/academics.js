@@ -81,7 +81,9 @@ exports.getCS = (req, res, next) => {
     )
   );
 };
-exports.getBCA = (req, res, next) => {
+exports.getBCA =async (req, res, next) => {
+  const [bcafees]= await query("SELECT fee FROM courses WHERE code = 'BCA'");
+  let feesofbca= bcafees.fee
   res.render(
     `academics/bca`,
     Object.assign(
@@ -91,11 +93,13 @@ exports.getBCA = (req, res, next) => {
         "/data/imgs/computer-science-banner.jpg",
         ""
       ),
-      { isAuthenticated: req.session.isLoggedIn }
+      { isAuthenticated: req.session.isLoggedIn,feesofbca }
     )
   );
 };
-exports.getMCA = (req, res, next) => {
+exports.getMCA =async (req, res, next) => {
+  const [mcafees]= await query("SELECT fee FROM courses WHERE code = 'MCA'");
+  let feesofmca= mcafees.fee
   res.render(
     `academics/mca`,
     Object.assign(
@@ -105,7 +109,7 @@ exports.getMCA = (req, res, next) => {
         "/data/imgs/computer-science-banner.jpg",
         ""
       ),
-      { isAuthenticated: req.session.isLoggedIn }
+      { isAuthenticated: req.session.isLoggedIn ,feesofmca}
     )
   );
 };
@@ -125,7 +129,9 @@ exports.getManagement = (req, res, next) => {
     )
   );
 };
-exports.getBBA = (req, res, next) => {
+exports.getBBA = async (req, res, next) => {
+  const [bbafees]= await query("SELECT fee FROM courses WHERE code = 'BBA'");
+  let feesofbba= bbafees.fee
   res.render(
     `academics/bba`,
     Object.assign(
@@ -135,11 +141,13 @@ exports.getBBA = (req, res, next) => {
         "/data/imgs/management-studies-banner.jpg",
         ""
       ),
-      { isAuthenticated: req.session.isLoggedIn }
+      { isAuthenticated: req.session.isLoggedIn ,feesofbba}
     )
   );
 };
-exports.getMBA = (req, res, next) => {
+exports.getMBA = async(req, res, next) => {
+  const [mbafees]= await query("SELECT fee FROM courses WHERE code = 'MBA'");
+  let feesofmba= mbafees.fee
   res.render(
     `academics/mba`,
     Object.assign(
@@ -149,7 +157,7 @@ exports.getMBA = (req, res, next) => {
         "/data/imgs/management-studies-banner.jpg",
         ""
       ),
-      { isAuthenticated: req.session.isLoggedIn }
+      { isAuthenticated: req.session.isLoggedIn ,feesofmba}
     )
   );
 };
