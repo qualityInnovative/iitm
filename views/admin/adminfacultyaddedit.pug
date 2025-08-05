@@ -219,11 +219,11 @@ block content
               option(value="placement_officer" selected=faculty && faculty.department === 'placement_officer') Placement Officer
         .col-md-6
           .form-group
-            label.form-label.required-field Experience
+            label.form-label Experience
             input.form-control(
               type="text" 
               name="experience" 
-              required
+             
               value=faculty ? faculty.experience : ''
               placeholder="e.g. 5 years"
             )
