@@ -142,6 +142,21 @@ const homeController = (req, res, next) => {
 
 // Route to /
 router.get("/", homeController);
+// Delete testimonial route
+router.post("/testimonials/delete/:id", (req, res) => {
+  
+
+  const testimonialId = req.params.id;
+
+  query("DELETE FROM placementTestimonials WHERE tid = ?", [testimonialId])
+    .then(() => {
+      res.redirect("/"); // or res.redirect("back") to return to the previous page
+    })
+    .catch((err) => {
+      console.error("Error deleting testimonial:", err);
+      res.status(500).send("Failed to delete testimonial");
+    });
+});
 
 // Route to /home
 router.get("/home", homeController);

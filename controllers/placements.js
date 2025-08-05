@@ -101,6 +101,18 @@ exports.getIndustrialVisists = (req, res, next) => {
       res.status(500).send("Internal Server Error");
     });
 };
+exports.deleteIndustrialVisit = (req, res, next) => {
+  const id = req.params.id;
+
+  query("DELETE FROM industrialVisits WHERE id = ?", [id])
+    .then(() => {
+      res.redirect("/industrial-visits");
+    })
+    .catch((err) => {
+      console.error("Error deleting industrial visit:", err);
+      res.status(500).send("Internal Server Error");
+    });
+};
 
 exports.deletePlacementDriveHighlight = (req, res, next) => {
   // Check admin privileges first

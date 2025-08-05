@@ -246,10 +246,16 @@ block content
                                 span.testimonials__slides--item--name.uppercase.bold #{testimonials[i].name}, #{testimonials[i].program}
                                 span.testimonials__slides--item--placement #{testimonials[i].company} @#{testimonials[i].package}
                                 p #{testimonials[i].testimonial}
+
+                                //- Add delete button if authenticated
+                                if isAuthenticated
+                                    form(method="POST", action=`/testimonials/delete/${testimonials[i].tid}`)
+                                        button.btn.btn-primary(type="submit", class="delete-button") Delete
                         - }
                     .testimonials__buttons 
                         button.testimonials__buttons--next
                             ion-icon(name="arrow-forward-circle")
+
 
         //- /////////////////////////////////////////////////
         //- Latest Events Section
