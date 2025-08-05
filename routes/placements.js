@@ -13,6 +13,8 @@ router.get("/internships", placementsController.getInternships);
 
 // Route to /industrial-visits at /placements
 router.get("/industrial-visits", placementsController.getIndustrialVisists);
+router.post("/industrial-visits/delete/:id", placementsController.deleteIndustrialVisit);
+
 
 // Route to /mou at /placements
 router.get("/mous", placementsController.getMOUS);

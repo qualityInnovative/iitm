@@ -65,6 +65,6 @@ block content
 
                                 
                         if isAuthenticated
-                            form(method="POST", action=`/industrial-visits/delete/${visits.iid}`)
-                                button(type="submit") Delete
+                            form(method="POST", action=`/placements/industrial-visits/delete/${visits[i].iid}`)
+                                button.btn.btn-primary(type="submit") Delete
                 - }

@@ -36,10 +36,16 @@ block content
                                 span.testimonials__slides--item--name.uppercase.bold #{placementTestimonials[i].name}, #{placementTestimonials[i].program}
                                 span.testimonials__slides--item--placement #{placementTestimonials[i].company} @#{placementTestimonials[i].package}
                                 p #{placementTestimonials[i].testimonial}
+
+                                if isAuthenticated
+                                    form(method="POST", action=`/testimonials/delete/${placementTestimonials[i].tid}`)
+                                        button.btn.btn-primary(type="submit", class="delete-button") Delete
                         - }
                     .testimonials__buttons 
                         button.testimonials__buttons--next
                             ion-icon(name="arrow-forward-circle")
+
+                    
 
         .offer-letter-container
             a(href="/data/imgs/offer-letter.jpeg" target="_blank") 

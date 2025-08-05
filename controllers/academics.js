@@ -281,6 +281,38 @@ exports.getGuestLectures = (req, res, next) => {
       res.status(500).send("Can't fetch guest lectures. Try again later.");
     });
 };
+exports.deleteGuestLecture = (req, res, next) => {
+  const id = req.params.id;
+
+  if (!id) {
+    return res.status(400).send("Invalid ID");
+  }
+
+  query("DELETE FROM guestLectures WHERE gid = ?", [id])
+    .then(() => {
+      res.redirect("/academics/guest-lectures");
+    })
+    .catch((err) => {
+      console.error("Error deleting guest lecture:", err);
+      res.status(500).send("Internal Server Error");
+    });
+};
+exports.deleteWorkshopBootcamp = (req, res, next) => {
+  const wbid = req.params.id;
+
+  if (!wbid) {
+    return res.status(400).send("Invalid ID");
+  }
+
+  query("DELETE FROM workshopsAndBootcamps WHERE wbid = ?", [wbid])
+    .then(() => {
+      res.redirect("/academics/workshops-and-bootcamps");
+    })
+    .catch((err) => {
+      console.error("Error deleting workshop/bootcamp:", err);
+      res.status(500).send("Internal Server Error");
+    });
+};
 
 // Route to workshops
 exports.getWorkshopsAndBootcamps = (req, res, next) => {

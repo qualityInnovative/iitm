@@ -30,9 +30,11 @@ router.get("/faculty/management", academicsController.getManagementFaculty);
 
 // Route to /guest-lectures at /academics
 router.get("/guest-lectures", academicsController.getGuestLectures);
+router.post("/guest-lectures/delete/:id",academicsController.deleteGuestLecture)
 
 // Route to /workshops at /academics
 router.get("/workshops-and-bootcamps", academicsController.getWorkshopsAndBootcamps);
+router.post("/workshops-and-bootcamps/delete/:id",academicsController.deleteWorkshopBootcamp);
 
 // Route to /library at /academics
 router.get("/library", academicsController.getLibrary);

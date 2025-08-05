@@ -104,9 +104,10 @@ exports.getIndustrialVisists = (req, res, next) => {
 exports.deleteIndustrialVisit = (req, res, next) => {
   const id = req.params.id;
 
-  query("DELETE FROM industrialVisits WHERE id = ?", [id])
+  console.log(id)
+  query("DELETE FROM industrialVisits WHERE iid = ?", [id])
     .then(() => {
-      res.redirect("/industrial-visits");
+      res.redirect("/placements/industrial-visits");
     })
     .catch((err) => {
       console.error("Error deleting industrial visit:", err);
@@ -182,6 +183,7 @@ exports.deletePlacementDriveHighlight = (req, res, next) => {
       });
     });
 };
+
 // Routes to Internships
 exports.getMOUS = (req, res, next) => {
   res.render(

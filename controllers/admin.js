@@ -3628,6 +3628,8 @@ exports.postWorkshopBootcamp = (req, res, next) => {
       res.status(500).send("Cannot upload workshop/bootcamp. Try again later!");
     });
 };
+// delete workshop wbid
+
 exports.postGuestLecture = (req, res, next) => {
   // Collects form data
   const title = req.body.title;

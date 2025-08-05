@@ -67,7 +67,9 @@ block content
                                                     path(stroke-width='2' stroke='#ffffff' d='M17 8C17 10.7614 14.7614 13 12 13C9.23858 13 7 10.7614 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z')
                                                     path(stroke-linecap='round' stroke-width='2' stroke='#ffffff' d='M3 21C3.95728 17.9237 6.41998 17 12 17C17.58 17 20.0427 17.9237 21 21')
                                         span #{workshopAndBootcamp.participants}
-
+                                if isAuthenticated
+                                    form(method="POST", action=`/academics/workshops-and-bootcamps/delete/${workshopAndBootcamp.wbid}`)
+                                            button.btn-danger(type="submit") Delete
                 .workshops-cont.hidden
                     each workshopAndBootcamp in workshopsAndBootcamps
                         if workshopAndBootcamp.type == "workshop"
@@ -115,6 +117,9 @@ block content
                                                     path(stroke-width='2' stroke='#ffffff' d='M17 8C17 10.7614 14.7614 13 12 13C9.23858 13 7 10.7614 7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8Z')
                                                     path(stroke-linecap='round' stroke-width='2' stroke='#ffffff' d='M3 21C3.95728 17.9237 6.41998 17 12 17C17.58 17 20.0427 17.9237 21 21')
                                         span #{workshopAndBootcamp.participants}
+                                    if isAuthenticated
+                                        form(method="POST", action=`/academics/workshops-and-bootcamps/delete/${workshopAndBootcamp.wbid}`)
+                                            button.btn.btn-primary(type="submit") Delete
 
     script.
         //- Script for tabs functionality
