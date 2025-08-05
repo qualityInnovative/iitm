@@ -3987,9 +3987,9 @@ footer .credits a {
 .academics-page__introduction,
 .placements-page__introduction,
 .directory-page__introduction {
-  font-size: 1.5em;
-  line-height: 1.4em;
-  padding-right: 0%;
+  font-size: 1.8em;
+  line-height: 1.6em;
+  padding-right: 25%;
   text-align: justify;
 }
 .about-page__introduction *,
@@ -8142,12 +8142,11 @@ p {
   margin-bottom: 1.1em;
 }
 .cards-person-container .card-person__experience::before {
-  content: "w/  ";
+  
   font-weight: normal;
   color: #e0e0e0;
 }
 .cards-person-container .card-person__experience::after {
-  content: " years of experience";
   color: #e0e0e0;
   font-weight: normal;
 }
